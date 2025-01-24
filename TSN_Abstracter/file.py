@@ -3,6 +3,18 @@ import json, os;
 
 # This file needs partial rewriting
 
+def Read(Path: str) -> str:
+    """ TBD """
+    pass;
+
+def Write(Path: str) -> bool:
+    """ TBD """
+    pass;
+
+def Exists(Path: str) -> bool:
+    """ TBD """
+    pass;
+
 def JSON_Load(Path: str) -> dict:
     JSON_Exists(Path); # If shit hits the fan we should still get an empty dict
     with open(Path, "r", encoding="UTF-8") as JSON:

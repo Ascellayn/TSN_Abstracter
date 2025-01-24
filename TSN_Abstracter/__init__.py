@@ -1,7 +1,7 @@
 __all__ = [
-    "file",
-    "debugger",
-    "misc",
-    "safe",
-    "time"
+    "File",
+    "Debugger",
+    "Misc",
+    "Safe",
+    "Time"
 ];
