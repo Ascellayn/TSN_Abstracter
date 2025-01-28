@@ -96,4 +96,3 @@ def JSON_Exists(Path: str) -> bool:
             JSON.write("{}");
         return False;
     return True;
-
