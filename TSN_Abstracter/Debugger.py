@@ -1,6 +1,8 @@
 import TSN_Abstracter.File;
 import logging, datetime, sys, inspect;
 
+
+# Simplified logging functions
 def L_Debug(Text: str) -> None:
     """ Debug Log """
     Log(Text=Text, Level=10);
@@ -55,6 +57,8 @@ def Log(Text: str, Level: int = 0) -> None:
 
     Logger.log(Level, f"{Get_Caller(3)}(): {Text}");
 
+
+# Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
      """
      Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "<module>".
