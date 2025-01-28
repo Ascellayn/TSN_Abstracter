@@ -1,5 +1,6 @@
 import datetime, time;
 
+
 # Time.Convert_*
 def Convert_Datetime(Object: datetime.datetime) -> int:
 	""" 
@@ -24,6 +25,7 @@ def Convert_Unix(Unix: int) -> datetime.datetime:
 		Datetime Object with the time set according to the Unix argument.
 	"""
 	return datetime.datetime.fromtimestamp(Unix);
+
 
 # Time.Get_*
 def Get_Dawn(Unix: int) -> int:
@@ -62,6 +64,7 @@ def Get_DateStrings(Unix: int) -> str:
 	Date = DT.strftime("%Y/%m/%d");
 	Time = DT.strftime("%H:%M:%S")
 	return Date, Time
+
 
 # Time.Calculate_*
 def Calculate_Elapsed(Unix: int) -> dict:
