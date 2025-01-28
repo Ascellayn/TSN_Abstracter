@@ -5,7 +5,7 @@ def Convert_Datetime(Object: datetime.datetime) -> int:
 	""" 
 	Converts a Datetime Object to Unix Time.
 
-	Args:
+	Arguments:
 		Object: Datetime Object to be converted to an Integer.
 
 	Returns:
@@ -17,7 +17,7 @@ def Convert_Unix(Unix: int) -> datetime.datetime:
 	"""
 	Converts Unix Timestamp to Datetime Object.
 
-	Args:
+	Arguments:
 		Unix: Integer representing the time since the Epoch.
 	
 	Returns:
@@ -30,7 +30,7 @@ def Get_Dawn(Unix: int) -> int:
 	"""
 	Get the Unix Time of the specified date day's first second.
 
-	Args:
+	Arguments:
 		Unix: Integer representing the time since the Epoch.
 
 	Returns:
@@ -51,7 +51,7 @@ def Get_DateStrings(Unix: int) -> str:
 	"""
 	Get the current date and time in the preferred format.
 
-	Args:
+	Arguments:
 		Unix: Integer representing the time since the Epoch.
 
 	Returns:
@@ -69,7 +69,7 @@ def Calculate_Elapsed(Unix: int) -> dict:
 	Calculate how much time since the Epoch has passed.  
 	NOTE: Everything is calculated according to a year being 365.25 days long.
 
-	Args:
+	Arguments:
 		Unix: Integer representing the time since the Epoch.
 
 	Returns:

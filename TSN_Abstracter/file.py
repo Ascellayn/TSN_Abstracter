@@ -1,20 +1,75 @@
 from TSN_Abstracter.Debugger import *;
 import json, os;
 
-# This file needs partial rewriting
+
+# General File Processing
+def Exists(Path: str) -> bool:
+    """
+    Takes in a String representing a RELATIVE file path and returns a boolean if a file or folder exists in the specified path.
+    
+    Arguments:
+        Path: String representing the RELATIVE Path.
+
+    Returns:
+        If the file or a folder exists according to "Path", returns True, otherwise False.
+    """
+    return True if (os.path.isfile(Path) or os.path.isdir(Path)) else False;
 
 def Read(Path: str) -> str:
-    """ TBD """
-    pass;
+    """ Docs TBW """
+    if Exists(Path):
+        try:
+            with open(Path, "r", encoding="UTF8") as File:
+                return File.read();
+        except:
+            L_Error(f"Failed to read file {Path}!\nEXCEPTION: {Exception}");
+    return None;
 
-def Write(Path: str) -> bool:
-    """ TBD """
-    pass;
+def Write(Path: str, Data: str) -> bool:
+    """ Docs TBW """
+    if Exists(Path):
+        try:
+            with open(Path, "w", encoding="UTF8") as File:
+                File.write(Data);
+                return True;
+        except:
+            L_Error(f"Failed to write file {Path}!\nData to be written:\n{Data}\nEXCEPTION: {Exception}");
+    return False;
 
-def Exists(Path: str) -> bool:
-    """ TBD """
-    pass;
 
+# Path Manipulation
+def Path_Create(Path: str) -> bool:
+    try:
+        os.makedirs(Path);
+        return True;
+    except:
+        L_Error(f"Failed creating folder structure: {Path}\nEXCEPTION: {Exception}");
+        return False;
+
+def Path_Exists(Path: str) -> bool:
+    return os.path.isPath(Path);
+
+
+# Other Functions
+def Tree(Path: str) -> list:
+    """
+    Returns a matrix of all folders and files inside Path.
+
+    Arguments:
+        Path: String representing the RELATIVE folder path we want to check.
+
+    Returns:
+        Array containing two arrays, the first one being a list of folders, and the second one being files.
+    """
+    try:
+        Results = next(os.walk(f"{os.getcwd()}/{Path}"));
+        return [Results[1], Results[2]];
+    except:
+        L_Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Exception}");
+        return None;
+
+
+# Deprecated
 def JSON_Load(Path: str) -> dict:
     JSON_Exists(Path); # If shit hits the fan we should still get an empty dict
     with open(Path, "r", encoding="UTF-8") as JSON:
@@ -42,35 +97,3 @@ def JSON_Exists(Path: str) -> bool:
         return False;
     return True;
 
-def Path_Exists(Path: str) -> bool:
-    return os.path.isPath(Path);
-
-def Path_Create(Path: str) -> None:
-    """ TBD """
-    pass;
-
-
-def mkdir(Path: str) -> None: # Shitty code incomin'!
-    if (Path[-1] == '/'):
-        Path = Path[:-1];
-    try: os.makedirs(Path, exist_ok=True);
-    except:
-        L_Error(f"when tf would that fail too \n {Exception}");
-        return None;
-
-def ls(Path: str) -> list:
-    """
-    Returns a matrix of all folders and files inside Path.
-
-    Args:
-        Path: String representing the RELATIVE folder path we want to check.
-
-    Returns:
-        Array containing two arrays, the first one being a list of folders, and the second one being files.
-    """
-    try:
-        Results = next(os.walk(f"{os.getcwd()}/{Path}"));
-        return [Results[1], Results[2]];
-    except:
-        L_Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Exception}");
-        return None;

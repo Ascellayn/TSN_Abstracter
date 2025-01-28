@@ -2,7 +2,7 @@ def Index(Array: list, Index: int):
 	"""
 	Attempts to safely try to read an array's specified index.
 	
-	Args:
+	Arguments:
         Array: The List that we want to check a specific index.
 		Index: The Index element we want to read.
 	
