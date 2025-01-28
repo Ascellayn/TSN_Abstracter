@@ -1,4 +1,4 @@
-import tsn_abstracter.file;
+import TSN_Abstracter.File;
 import logging, datetime, sys, inspect;
 
 def L_Debug(Text: str) -> None:
@@ -35,7 +35,7 @@ def Log(Text: str, Level: int = 0) -> None:
         - Make Logger Global so we don't have to redeclare EVERY TIME this shit
     """
     # TODO: Verify the "logs" folder exists
-    print(tsn_abstracter.file.test());
+    print(TSN_Abstracter.File.test());
     
     # Configure Logger
     Logger = logging.getLogger();
