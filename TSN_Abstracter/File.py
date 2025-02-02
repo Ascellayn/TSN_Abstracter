@@ -1,6 +1,5 @@
-from TSN_Abstracter.Debugger import *;
+import TSN_Abstracter.Log as Log;
 import json, os;
-
 
 # General File Processing
 def Exists(Path: str) -> bool:
@@ -13,86 +12,149 @@ def Exists(Path: str) -> bool:
     Returns:
         If the file or a folder exists according to "Path", returns True, otherwise False.
     """
+    Path = Path_Folder(Path);
     return True if (os.path.isfile(Path) or os.path.isdir(Path)) else False;
 
 def Read(Path: str) -> str:
-    """ Docs TBW """
+    """
+    Takes in a String representing a RELATIVE file path and returns the contents of the file specified.
+    
+    Arguments:
+        Path: String representing the RELATIVE Path to a file.
+
+    Returns:
+        If the file or a folder exists according to "Path", returns its data, otherwise None.
+    """
     if Exists(Path):
         try:
             with open(Path, "r", encoding="UTF8") as File:
                 return File.read();
-        except:
-            L_Error(f"Failed to read file {Path}!\nEXCEPTION: {Exception}");
+        except Exception as Error:
+            Log.Error(f"Failed to read file {Path}!\n   EXCEPTION: {Error}");
     return None;
 
 def Write(Path: str, Data: str) -> bool:
-    """ Docs TBW """
+    """
+    Takes in a String representing a RELATIVE file path and writes the contents specified in Data.
+    
+    Arguments:
+        Path: String representing the RELATIVE Path to a file.
+        Data: String representing the data to write.
+
+    Returns:
+        If the write was successful, return True. Otherwise False.
+    """
     if Exists(Path):
         try:
             with open(Path, "w", encoding="UTF8") as File:
                 File.write(Data);
                 return True;
-        except:
-            L_Error(f"Failed to write file {Path}!\nData to be written:\n{Data}\nEXCEPTION: {Exception}");
+        except Exception as Error:
+            Log.Error(f"Failed to write file {Path}!\nData to be written:\n   DATA: {Data}\n   EXCEPTION: {Error}");
     return False;
 
 
 # Path Manipulation
 def Path_Create(Path: str) -> bool:
+    """
+    Creates the specified file path.
+
+    Arguments:
+        Path: String representing the RELATIVE folder path we want to create.
+
+    Returns:
+        Boolean telling us if the operation was successful or not.
+    """
+    Path = Path_Folder(Path);
     try:
         os.makedirs(Path);
         return True;
-    except:
-        L_Error(f"Failed creating folder structure: {Path}\nEXCEPTION: {Exception}");
+    except Exception as Error:
+        Log.Error(f"Failed creating folder structure: {Path}\n   EXCEPTION: {Error}");
         return False;
 
-def Path_Exists(Path: str) -> bool:
-    return os.path.isPath(Path);
+def Path_Require(Path: str) -> bool:
+    """
+    Checks the existence of the Path, if it doesn't then create it.
+    
+    Arguments:
+        Path: String representing the RELATIVE folder path we want to check.
 
+    Returns:
+        Boolean telling us if the file path existed before.
+    """
+    if (Exists(Path)):
+        return True;
+    Path_Create(Path);
+    return False;
+
+def Path_Folder(Path: str) -> str:
+    """
+    Takes in a Path and returns itself, minus the file name at the end if it exists by checking for "." and "/" in the filename.  
+    Yes this function is inherently complete garbage but it does the job good enough.
+    
+    Arguments:
+        Path: String representing the RELATIVE file path we want to transform.
+
+    Returns:
+        String representing the Folder Path of the File Path.
+    """
+    if ("." in Path):
+        Folder_Path = Path.split("/");
+        Folder_Path.pop(-1);
+        Path = "";
+        for Folder in Folder_Path:
+            Path += f"/{Folder}";
+        Path = Path[1:] # Exclude the first "/", yeah this is janky.
+    return Path;
 
 # Other Functions
-def Tree(Path: str) -> list:
+def List(Path: str) -> tuple:
     """
-    Returns a matrix of all folders and files inside Path.
+    Returns a matrix of the folders and files inside Path.
 
     Arguments:
         Path: String representing the RELATIVE folder path we want to check.
 
     Returns:
-        Array containing two arrays, the first one being a list of folders, and the second one being files.
+        Tuple containing two arrays, the first one being a list of folders, and the second one being files.
     """
     try:
         Results = next(os.walk(f"{os.getcwd()}/{Path}"));
-        return [Results[1], Results[2]];
-    except:
-        L_Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Exception}");
+        return (tuple(Results[1]), tuple(Results[2]));
+    except Exception as Error:
+        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Error}");
         return None;
 
+def Tree(Path: str) -> tuple:
+    """
+    Returns a matrix of ALL folders and files inside Path.
 
-# Deprecated
+    Arguments:
+        Path: String representing the RELATIVE folder path we want to check.
+
+    Returns:
+        Array containing two arrays, the first one being a list of folders, and the second one being files.  
+        Each folder in the first array is in reality
+    """
+    try:
+        Results = List(Path); # The return looks retarded. But it works so I don't give a shit. Also oh no recursion
+        return (tuple((Folder, Tree(f"{Path}/{Folder}")) for Folder in Results[0] if (Results[0] != None)), Results[1]);
+    except Exception as Error:
+        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Error}");
+        return None;
+
+# JSON Specific Abstraction
 def JSON_Load(Path: str) -> dict:
-    JSON_Exists(Path); # If shit hits the fan we should still get an empty dict
-    with open(Path, "r", encoding="UTF-8") as JSON:
-        return json.load(JSON);
+    if (Path_Require(Path)):
+        return json.load(Read(Path));
+    return {};
     
-def JSON_Write(Path: str, Dictionary: dict) -> None:
-    JSON_Exists(Path)
-    with open(Path, "w", encoding="UTF-8") as JSON:
-        JSON.write(json.dumps(Dictionary, indent=2));
-        return None;
-
-def JSON_Exists(Path: str) -> bool:
-    if ('/' in Path): # Creates the corresponding folder structure if it doesn't exist.
-        Path_Array = Path.split("/");
-        Path = "";
-
-        for Path_Index in range (len(Path_Array)):
-            if (Path_Index >= (len(Path_Array) -1)): break;
-            Path += f"{Path_Array[Path_Index]}/";
-        mkdir(Path)
-
-    if (Path_Exists(Path) == False):
-        with open(Path, "w", encoding="UTF-8") as JSON:
-            JSON.write("{}");
-        return False;
-    return True;
+def JSON_Write(Path: str, Dictionary: dict) -> bool:
+    try:
+        Path_Require(Path)
+        Write(Path, json.dumps(Dictionary, indent=2));
+        return True;
+    except Exception as Error:
+        Log.Error(f"Error Writing JSON {Path}.\n   DATA: {Dictionary}\n   EXCEPTION:{Error}")
+    return False;
