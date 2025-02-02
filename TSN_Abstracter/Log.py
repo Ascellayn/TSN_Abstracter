@@ -1,25 +1,25 @@
-import TSN_Abstracter.File;
+import TSN_Abstracter.File as File;
 import logging, datetime, sys, inspect;
 
 
 # Simplified logging functions
-def L_Debug(Text: str) -> None:
+def Debug(Text: str) -> None:
     """ Debug Log """
     Log(Text=Text, Level=10);
 
-def L_Info(Text: str) -> None:
+def Info(Text: str) -> None:
     """ Info Log """
     Log(Text=Text, Level=20);
 
-def L_Warning(Text: str) -> None:
+def Warning(Text: str) -> None:
     """ Warning Log """
     Log(Text=Text, Level=30);
 
-def L_Error(Text: str) -> None:
+def Error(Text: str) -> None:
     """ Error Log """
     Log(Text=Text, Level=40);
 
-def L_Critical(Text: str) -> None:
+def Critical(Text: str) -> None:
     """ Critical Log """
     Log(Text=Text, Level=50);
 
@@ -32,12 +32,11 @@ def Log(Text: str, Level: int = 0) -> None:
         Level: Integer corresponding to how severe the message is.
 
     TODO:
-        - Verify the logs folder exists
         - Add config to prevent generation of logs
         - Make Logger Global so we don't have to redeclare EVERY TIME this shit
     """
-    # TODO: Verify the "logs" folder exists
-    print(TSN_Abstracter.File.test());
+    # Check if the Logs folder doesn't exist, create it if it isn't.
+    File.Path_Require("logs");
     
     # Configure Logger
     Logger = logging.getLogger();

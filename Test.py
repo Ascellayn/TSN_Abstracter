@@ -1,3 +1,6 @@
-from TSN_Abstracter.Debugger import *;
+from TSN_Abstracter import *;
 
-L_Warning(f"Testing");
+Log.Warning(f"Testing");
+Log.Debug(File.Tree("TreeTest"));
+
+File.JSON_Write("JSON/Test.json", {"hi": "balls"})
