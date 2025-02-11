@@ -28,7 +28,9 @@ def Read(Path: str) -> str:
     if Exists(Path):
         try:
             with open(Path, "r", encoding="UTF8") as File:
-                return File.read();
+                Data = File.read();
+                Log.Debug(f"{Path}:\n'{Data}'");
+                return Data;
         except Exception as Error:
             Log.Error(f"Failed to read file {Path}!\n   EXCEPTION: {Error}");
     return None;
@@ -47,12 +49,12 @@ def Write(Path: str, Data: str) -> bool:
     if Exists(Path):
         try:
             with open(Path, "w", encoding="UTF8") as File:
+                Log.Debug(f"{Path}:\n'{Data}'");
                 File.write(Data);
                 return True;
         except Exception as Error:
-            Log.Error(f"Failed to write file {Path}!\nData to be written:\n   DATA: {Data}\n   EXCEPTION: {Error}");
+            Log.Error(f"Failed to write file '{Path}'!\nData to be written:\n   DATA: '{Data}'\n   EXCEPTION: '{Error}'");
     return False;
-
 
 # Path Manipulation
 def Path_Create(Path: str) -> bool:
@@ -70,7 +72,7 @@ def Path_Create(Path: str) -> bool:
         os.makedirs(Path);
         return True;
     except Exception as Error:
-        Log.Error(f"Failed creating folder structure: {Path}\n   EXCEPTION: {Error}");
+        Log.Error(f"Failed creating folder structure: '{Path}'\n   EXCEPTION: '{Error}'");
         return False;
 
 def Path_Require(Path: str) -> bool:
@@ -123,7 +125,7 @@ def List(Path: str) -> tuple:
         Results = next(os.walk(f"{os.getcwd()}/{Path}"));
         return (tuple(Results[1]), tuple(Results[2]));
     except Exception as Error:
-        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Error}");
+        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow.\n   EXCEPTION: '{Error}'");
         return None;
 
 def Tree(Path: str) -> tuple:
@@ -137,19 +139,21 @@ def Tree(Path: str) -> tuple:
         Array containing two arrays, the first one being a list of folders, and the second one being files.  
         Each folder in the first array is in reality
     """
-    try:
-        Results = List(Path); # The return looks retarded. But it works so I don't give a shit. Also oh no recursion
-        return (tuple((Folder, Tree(f"{Path}/{Folder}")) for Folder in Results[0] if (Results[0] != None)), Results[1]);
-    except Exception as Error:
-        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow. \n {Error}");
-        return None;
+    if Exists(Path):
+        try:
+            Results = List(Path); # The return looks retarded. But it works so I don't give a shit. Also oh no recursion
+            return (tuple((Folder, Tree(f"{Path}/{Folder}")) for Folder in Results[0] if (Results[0] != None)), Results[1]);
+        except Exception as Error:
+            Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow.\n   EXCEPTION: '{Error}'");
+            return None;
+    return None;
 
 # JSON Specific Abstraction
 def JSON_Load(Path: str) -> dict:
     if (Path_Require(Path)):
         return json.load(Read(Path));
     return {};
-    
+
 def JSON_Write(Path: str, Dictionary: dict) -> bool:
     try:
         Path_Require(Path)

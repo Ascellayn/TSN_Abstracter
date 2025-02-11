@@ -1,5 +1,6 @@
+import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
-import logging, datetime, sys, inspect;
+import datetime, inspect, logging, shutil, sys;
 
 
 # Simplified logging functions
@@ -39,22 +40,26 @@ def Log(Text: str, Level: int = 0) -> None:
     File.Path_Require("logs");
     
     # Configure Logger
-    Logger = logging.getLogger();
+    Logger = logging.getLogger(__name__);
     Logger.setLevel(Level);
 
-    Handlers = [];
-    if (Level >= 10): # If this is a debug message, don't display to the console.
-        Handlers.append(logging.StreamHandler(stream=sys.stdout));
-    if (True): # TODO: add config to prevent generation of logs
-        Handlers.append(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"));
-    
-    logging.basicConfig(
-        format = "[%(asctime)s] - %(levelname)s: %(message)s",
-        datefmt = "%Y/%m/%d - %H:%M:%S",
-        handlers = Handlers
+    Format = logging.Formatter(
+        fmt = "[%(asctime)s] - %(levelname)s: %(message)s", 
+        datefmt = "%Y/%m/%d - %H:%M:%S"
     );
 
-    Logger.log(Level, f"{Get_Caller(3)}(): {Text}");
+    Handlers = [];
+    Logger.handlers.clear(); # Clearing handlers otherwise the fucking conditions compared to the config never work?????
+    if (Level >= Config.Logging["Print_Level"]): # If this is a debug message, don't display to the console.
+        Handlers.append(logging.StreamHandler(stream=sys.stdout));
+    if (Config.Logging["File"] and (Level >= Config.Logging["File_Level"])):
+        Handlers.append(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"));
+    
+    for Handler in Handlers:
+        Handler.setFormatter(Format);
+        Logger.addHandler(Handler);
+
+    Logger.log(Level, f"{Get_Caller(3)}() - {Text}");
 
 
 # Logging Dependencies
@@ -72,3 +77,16 @@ def Get_Caller(Depth: int = 2) -> str:
      if (Function == "<module>"):
          Function = __name__;
      return Function;
+
+# Miscellaneous Logging
+def Carriage(Text: str) -> None:
+    """
+    Prints using "\r" while also completely clearing the line to be sure there won't be artifacts from the previous text.
+    """
+    print(" "*shutil.get_terminal_size()[0], end="\r");
+    print(Text, end="\r");
+
+def Clear() -> None:
+    print("\n"*6948);
+    Warning("=== CLEARING THE LOG FILE! ===");
+    File.Write(f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log", "");
