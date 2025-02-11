@@ -79,11 +79,28 @@ def Calculate_Elapsed(Unix: int) -> dict:
 		Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 	"""
 	return {
-		"Seconds": Unix % 60,
-		"Minutes": (Unix // 60) % 60,
-		"Hours": (Unix // 3600) % 24,
-		"Days": (Unix // 86400) % 30.4375,
+		"Years": Unix // 31557600,
 		"Months": (Unix // 2629800) % 12,
-		"Years": Unix // 31557600
+		"Days": int((Unix // 86400) % 30.4375), # The int is required because otherwise this is automatically a float which we do not want.
+		"Hours": (Unix // 3600) % 24,
+		"Minutes": (Unix // 60) % 60,
+		"Seconds": Unix % 60
     };
 
+def Elapsed_String(Unix: int) -> str:
+	"""
+	Gives a dynamically sized string of the amount of time passed since the epoch.
+
+	Arguments:
+		Unix: Integer representing the time since the Epoch.
+
+	Returns:
+		String in the format "Xy, Xm, Xd, Xh, Xm, Xs".
+	"""
+	Elapsed = Calculate_Elapsed(Unix);
+	Dynamic_String = "";
+	for Key in Elapsed.keys():
+		if (Elapsed[Key] != 0):
+			Suffix = ", " if (Key != "Seconds") else "";
+			Dynamic_String += f"{Elapsed[Key]}{Key[:1].lower()}{Suffix}";
+	return Dynamic_String;
