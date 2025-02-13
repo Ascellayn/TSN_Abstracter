@@ -1,1 +1,2 @@
-logs/*
+# nuh uh no compiled python in MY repository
+*.pyc

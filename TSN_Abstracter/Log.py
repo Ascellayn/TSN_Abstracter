@@ -2,6 +2,7 @@ import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
 import datetime, inspect, logging, shutil, sys;
 
+Level_Last = 0;
 
 # Simplified logging functions
 def Debug(Text: str) -> None:
@@ -36,6 +37,10 @@ def Log(Text: str, Level: int = 0) -> None:
         - Add config to prevent generation of logs
         - Make Logger Global so we don't have to redeclare EVERY TIME this shit
     """
+    # We edit this global variable so that using Status_Update() is much less painful on the "user" side.
+    global Level_Last;
+    Level_Last = Level;
+
     # Check if the Logs folder doesn't exist, create it if it isn't.
     File.Path_Require("logs");
     
@@ -55,12 +60,18 @@ def Log(Text: str, Level: int = 0) -> None:
     if (Config.Logging["File"] and (Level >= Config.Logging["File_Level"])):
         Handlers.append(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"));
     
+    # Detects if the logged text is going to await a status update and changes the terminator accordingly
+    Terminator = "\n";
+    if (Text != None): # Avoids Exception if Text is None which actually can happen due to coding errors on whichever script is using this module
+        if ("..." == Text[-3:]):
+            Terminator = "";
+
     for Handler in Handlers:
+        Handler.terminator = Terminator;
         Handler.setFormatter(Format);
         Logger.addHandler(Handler);
 
     Logger.log(Level, f"{Get_Caller(3)}() - {Text}");
-
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
@@ -79,6 +90,19 @@ def Get_Caller(Depth: int = 2) -> str:
      return Function;
 
 # Miscellaneous Logging
+def Status_Update(Text: str) -> None:
+    """
+    Replaces the last 3 characters (which are assumed to be "...", done automatically) with {Text}. Used to show progress with statuses such as "[OK]".  
+    This functions handles also making changes to the Log file, although the assumed "..." will NOT be removed.
+    """
+    print(f"\033[3D {Text}");
+    if (Config.Logging["File"] and (Level_Last >= Config.Logging["File_Level"])):
+        Logger = logging.getLogger(__name__);
+        Logger.handlers.clear();
+        Logger.addHandler(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"))
+        Logger.log(msg=f" {Text}", level=Level_Last)
+
+
 def Carriage(Text: str) -> None:
     """
     Prints using "\r" while also completely clearing the line to be sure there won't be artifacts from the previous text.
@@ -87,6 +111,15 @@ def Carriage(Text: str) -> None:
     print(Text, end="\r");
 
 def Clear() -> None:
-    print("\n"*6948);
-    Warning("=== CLEARING THE LOG FILE! ===");
+    """
+    Simply empties the entire console's text.
+    """
+    print(f"\033[2J");
+
+def Delete() -> None:
+    """
+    COMPLETELY Empties the latest Log File.
+    """
+    Clear();
+    Critical("=== DELETING THE LOG FILE! ===");
     File.Write(f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log", "");
