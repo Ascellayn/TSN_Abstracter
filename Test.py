@@ -11,13 +11,15 @@ Log.Critical("Im the only log to be written bitches, for now");
 
 File.JSON_Write("JSON/Test.json", {"hi": "balls"});
 
-Log.Info("Hey, I'm waiting for status shit here...");
+Awaited = Log.Info("Hey, I'm waiting for status shit here...");
 Log.Critical("im gonna fucc shi up now")
-Log.OK();
-
-Log.Warning("Doing LITERALLY nothing right now...");
+print(Awaited)
+OtherAwaited = Log.Warning("Doing LITERALLY nothing right now...");
 time.sleep(1);
-Log.Status_Update("[DONE]");
+Awaited.OK();
+OtherAwaited.OK();
+Awaited = Log.Info("wahooo, this code is shit...");
+Awaited.Status_Update("[Yeah it fuckin is]");
 
 Config.Logging["File"] = False;
 

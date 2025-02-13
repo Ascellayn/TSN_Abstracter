@@ -3,35 +3,65 @@ import TSN_Abstracter.File as File;
 import datetime, inspect, logging, shutil, sys;
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
-Await_Status = False;
-Await_Level = 0;
-Await_Text = "";
-Await_Caller = "";
 Last_Awaited = False;
+Last_Text = "";
 
+class Awaited_Log:
+    def __init__(self, Level: int, Caller: str, Text: str) -> None:
+        self.Level = Level;
+        self.Text = Text;
+        self.Caller = Caller;
+    
+    def __str__(self) -> str:
+        return f"{self.Level}: {self.Caller}() - {self.Text}";
+
+    def Status_Update(self, Status: str) -> None:
+        """
+        Replaces the last 3 characters (which are assumed to be "...", done automatically) with {Text}. Used to show progress with statuses such as "[OK]".  
+        This functions handles also making changes to the Log file, although the assumed "..." will NOT be removed.
+        """
+        global Last_Awaited;
+        if (Last_Awaited and Last_Text == self.Text):
+            print(f"\033[3D {Status}");
+            if (Config.Logging["File"] and (self.Level >= Config.Logging["File_Level"])):
+                Logger = logging.getLogger(__name__);
+                Logger.handlers.clear();
+                Logger.addHandler(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"))
+                Logger.log(msg=f" {Status}", level=self.Level)
+        else:
+            Log(self.Text.replace("...", f" {Status}"), self.Level, self.Caller);
+        Last_Awaited = False;
+
+    def OK(self) -> None:
+        """ [OK] Status Update shortcut"""
+        self.Status_Update(f"[OK]");
+
+    def ERROR(self, Except: Exception) -> None:
+        """ [ERROR] Status Update shortcut"""
+        self.Status_Update(f"[ERROR]\n\tEXCEPTION: {Except}");
 
 # Simplified logging functions
-def Debug(Text: str) -> None:
+def Debug(Text: str) -> Awaited_Log:
     """ Debug Log """
-    Log(Text=Text, Level=10);
+    return Log(Text=Text, Level=10);
 
-def Info(Text: str) -> None:
+def Info(Text: str) -> Awaited_Log:
     """ Info Log """
-    Log(Text=Text, Level=20);
+    return Log(Text=Text, Level=20);
 
-def Warning(Text: str) -> None:
+def Warning(Text: str) -> Awaited_Log:
     """ Warning Log """
-    Log(Text=Text, Level=30);
+    return Log(Text=Text, Level=30);
 
-def Error(Text: str) -> None:
+def Error(Text: str) -> Awaited_Log:
     """ Error Log """
-    Log(Text=Text, Level=40);
+    return Log(Text=Text, Level=40);
 
-def Critical(Text: str) -> None:
+def Critical(Text: str) -> Awaited_Log:
     """ Critical Log """
-    Log(Text=Text, Level=50);
+    return Log(Text=Text, Level=50);
 
-def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
+def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
     """
     Logs a specified message manually. Writes the log to a file and displays it to the console.
 
@@ -44,7 +74,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
         - Make Logger Global so we don't have to redeclare EVERY TIME this shit
     """
     # We edit these global variables so that using Status_Update() is much less painful on the "user" side.
-    global Await_Status, Await_Level, Await_Text, Await_Caller, Last_Awaited;
+    global Last_Awaited, Last_Text;
 
     # Check if the Logs folder doesn't exist, create it if it isn't.
     File.Path_Require("logs");
@@ -68,14 +98,13 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
     # Detects if the logged text is going to await a status update and changes the terminator accordingly, includes prefix.
     Prefix = "\n" if (Last_Awaited) else "";
     Terminator = "\n";
+    Return = False;
     if (Text != None): # Avoids Exception if Text is None which actually can happen due to coding errors on whichever script is using this module
         if ("..." == Text[-3:]):
             Terminator = "";
-            Await_Status = True;
-            Await_Level = Level;
-            Await_Text = Text;
-            Await_Caller = Caller;
             Last_Awaited = True;
+            Last_Text = Text;
+            Return = True;
         else:
             Last_Awaited = False;
 
@@ -90,6 +119,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
         Logger.addHandler(Handler);
 
     Logger.log(Level, f"{Caller}() - {Text}");
+    if (Return):
+        return Awaited_Log(Level, Caller, Text); # WHY THE FUCK DOES THIS NOT RETURN THE FUCKING OBJECT
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
@@ -108,32 +139,6 @@ def Get_Caller(Depth: int = 2) -> str:
      return Function;
 
 # Miscellaneous Logging
-def Status_Update(Text: str) -> None:
-    """
-    Replaces the last 3 characters (which are assumed to be "...", done automatically) with {Text}. Used to show progress with statuses such as "[OK]".  
-    This functions handles also making changes to the Log file, although the assumed "..." will NOT be removed.
-    """
-    global Await_Status, Last_Awaited;
-    if (Await_Status and Last_Awaited):
-        print(f"\033[3D {Text}");
-        if (Config.Logging["File"] and (Await_Level >= Config.Logging["File_Level"])):
-            Logger = logging.getLogger(__name__);
-            Logger.handlers.clear();
-            Logger.addHandler(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"))
-            Logger.log(msg=f" {Text}", level=Await_Level)
-    else:
-        Log(Await_Text.replace("...", f" {Text}"), Await_Level, Await_Caller);
-    Await_Status = Last_Awaited = False;
-
-
-def OK() -> None:
-    """ [OK] Status Update shortcut"""
-    Status_Update(f"[OK]");
-
-def ERROR(Except: Exception) -> None:
-    """ [ERROR] Status Update shortcut"""
-    Status_Update(f"[ERROR]\n\tEXCEPTION: {Except}");
-
 def Carriage(Text: str) -> None:
     """
     Prints using "\r" while also completely clearing the line to be sure there won't be artifacts from the previous text.
