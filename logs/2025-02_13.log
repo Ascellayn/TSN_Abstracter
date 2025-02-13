@@ -1,1 +1,9 @@
-[2025/02/13 - 14:13:42] - CRITICAL: TSN_Abstracter.Log() - Im the only log to be written bitches
+[2025/02/13 - 15:20:10] - CRITICAL: TSN_Abstracter.Log() - Im the only log to be written bitches, for now
+[2025/02/13 - 15:20:10] - DEBUG: Write() - JSON/Test.json:
+'{
+  "hi": "balls"
+}'
+[2025/02/13 - 15:20:10] - INFO: TSN_Abstracter.Log() - Hey, I'm waiting for status shit here...
+[2025/02/13 - 15:20:10] - CRITICAL: TSN_Abstracter.Log() - im gonna fucc shi up now
+[2025/02/13 - 15:20:10] - INFO: TSN_Abstracter.Log() - Hey, I'm waiting for status shit here [OK]
+[2025/02/13 - 15:20:10] - WARNING: TSN_Abstracter.Log() - Doing LITERALLY nothing right now... [DONE]
