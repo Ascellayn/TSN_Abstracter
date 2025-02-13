@@ -12,8 +12,7 @@ def Exists(Path: str) -> bool:
     Returns:
         If the file or a folder exists according to "Path", returns True, otherwise False.
     """
-    Path = Path_Folder(Path);
-    return True if (os.path.isfile(Path) or os.path.isdir(Path)) else False;
+    return True if (os.path.isfile(Path) or os.path.isdir(Path_Folder(Path))) else False;
 
 def Read(Path: str) -> str:
     """
@@ -68,7 +67,7 @@ def Path_Create(Path: str) -> bool:
         Boolean telling us if the operation was successful or not.
     """
     Path = Path_Folder(Path);
-    if (Path == ""): return; # Unfucking "User" error
+    if (Path == ""): return True; # Unfucking "User" error
     try:
         os.makedirs(Path);
         return True;
@@ -86,7 +85,8 @@ def Path_Require(Path: str) -> bool:
     Returns:
         Boolean telling us if the file path existed before.
     """
-    if (Exists(Path)):
+    Path = Path_Folder(Path);
+    if (Exists(Path) or Path == ""):
         return True;
     Path_Create(Path);
     return False;
