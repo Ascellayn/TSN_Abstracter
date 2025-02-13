@@ -51,7 +51,7 @@ def Get_Unix() -> int:
 
 def Get_DateStrings(Unix: int) -> str:
 	"""
-	Get the current date and time in the preferred format.
+	Get the specified Unix's date and time string in the preferred format.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
