@@ -23,6 +23,8 @@ Awaited.Status_Update("[Yeah it fuckin is]");
 
 Config.Logging["File"] = False;
 
+Log.Info(str(File.JSON_Load("JSON/Test.json")));
+
 """
 Unix = 0;
 while True:
