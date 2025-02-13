@@ -32,7 +32,7 @@ def Read(Path: str) -> str:
                 Log.Debug(f"{Path}:\n'{Data}'");
                 return Data;
         except Exception as Error:
-            Log.Error(f"Failed to read file {Path}!\n   EXCEPTION: {Error}");
+            Log.Error(f"Failed to read file {Path}!\n\tEXCEPTION: {Error}");
     return None;
 
 def Write(Path: str, Data: str) -> bool:
@@ -53,7 +53,7 @@ def Write(Path: str, Data: str) -> bool:
                 File.write(Data);
                 return True;
         except Exception as Error:
-            Log.Error(f"Failed to write file '{Path}'!\nData to be written:\n   DATA: '{Data}'\n   EXCEPTION: '{Error}'");
+            Log.Error(f"Failed to write file '{Path}'!\nData to be written:\n\tDATA: '{Data}'\n\tEXCEPTION: '{Error}'");
     return False;
 
 # Path Manipulation
@@ -72,7 +72,7 @@ def Path_Create(Path: str) -> bool:
         os.makedirs(Path);
         return True;
     except Exception as Error:
-        Log.Error(f"Failed creating folder structure: '{Path}'\n   EXCEPTION: '{Error}'");
+        Log.Error(f"Failed creating folder structure: '{Path}'\n\tEXCEPTION: '{Error}'");
         return False;
 
 def Path_Require(Path: str) -> bool:
@@ -125,7 +125,7 @@ def List(Path: str) -> tuple:
         Results = next(os.walk(f"{os.getcwd()}/{Path}"));
         return (tuple(Results[1]), tuple(Results[2]));
     except Exception as Error:
-        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow.\n   EXCEPTION: '{Error}'");
+        Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow.\n\tEXCEPTION: '{Error}'");
         return None;
 
 def Tree(Path: str) -> tuple:
@@ -144,7 +144,7 @@ def Tree(Path: str) -> tuple:
             Results = List(Path); # The return looks retarded. But it works so I don't give a shit. Also oh no recursion
             return (tuple((Folder, Tree(f"{Path}/{Folder}")) for Folder in Results[0] if (Results[0] != None)), Results[1]);
         except Exception as Error:
-            Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow.\n   EXCEPTION: '{Error}'");
+            Log.Error(f"I'm not exactly sure how the fuck it would fail here so just in case, hello! Kosaka most likely gonna the shit thats gonna blow this function somehow.\n\tEXCEPTION: '{Error}'");
             return None;
     return None;
 
@@ -160,5 +160,5 @@ def JSON_Write(Path: str, Dictionary: dict) -> bool:
         Write(Path, json.dumps(Dictionary, indent=2));
         return True;
     except Exception as Error:
-        Log.Error(f"Error Writing JSON {Path}.\n   DATA: {Dictionary}\n   EXCEPTION:{Error}")
+        Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
     return False;
