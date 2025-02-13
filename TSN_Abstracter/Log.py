@@ -1,10 +1,12 @@
 import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
-import datetime, inspect, logging, shutil, sys;
+import datetime, inspect, logging, os, shutil, sys;
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Last_Awaited = False;
 Last_Text = "";
+
+Default_Path = os.getcwd(); # Move this later to File.*
 
 class Awaited_Log:
     def __init__(self, Level: int, Caller: str, Text: str) -> None:
@@ -24,7 +26,7 @@ class Awaited_Log:
         if (Last_Awaited and Last_Text == self.Text):
             print(f"\033[3D {Status}");
             if (Config.Logging["File"] and (self.Level >= Config.Logging["File_Level"])):
-                Logger = logging.getLogger(__name__);
+                Logger = logging.getLogger("TSN");
                 Logger.handlers.clear();
                 Logger.addHandler(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"))
                 Logger.log(msg=f" {Status}", level=self.Level)
@@ -80,7 +82,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
     File.Path_Require("logs");
     
     # Configure Logger
-    Logger = logging.getLogger(__name__);
+    Logger = logging.getLogger("TSN");
     Logger.setLevel(Level);
 
     # Handlers
@@ -89,7 +91,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
     if (Level >= Config.Logging["Print_Level"]): # If this is a debug message, don't display to the console.
         Handlers.append(logging.StreamHandler(stream=sys.stdout));
     if (Config.Logging["File"] and (Level >= Config.Logging["File_Level"])):
-        Handlers.append(logging.FileHandler(filename=f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"));
+        Handlers.append(logging.FileHandler(filename=f"{Default_Path}/logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"));
     
     # Get function name that called the logger
     if (Caller == ""):
