@@ -2,7 +2,7 @@ import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
 import datetime, inspect, logging, shutil, sys;
 
-# My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGIN
+# My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Await_Status = False;
 Await_Level = 0;
 Await_Text = "";
