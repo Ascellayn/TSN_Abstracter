@@ -68,6 +68,7 @@ def Path_Create(Path: str) -> bool:
         Boolean telling us if the operation was successful or not.
     """
     Path = Path_Folder(Path);
+    if (Path == ""): return; # Unfucking "User" error
     try:
         os.makedirs(Path);
         return True;
