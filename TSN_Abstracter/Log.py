@@ -45,23 +45,23 @@ class Awaited_Log:
 # Simplified logging functions
 def Debug(Text: str) -> Awaited_Log:
     """ Debug Log """
-    return Log(Text=Text, Level=10);
+    return Log(Text, 10);
 
 def Info(Text: str) -> Awaited_Log:
     """ Info Log """
-    return Log(Text=Text, Level=20);
+    return Log(Text, 20);
 
 def Warning(Text: str) -> Awaited_Log:
     """ Warning Log """
-    return Log(Text=Text, Level=30);
+    return Log(Text, 30);
 
 def Error(Text: str) -> Awaited_Log:
     """ Error Log """
-    return Log(Text=Text, Level=40);
+    return Log(Text, 40);
 
 def Critical(Text: str) -> Awaited_Log:
     """ Critical Log """
-    return Log(Text=Text, Level=50);
+    return Log(Text, 50);
 
 def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
     """
@@ -88,6 +88,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
     # Handlers
     Handlers = [];
     Logger.handlers.clear(); # Clearing handlers otherwise the fucking conditions compared to the config never work?????
+
     if (Level >= Config.Logging["Print_Level"]): # If this is a debug message, don't display to the console.
         Handlers.append(logging.StreamHandler(stream=sys.stdout));
     if (Config.Logging["File"] and (Level >= Config.Logging["File_Level"])):
