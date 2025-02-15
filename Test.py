@@ -1,6 +1,7 @@
 from TSN_Abstracter import *;
 import time;
 
+Config.Logging["File_Level"] = 10;
 Log.Delete();
 
 Log.Info(File.Tree("TSN_Abstracter"));

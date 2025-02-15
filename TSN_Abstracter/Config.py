@@ -1,5 +1,5 @@
 Logging = {
     "File": False,
-    "File_Level": 10,
-    "Print_Level": 10
+    "File_Level": 20,
+    "Print_Level": 20
 }
