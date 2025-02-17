@@ -1,6 +1,6 @@
 import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
-import datetime, inspect, logging, os, shutil, sys;
+import datetime, inspect, logging, os, shutil, typing, sys;
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Last_Awaited = False;
@@ -42,6 +42,24 @@ class Awaited_Log:
         """ [ERROR] Status Update shortcut"""
         self.Status_Update(f"[ERROR]\n\tEXCEPTION: {Except}");
 
+class Empty_Log:
+    """
+    Version of Awaited_Log that contains nothing, used to prevent exceptions when the users' code expects Awaited_Log but the log level is too low
+    """
+    def __init__(self) -> None:
+        return;
+
+    def __str__(self) -> str:
+        return f"Empty";
+
+    def Status_Update(self, Status: str) -> None:
+        return;
+
+    def OK(self) -> None:
+        return;
+    def ERROR(self, Except: Exception) -> None:
+        return;
+
 # Simplified logging functions
 def Debug(Text: str) -> Awaited_Log:
     """ Debug Log """
@@ -63,7 +81,7 @@ def Critical(Text: str) -> Awaited_Log:
     """ Critical Log """
     return Log(Text, 50);
 
-def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
+def Log(Text: str, Level: int = 0, Caller: str = "") -> typing.Union[Awaited_Log, Empty_Log]:
     """
     Logs a specified message manually. Writes the log to a file and displays it to the console.
 
@@ -75,6 +93,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
         - Add config to prevent generation of logs
         - Make Logger Global so we don't have to redeclare EVERY TIME this shit
     """
+    if (Level < Config.Logging["Print_Level"] and Level < Config.Logging["File_Level"]):
+        return Empty_Log(); # Stop execution if the log isn't gonna display anywhere
+
     # We edit these global variables so that using Status_Update() is much less painful on the "user" side.
     global Last_Awaited, Last_Text;
 
@@ -123,7 +144,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log:
 
     Logger.log(Level, f"{Caller}() - {Text}");
     if (Return):
-        return Awaited_Log(Level, Caller, Text); # WHY THE FUCK DOES THIS NOT RETURN THE FUCKING OBJECT
+        return Awaited_Log(Level, Caller, Text);
+    else:
+        return Empty_Log();
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
@@ -146,6 +169,8 @@ def Carriage(Text: str) -> None:
     """
     Prints using "\r" while also completely clearing the line to be sure there won't be artifacts from the previous text.
     """
+    global Last_Awaited;
+    Last_Awaited = False;
     print(" "*shutil.get_terminal_size()[0], end="\r");
     print(Text, end="\r");
 
