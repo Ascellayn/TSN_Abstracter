@@ -1,6 +1,6 @@
 import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
-import datetime, inspect, logging, os, shutil, typing, sys;
+import datetime, inspect, logging, os, shutil, sys;
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Last_Awaited = False;
@@ -81,7 +81,7 @@ def Critical(Text: str) -> Awaited_Log:
     """ Critical Log """
     return Log(Text, 50);
 
-def Log(Text: str, Level: int = 0, Caller: str = "") -> typing.Union[Awaited_Log, Empty_Log]:
+def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
     """
     Logs a specified message manually. Writes the log to a file and displays it to the console.
 
