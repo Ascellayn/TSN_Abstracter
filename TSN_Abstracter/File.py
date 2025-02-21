@@ -150,7 +150,7 @@ def Tree(Path: str) -> tuple:
     return None;
 
 # JSON Specific Abstraction
-def JSON_Load(Path: str) -> dict:
+def JSON_Read(Path: str) -> dict:
     if (Path_Require(Path)):
         return json.loads(Read(Path));
     return {};
