@@ -3,24 +3,20 @@ import json, os;
 
 # General File Processing
 def Exists(Path: str) -> bool:
-    """
-    Takes in a String representing a RELATIVE file path and returns a boolean if a file or folder exists in the specified path.
-    
+    """ Takes in a String representing a RELATIVE file path and returns a boolean if a file or folder exists in the specified path.
+
     Arguments:
         Path: String representing the RELATIVE Path.
-
     Returns:
         If the file or a folder exists according to "Path", returns True, otherwise False.
     """
     return True if (os.path.isfile(Path) or os.path.isdir(Path_Folder(Path))) else False;
 
 def Read(Path: str) -> str:
-    """
-    Takes in a String representing a RELATIVE file path and returns the contents of the file specified.
-    
+    """ Takes in a String representing a RELATIVE file path and returns the contents of the file specified.
+
     Arguments:
         Path: String representing the RELATIVE Path to a file.
-
     Returns:
         If the file or a folder exists according to "Path", returns its data, otherwise None.
     """
@@ -35,13 +31,11 @@ def Read(Path: str) -> str:
     return None;
 
 def Write(Path: str, Data: str) -> bool:
-    """
-    Takes in a String representing a RELATIVE file path and writes the contents specified in Data.
+    """ Takes in a String representing a RELATIVE file path and writes the contents specified in Data.
     
     Arguments:
         Path: String representing the RELATIVE Path to a file.
         Data: String representing the data to write.
-
     Returns:
         If the write was successful, return True. Otherwise False.
     """
@@ -57,12 +51,10 @@ def Write(Path: str, Data: str) -> bool:
 
 # Path Manipulation
 def Path_Create(Path: str) -> bool:
-    """
-    Creates the specified file path.
+    """ Creates the specified file path.
 
     Arguments:
         Path: String representing the RELATIVE folder path we want to create.
-
     Returns:
         Boolean telling us if the operation was successful or not.
     """
@@ -76,12 +68,10 @@ def Path_Create(Path: str) -> bool:
         return False;
 
 def Path_Require(Path: str) -> bool:
-    """
-    Checks the existence of the Path, if it doesn't then create it.
+    """ Checks the existence of the Path, if it doesn't then create it.
     
     Arguments:
         Path: String representing the RELATIVE folder path we want to check.
-
     Returns:
         Boolean telling us if the file path existed before.
     """
@@ -92,13 +82,11 @@ def Path_Require(Path: str) -> bool:
     return False;
 
 def Path_Folder(Path: str) -> str:
-    """
-    Takes in a Path and returns itself, minus the file name at the end if it exists by checking for "." and "/" in the filename.  
+    """ Takes in a Path and returns itself, minus the file name at the end if it exists by checking for "." and "/" in the filename.  
     Yes this function is inherently complete garbage but it does the job good enough.
     
     Arguments:
         Path: String representing the RELATIVE file path we want to transform.
-
     Returns:
         String representing the Folder Path of the File Path.
     """
@@ -113,12 +101,10 @@ def Path_Folder(Path: str) -> str:
 
 # Other Functions
 def List(Path: str) -> tuple:
-    """
-    Returns a matrix of the folders and files inside Path.
+    """ Returns a matrix of the folders and files inside Path.
 
     Arguments:
         Path: String representing the RELATIVE folder path we want to check.
-
     Returns:
         Tuple containing two arrays, the first one being a list of folders, and the second one being files.
     """
@@ -130,15 +116,13 @@ def List(Path: str) -> tuple:
         return None;
 
 def Tree(Path: str) -> tuple:
-    """
-    Returns a matrix of ALL folders and files inside Path.
+    """ Returns a matrix of ALL folders and files inside Path.
 
     Arguments:
         Path: String representing the RELATIVE folder path we want to check.
-
     Returns:
         Array containing two arrays, the first one being a list of folders, and the second one being files.  
-        Each folder in the first array is in reality
+        Each folder in the first array is in reality  
     """
     if Exists(Path):
         try:
@@ -151,11 +135,27 @@ def Tree(Path: str) -> tuple:
 
 # JSON Specific Abstraction
 def JSON_Read(Path: str) -> dict:
+    """ Read() Wrapper for specifically reading JSON Files.  
+    QUIRK: Automatically creates the file path if it doesn't exist. 
+    
+    Arguments:
+        Path: String representing the RELATIVE Path to a JSON file.
+    Returns:
+        Dictionary containing the JSON Data or an empty dictionary if the file does not exists.
+    """
     if (Path_Require(Path)):
         return json.loads(Read(Path));
     return {};
 
 def JSON_Write(Path: str, Dictionary: dict) -> bool:
+    """ Write() Wrapper for specifically writing JSON Files.  
+    Automatically creates the file path if it doesn't exist.
+    
+    Arguments:
+        Path: String representing the RELATIVE Path to a JSON file.
+    Returns:
+        Boolean specifying if the write was successful or not.
+    """
     try:
         Path_Require(Path)
         Write(Path, json.dumps(Dictionary, indent=2));

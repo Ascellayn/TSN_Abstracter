@@ -3,24 +3,20 @@ import datetime, time;
 
 # Time.Convert_*
 def Convert_Datetime(Object: datetime.datetime) -> int:
-	""" 
-	Converts a Datetime Object to Unix Time.
+	""" Converts a Datetime Object to Unix Time.
 
 	Arguments:
 		Object: Datetime Object to be converted to an Integer.
-
 	Returns:
 		Integer representing the Unix Time the Object argument contains.
 	"""
 	return int(round(Object.timestamp()));
 
 def Convert_Unix(Unix: int) -> datetime.datetime:
-	"""
-	Converts Unix Timestamp to Datetime Object.
+	""" Converts Unix Timestamp to Datetime Object.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
-	
 	Returns:
 		Datetime Object with the time set according to the Unix argument.
 	"""
@@ -29,20 +25,17 @@ def Convert_Unix(Unix: int) -> datetime.datetime:
 
 # Time.Get_*
 def Get_Dawn(Unix: int) -> int:
-	"""
-	Get the Unix Time of the specified date day's first second.
+	""" Get the Unix Time of the specified date day's first second.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
-
 	Returns:
 		Integer representing the first second of the current day thanks to the Unix Time passed.
 	"""
 	return Convert_Datetime(Convert_Unix(Unix).replace(hour=0, minute=0, second=0));
 
 def Get_Unix() -> int:
-	""" 
-	Get an Integer representing Unix Time.
+	"""  Get an Integer representing Unix Time.
 
 	Returns:
 		Integer representing the current Unix Time.
@@ -50,12 +43,10 @@ def Get_Unix() -> int:
 	return int(round(time.time()));
 
 def Get_DateStrings(Unix: int) -> str:
-	"""
-	Get the specified Unix's date and time string in the preferred format.
+	""" Get the specified Unix's date and time string in the preferred format.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
-
 	Returns:
 		Date: String corresponding to the date in YYYY/MM/DD format.  
 		Time: String corresponding to the time in HH:MM:SS format.
@@ -68,13 +59,11 @@ def Get_DateStrings(Unix: int) -> str:
 
 # Time.Calculate_*
 def Calculate_Elapsed(Unix: int) -> dict:
-	"""
-	Calculate how much time since the Epoch has passed.  
+	""" Calculate how much time since the Epoch has passed.  
 	NOTE: Everything is calculated according to a year being 365.25 days long.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
-
 	Returns:
 		Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 	"""
@@ -88,12 +77,10 @@ def Calculate_Elapsed(Unix: int) -> dict:
     };
 
 def Elapsed_String(Unix: int) -> str:
-	"""
-	Gives a dynamically sized string of the amount of time passed since the epoch.
+	""" Gives a dynamically sized string of the amount of time passed since the epoch.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
-
 	Returns:
 		String in the format "Xy, Xm, Xd, Xh, Xm, Xs".
 	"""

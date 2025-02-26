@@ -9,6 +9,12 @@ Last_Text = "";
 Default_Path = os.getcwd(); # Move this later to File.*
 
 class Awaited_Log:
+    """ Object used to update the "status" of the log specified. Prevents conflicts across threads at the inconvenience of using this object to correctly render logs.  
+    Call the following methods to replace "..." to:  
+    .OK() -> "[OK]"  
+    .ERROR(Exception) -> "[ERROR] \n\t EXCEPTION: {Exception}"  
+    Status_Update(Status) -> "{Status}"
+    """
     def __init__(self, Level: int, Caller: str, Text: str) -> None:
         self.Level = Level;
         self.Text = Text;
@@ -43,9 +49,8 @@ class Awaited_Log:
         self.Status_Update(f"[ERROR]\n\tEXCEPTION: {Except}");
 
 class Empty_Log:
-    """
-    Version of Awaited_Log that contains nothing, used to prevent exceptions when the users' code expects Awaited_Log but the log level is too low
-    """
+    """ Version of Awaited_Log that contains nothing, used to prevent exceptions when the users' code expects Awaited_Log but the log level is too low  
+    Contains the same methods as Awaited_Log but they all do absolutely nothing. """
     def __init__(self) -> None:
         return;
 
@@ -82,13 +87,11 @@ def Critical(Text: str) -> Awaited_Log:
     return Log(Text, 50);
 
 def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
-    """
-    Logs a specified message manually. Writes the log to a file and displays it to the console.
+    """ Logs a specified message manually. Writes the log to a file and displays it to the console.
 
     Arguments:
         Text: String corresponding to the message to Log
         Level: Integer corresponding to how severe the message is.
-
     TODO:
         - Add config to prevent generation of logs
         - Make Logger Global so we don't have to redeclare EVERY TIME this shit
@@ -150,12 +153,10 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
-     """
-     Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "<module>".
+     """ Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "<module>".
 
      Arguments:
         Depth: Integer representing how far we go back to get the function name. By default it is 2.
-     
      Returns:
         String with the name of the function or module name.
      """
