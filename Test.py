@@ -24,7 +24,11 @@ Awaited.Status_Update("[Yeah it fuckin is]");
 
 Config.Logging["File"] = False;
 
-Log.Info(str(File.JSON_Load("JSON/Test.json")));
+Log.Info(str(File.JSON_Read("JSON/Test.json")));
+
+Private, Public = Cryptography.Generate_Key(); # Slow!
+Message = Cryptography.Encrypt(Public, "i'm silly");
+print(Cryptography.Decrypt(Private, Message));
 
 """
 Unix = 0;
