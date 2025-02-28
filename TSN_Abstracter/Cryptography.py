@@ -3,7 +3,9 @@ import hashlib
 
 import cryptography.hazmat.primitives.asymmetric.ed25519 as ed25519;
 import cryptography.hazmat.primitives.asymmetric.rsa as rsa;
+
 import cryptography.hazmat.primitives.asymmetric.padding as padding;
+import cryptography.hazmat.primitives.serialization as serialization;
 import cryptography.hazmat.primitives.hashes as hashes;
 
 def Generate_Key(Key_Size: int = 4096) -> rsa.RSAPrivateKey | rsa.RSAPublicKey:
@@ -24,6 +26,29 @@ def Generate_Public(Private_Key: rsa.RSAPrivateKey) -> rsa.RSAPublicKey:
     """ Generates a RSA Public Key from its Private Key. """
     Log.Debug(f"Generating RSA Public Key...");
     return Private_Key.public_key();
+
+def Get_Bytes_Public(Key: rsa.RSAPublicKey) -> bytes:
+    """ Takes in an RSA public key and returns its bytes in PEM Encoding. """
+    return Key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    );
+
+def Get_Bytes_Private(Key: rsa.RSAPublicKey) -> bytes:
+    """ Takes in an RSA private key and returns its bytes in PEM Encoding (UNPROTECTED). """
+    return Key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.TraditionalOpenSSL,
+        encryption_algorithm=serialization.NoEncryption()
+    );
+
+def Load_Public(Key: bytes) -> rsa.RSAPublicKey:
+    """ Takes in PEM Bytes and attempts to return it as a Public Key RSA Object. """
+    return serialization.load_pem_public_key(Key.encode("ASCII"));
+
+def Load_Private(Key: bytes) -> rsa.RSAPrivateKey:
+    """ Takes in PEM Bytes and attempts to return it as a Public Key RSA Object. """
+    return serialization.load_pem_private_key(Key)
 
 def Encrypt(Public_Key: rsa.RSAPublicKey, Data: str) -> bytes:
     """ Encrypts Data using RSA-4096 and returns the encrypted Bytes. """
