@@ -13,3 +13,13 @@ def Process_Start(Function, Daemon: bool = True) -> None:
     """ Abstraction to launch a Process. """
     multiprocessing.Process(target=Function()).start();
     return;
+
+Loading_Index: int = 0;
+def Loading_Spin() -> str:
+    """ Returns a singular character used for the spinning / - \ | animation. """
+    global Loading_Index; Loading_Index+=1;
+    Loading_Characters: list = ["\\", "|", "/", "-"];
+    if (Loading_Index != len(Loading_Characters)):
+        return Loading_Characters[Loading_Index];
+    Loading_Index: int = 0;
+    return Loading_Characters[Loading_Index];
