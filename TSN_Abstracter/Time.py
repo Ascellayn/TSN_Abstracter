@@ -2,7 +2,7 @@ import datetime, time;
 
 
 # Time.Convert_*
-def Convert_Datetime(Object: datetime.datetime) -> int:
+def Convert_Datetime(Object: datetime.datetime) -> int | None:
 	""" Converts a Datetime Object to Unix Time.
 
 	Arguments:
@@ -10,7 +10,9 @@ def Convert_Datetime(Object: datetime.datetime) -> int:
 	Returns:
 		Integer representing the Unix Time the Object argument contains.
 	"""
-	return int(round(Object.timestamp()));
+	if (Object != None): # For some reason we have to add this check because i dunno cosmic rays
+		return int(round(Object.timestamp()));
+	return None;
 
 def Convert_Unix(Unix: int) -> datetime.datetime:
 	""" Converts Unix Timestamp to Datetime Object.
