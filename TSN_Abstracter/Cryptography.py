@@ -44,7 +44,7 @@ def Get_Bytes_Private(Key: rsa.RSAPublicKey) -> bytes:
 
 def Load_Public(Key: bytes) -> rsa.RSAPublicKey:
     """ Takes in PEM Bytes and attempts to return it as a Public Key RSA Object. """
-    return serialization.load_pem_public_key(Key.encode("ASCII"));
+    return serialization.load_pem_public_key(Key);
 
 def Load_Private(Key: bytes) -> rsa.RSAPrivateKey:
     """ Takes in PEM Bytes and attempts to return it as a Public Key RSA Object. """
