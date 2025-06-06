@@ -1,5 +1,5 @@
 import TSN_Abstracter.Log as Log;
-import json, os;
+import json, os, lzma;
 
 # General File Processing
 def Exists(Path: str) -> bool:
@@ -12,39 +12,48 @@ def Exists(Path: str) -> bool:
     """
     return True if (os.path.isfile(Path) or os.path.isdir(Path_Folder(Path))) else False;
 
-def Read(Path: str) -> str:
+def Read(Path: str, Compressed: bool = False) -> str:
     """ Takes in a String representing a RELATIVE file path and returns the contents of the file specified.
 
     Arguments:
         Path: String representing the RELATIVE Path to a file.
+        Compressed: Specify the use of LZMA Compression.
     Returns:
         If the file or a folder exists according to "Path", returns its data, otherwise None.
     """
     if Exists(Path):
         try:
-            with open(Path, "r", encoding="UTF8") as File:
-                Data = File.read();
-                Log.Debug(f"{Path}:\n'{Data}'");
-                return Data;
+            if (Compressed):
+                with lzma.open(Path, "r", encoding="UTF-8") as File: Data = File.read();
+            else:
+                with open(Path, "r", encoding="UTF8") as File: Data = File.read();
+            
+            Log.Debug(f"{Path}:\n'{Data}'");
+            return Data;
         except Exception as Error:
             Log.Error(f"Failed to read file {Path}!\n\tEXCEPTION: {Error}");
     return None;
 
-def Write(Path: str, Data: str) -> bool:
+def Write(Path: str, Data: str, Compressed: bool = False) -> bool:
     """ Takes in a String representing a RELATIVE file path and writes the contents specified in Data.
     
     Arguments:
         Path: String representing the RELATIVE Path to a file.
         Data: String representing the data to write.
+        Compressed: Specify the use of LZMA Compression.
     Returns:
         If the write was successful, return True. Otherwise False.
     """
     if Exists(Path):
+        Log.Debug(f"{Path}:\n'{Data}'");
         try:
-            with open(Path, "w", encoding="UTF8") as File:
-                Log.Debug(f"{Path}:\n'{Data}'");
-                File.write(Data);
-                return True;
+            if (Compressed):
+                with open(Path, "w", encoding="UTF8") as File:
+                    File.write(Data);
+            else:
+                with lzma.open(Path, "w", encoding="UTF8") as File:
+                    File.write(Data);
+            return True;
         except Exception as Error:
             Log.Error(f"Failed to write file '{Path}'!\nData to be written:\n\tDATA: '{Data}'\n\tEXCEPTION: '{Error}'");
     return False;
@@ -134,31 +143,33 @@ def Tree(Path: str) -> tuple:
     return None;
 
 # JSON Specific Abstraction
-def JSON_Read(Path: str) -> dict:
+def JSON_Read(Path: str, Compressed: bool = False) -> dict:
     """ Read() Wrapper for specifically reading JSON Files.  
     QUIRK: Automatically creates the file path if it doesn't exist. 
     
     Arguments:
         Path: String representing the RELATIVE Path to a JSON file.
+        Compressed: Specify the use of LZMA Compression.
     Returns:
         Dictionary containing the JSON Data or an empty dictionary if the file does not exists.
     """
     if (Path_Require(Path)):
-        return json.loads(Read(Path));
+        return json.loads(Read(Path, Compressed));
     return {};
 
-def JSON_Write(Path: str, Dictionary: dict) -> bool:
+def JSON_Write(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
     """ Write() Wrapper for specifically writing JSON Files.  
     Automatically creates the file path if it doesn't exist.
     
     Arguments:
         Path: String representing the RELATIVE Path to a JSON file.
+        Compressed: Specify the use of LZMA Compression.
     Returns:
         Boolean specifying if the write was successful or not.
     """
     try:
         Path_Require(Path)
-        Write(Path, json.dumps(Dictionary, indent=2));
+        Write(Path, json.dumps(Dictionary, indent=2), Compressed);
         return True;
     except Exception as Error:
         Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
