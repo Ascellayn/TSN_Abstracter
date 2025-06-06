@@ -8,6 +8,36 @@ Last_Text = "";
 
 Default_Path = os.getcwd(); # Move this later to File.*
 
+""" Note: All the ANSI Colors and everything here are purposeful shit because they're compatible with Discord's ANSI ones. (of which they are shit)
+In the future if I have time I will add more colors which would better fit SNDL's Colors. """
+class TF():
+    # Text Format
+    Normal = "\u001b[0m";
+    Bold = "\u001b[1m";
+    Underline = "\u001b[4m";
+
+class FC():
+    # Foreground Color
+    Red = "\u001b[31m";
+    Yellow = "\u001b[33m";
+    Green = "\u001b[32m";
+    Cyan = "\u001b[36m";
+    Blue = "\u001b[34m";
+    Magenta = "\u001b[35m";
+    Grey = "\u001b[30m";
+    White = "\u001b[37m";
+
+class BC():
+    # Background Color
+    Orange = "\u001b[41m";
+    Indigo = "\u001b[45m";
+    Firefly_Dark_Blue = "\u001b[40m";
+    Marble_Blue = "\u001b[42m";
+    Greyish_Turquoise = "\u001b[43m";
+    Grey = "\u001b[44m";
+    Light_Grey = "\u001b[46m";
+    White = "\u001b[47m";
+
 class Awaited_Log:
     """ Object used to update the "status" of the log specified. Prevents conflicts across threads at the inconvenience of using this object to correctly render logs.  
     Call the following methods to replace "..." to:  
@@ -42,11 +72,11 @@ class Awaited_Log:
 
     def OK(self) -> None:
         """ [OK] Status Update shortcut"""
-        self.Status_Update(f"[OK]");
+        self.Status_Update(f"{FC.Green}[OK]{TF.Normal}");
 
     def ERROR(self, Except: Exception) -> None:
         """ [ERROR] Status Update shortcut"""
-        self.Status_Update(f"[ERROR]\n\tEXCEPTION: {Except}");
+        self.Status_Update(f"{FC.Red}[ERROR]{TF.Normal}\n{BC.Indigo}{FC.White}\t{TF.Underline}EXCEPTION:{TF.Normal}{BC.Indigo}{FC.White} {Except}{TF.Normal}");
 
 class Empty_Log:
     """ Version of Awaited_Log that contains nothing, used to prevent exceptions when the users' code expects Awaited_Log but the log level is too low  
@@ -135,8 +165,17 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
         else:
             Last_Awaited = False;
 
+
+    match Level:
+        case 50: Level_Color = FC.Magenta; # Critical 
+        case 40: Level_Color = FC.Red; # Error 
+        case 30: Level_Color = FC.Yellow; # Warning
+        case 20: Level_Color = FC.Blue; # Information
+        case 10: Level_Color = FC.Cyan; # Debug
+        case _: Level_Color = FC.White;
+
     Format = logging.Formatter(
-        fmt = f"{Prefix}[%(asctime)s] - %(levelname)s: %(message)s", 
+        fmt = f"{Prefix}{FC.Grey}[%(asctime)s]{TF.Normal} - {TF.Bold}{Level_Color}%(levelname)s{TF.Normal}: %(message)s", 
         datefmt = "%Y/%m/%d - %H:%M:%S"
     );
 
@@ -145,7 +184,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
         Handler.setFormatter(Format);
         Logger.addHandler(Handler);
 
-    Logger.log(Level, f"{Caller}() - {Text}");
+    Logger.log(Level, f"{TF.Underline}{FC.Grey}{Caller}(){TF.Normal} - {Text}");
     if (Return):
         return Awaited_Log(Level, Caller, Text);
     else:
