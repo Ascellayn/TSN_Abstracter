@@ -132,8 +132,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
     # We edit these global variables so that using Status_Update() is much less painful on the "user" side.
     global Last_Awaited, Last_Text;
 
-    # Check if the Logs folder doesn't exist, create it if it isn't.
-    File.Path_Require("logs");
+    # Check if the Logs folder doesn't exist, create it if it isn't. Assuming it is allowed to do so.
+    if (Config.Logging["File"]):
+        File.Path_Require("logs");
     
     # Configure Logger
     Logger = logging.getLogger("TSN");
