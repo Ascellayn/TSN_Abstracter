@@ -116,6 +116,9 @@ def Critical(Text: str) -> Awaited_Log:
     """ Critical Log """
     return Log(Text, 50);
 
+def Log_Path() -> str:
+    f"{Default_Path}/logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log");
+
 def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
     """ Logs a specified message manually. Writes the log to a file and displays it to the console.
 
@@ -147,7 +150,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
     if (Level >= Config.Logging["Print_Level"]): # If this is a debug message, don't display to the console.
         Handlers.append(logging.StreamHandler(stream=sys.stdout));
     if (Config.Logging["File"] and (Level >= Config.Logging["File_Level"])):
-        Handlers.append(logging.FileHandler(filename=f"{Default_Path}/logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log"));
+        Handlers.append(logging.FileHandler(filename=Log_Path()));
     
     # Get function name that called the logger
     if (Caller == ""):
