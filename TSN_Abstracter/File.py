@@ -24,7 +24,7 @@ def Read(Path: str, Compressed: bool = False) -> str:
     if Exists(Path):
         try:
             if (Compressed):
-                with lzma.open(Path, "r", encoding="UTF-8") as File: Data = File.read();
+                with lzma.open(Path, "rt", encoding="UTF-8") as File: Data = File.read();
             else:
                 with open(Path, "r", encoding="UTF8") as File: Data = File.read();
             
@@ -46,6 +46,10 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
     """
     if (Append): Mode: str = "a";
     else: Mode: str = "w";
+
+    if (Compressed): Mode += "t";
+    Log.Debug(f"File Mode used: {Mode}");
+
 
     if Exists(Path):
         Log.Debug(f"{Path}:\n'{Data}'");
@@ -190,9 +194,13 @@ def JSON_Append(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
         Boolean specifying if the write was successful or not.
     """
     try:
+        if (not Exists(Path)):
+            Log.Debug(f"{Path} didn't exist before, the file has been automatically created.");
+            JSON_Write(Path, {}, Compressed);
+
         JSON: dict = json.loads(Read(Path, Compressed));
         JSON.update(Dictionary);
-        JSON_Write(JSON);
+        JSON_Write(JSON, Compressed);
         return True;
     except Exception as Error:
         Log.Error(f"Error Appending to JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
