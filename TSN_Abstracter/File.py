@@ -34,7 +34,7 @@ def Read(Path: str, Compressed: bool = False) -> str:
             Log.Error(f"Failed to read file {Path}!\n\tEXCEPTION: {Error}");
     return None;
 
-def Write(Path: str, Data: str, Compressed: bool = False) -> bool:
+def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) -> bool:
     """ Takes in a String representing a RELATIVE file path and writes the contents specified in Data.
     
     Arguments:
@@ -44,14 +44,17 @@ def Write(Path: str, Data: str, Compressed: bool = False) -> bool:
     Returns:
         If the write was successful, return True. Otherwise False.
     """
+    if (Append): Mode: str = "a";
+    else: Mode: str = "w";
+
     if Exists(Path):
         Log.Debug(f"{Path}:\n'{Data}'");
         try:
             if (Compressed):
-                with open(Path, "w", encoding="UTF8") as File:
+                with open(Path, Mode, encoding="UTF-8") as File:
                     File.write(Data);
             else:
-                with lzma.open(Path, "w", encoding="UTF8") as File:
+                with lzma.open(Path, Mode, encoding="UTF-8") as File:
                     File.write(Data);
             return True;
         except Exception as Error:
@@ -163,6 +166,7 @@ def JSON_Write(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
     
     Arguments:
         Path: String representing the RELATIVE Path to a JSON file.
+        Dictionary: The JSON we want to write to the file.
         Compressed: Specify the use of LZMA Compression.
     Returns:
         Boolean specifying if the write was successful or not.
@@ -173,4 +177,23 @@ def JSON_Write(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
         return True;
     except Exception as Error:
         Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
+    return False;
+
+def JSON_Append(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
+    """ JSON_Write() Wrapper for specifically appending new data to JSON Files.  
+    
+    Arguments:
+        Path: String representing the RELATIVE Path to a JSON file.
+        Dictionary: The JSON we want to write to the file.
+        Compressed: Specify the use of LZMA Compression.
+    Returns:
+        Boolean specifying if the write was successful or not.
+    """
+    try:
+        JSON: dict = json.loads(Read(Path, Compressed));
+        JSON.update(Dictionary);
+        JSON_Write(JSON);
+        return True;
+    except Exception as Error:
+        Log.Error(f"Error Appending to JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
     return False;
