@@ -11,7 +11,6 @@ def Exists(Path: str) -> bool:
         If the file or a folder exists according to "Path", returns True, otherwise False.
     """
     return pathlib.Path(Path).exists();
-    #return True if (os.path.isfile(Path) or os.path.isdir(Path_Folder(Path))) else False;
 
 def Read(Path: str, Compressed: bool = False) -> str:
     """ Takes in a String representing a RELATIVE file path and returns the contents of the file specified.
@@ -22,10 +21,10 @@ def Read(Path: str, Compressed: bool = False) -> str:
     Returns:
         If the file or a folder exists according to "Path", returns its data, otherwise None.
     """
-    if Exists(Path):
+    if Exists(Path_Folder(Path)):
         try:
             if (Compressed):
-                with lzma.open(Path, "rt", encoding="UTF-8") as File: Data = File.read();
+                with lzma.open(Path, "rt") as File: Data = File.read();
             else:
                 with open(Path, "r", encoding="UTF8") as File: Data = File.read();
             
@@ -48,18 +47,17 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
     if (Append): Mode: str = "a";
     else: Mode: str = "w";
 
-    if (Compressed): Mode += "t";
     Log.Debug(f"File Mode used: {Mode}");
 
 
-    if Exists(Path):
+    if Exists(Path_Folder(Path)):
         Log.Debug(f"{Path}:\n'{Data}'");
         try:
             if (Compressed):
-                with open(Path, Mode, encoding="UTF-8") as File:
-                    File.write(Data);
+                with lzma.open(Path, Mode) as File:
+                    File.write(Data.encode("utf-8"));
             else:
-                with lzma.open(Path, Mode, encoding="UTF-8") as File:
+                with open(Path, Mode, encoding="UTF-8") as File:
                     File.write(Data);
             return True;
         except Exception as Error:
@@ -178,10 +176,9 @@ def JSON_Write(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
     """
     try:
         Path_Require(Path)
-        Write(Path, json.dumps(Dictionary, indent=2), Compressed);
-        return True;
+        return Write(Path, json.dumps(Dictionary, indent=2), Compressed)
     except Exception as Error:
-        Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
+        Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}");
     return False;
 
 def JSON_Append(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
@@ -197,12 +194,11 @@ def JSON_Append(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
     try:
         if (not Exists(Path)):
             Log.Debug(f"{Path} didn't exist before, the file has been automatically created.");
-            JSON_Write(Path, {}, Compressed);
+            return JSON_Write(Path, Dictionary, Compressed);
 
-        JSON: dict = json.loads(Read(Path, Compressed));
+        JSON: dict = JSON_Read(Path, Compressed);
         JSON.update(Dictionary);
-        JSON_Write(JSON, Compressed);
-        return True;
+        return JSON_Write(Path, JSON, Compressed);
     except Exception as Error:
-        Log.Error(f"Error Appending to JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}")
+        Log.Error(f"Error Appending to JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}");
     return False;
