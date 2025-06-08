@@ -1,5 +1,5 @@
 import TSN_Abstracter.Log as Log;
-import json, os, lzma;
+import pathlib, os, lzma, json;
 
 # General File Processing
 def Exists(Path: str) -> bool:
@@ -10,7 +10,8 @@ def Exists(Path: str) -> bool:
     Returns:
         If the file or a folder exists according to "Path", returns True, otherwise False.
     """
-    return True if (os.path.isfile(Path) or os.path.isdir(Path_Folder(Path))) else False;
+    return pathlib.Path(Path).exists();
+    #return True if (os.path.isfile(Path) or os.path.isdir(Path_Folder(Path))) else False;
 
 def Read(Path: str, Compressed: bool = False) -> str:
     """ Takes in a String representing a RELATIVE file path and returns the contents of the file specified.
