@@ -21,7 +21,7 @@ def Read(Path: str, Compressed: bool = False) -> str:
 	Returns:
 		If the file or a folder exists according to "Path", returns its data, otherwise None.
 	"""
-	if Exists(Path_Folder(Path)):
+	if Exists(Path):
 		try:
 			if (Compressed):
 				with lzma.open(Path, "rt") as File: Data = File.read();
