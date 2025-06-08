@@ -76,7 +76,7 @@ def Calculate_Elapsed(Unix: int) -> dict:
 		"Hours": (Unix // 3600) % 24,
 		"Minutes": (Unix // 60) % 60,
 		"Seconds": Unix % 60
-    };
+	};
 
 def Elapsed_String(Unix: int) -> str:
 	""" Gives a dynamically sized string of the amount of time passed since the epoch.
