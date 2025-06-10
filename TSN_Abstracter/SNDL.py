@@ -1,3 +1,46 @@
+def Hex_Tuple(Hex: str) -> tuple[int]:
+	"""
+	Transform a Hex Code representing colors into a Tuple containing RGB(A) colors. 
+
+	Arguments:
+		Hex: The string representing the Hex Code, such as "#FF96FF".
+	Returns:
+		A Tuple containing integers such as "(255, 150, 255)".
+	"""
+	# Gets rid of the first character if it's an "#"
+	if (Hex[:1] == "#"): Hex = Hex[:1];
+
+	if (len(Hex) > 8): raise Exception("Invalid Hex Code Length (Too long!)");
+	elif (len(Hex) < 6): raise Exception("Invalid Hex Code Length (Too short!)");
+
+	Hex_List: list[int] = [];
+	Hex_List.append(16*Hex_To_Decimal(Hex[:1]) + Hex_To_Decimal[1:2]);
+	Hex_List.append(16*Hex_To_Decimal(Hex[2:3]) + Hex_To_Decimal[3:4]);
+	Hex_List.append(16*Hex_To_Decimal(Hex[4:5]) + Hex_To_Decimal[4:6]);
+
+	if (len(Hex) == 8):
+		Hex_List.append(16*Hex_To_Decimal(Hex[5:6]) + Hex_To_Decimal[5:7]);
+
+	return tuple(Hex_List);
+
+def Hex_To_Decimal(Hex: str) -> int:
+	"""
+	Transform a SINGULAR Hex Character into Base 10 alias Decimal.
+
+	Arguments:
+		Hex: The character representing the Hex Code, such as "F".
+	Returns:
+		An integer such as "15".
+	"""
+	match Hex[1:].upper():
+		case "F": return 15;
+		case "E": return 14
+		case "D": return 13;
+		case "C": return 12;
+		case "B": return 11;
+		case "A": return 10;
+		case _: return int(Hex[1:])
+
 """ SNDL Colors v3.1 """
 # Sirio Network Design Language (c) The Sirio Network 2023-2025 // All Rights Reserved
 
