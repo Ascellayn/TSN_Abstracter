@@ -1,7 +1,7 @@
-def Index(Array: list, Index: int):
+def Index(Array: list, Index: int): # Isn't there a Python function to already do this?
 	"""
 	Attempts to safely try to read an array's specified index.
-	
+
 	Arguments:
 		Array: The List that we want to check a specific index.
 		Index: The Index element we want to read.
