@@ -24,6 +24,15 @@ def Convert_Unix(Unix: int) -> datetime.datetime:
 	"""
 	return datetime.datetime.fromtimestamp(Unix);
 
+def Convert_ISO(ISO_8601: str) -> datetime.datetime:
+	""" Converts ISO 8601 Timestamp to Datetime Object.
+
+	Arguments:
+		ISO_8601: String containing the time in ISO_8601 format such as "2025-06-10T07:31:59Z".
+	Returns:
+		Datetime Object with the time set according to the ISO_8601 argument.
+	"""
+	return datetime.datetime.fromisoformat(ISO_8601.replace("Z", "+00:00"));
 
 # Time.Get_*
 def Get_Dawn(Unix: int) -> int:
