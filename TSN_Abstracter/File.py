@@ -159,8 +159,10 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict:
 	Returns:
 		Dictionary containing the JSON Data or an empty dictionary if the file does not exists.
 	"""
-	if (Path_Require(Path)):
+	Path_Require(Path)
+	if (Exists(Path)):
 		return json.loads(Read(Path, Compressed));
+	Log.Debug(f"JSON File at {Path} doesn't exist. Returning empty dictionary.");
 	return {};
 
 def JSON_Write(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
