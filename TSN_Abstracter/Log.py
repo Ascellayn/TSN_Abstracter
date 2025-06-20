@@ -117,7 +117,7 @@ def Critical(Text: str) -> Awaited_Log:
 	return Log(Text, 50);
 
 def Log_Path() -> str:
-	f"{Default_Path}/logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
+	return f"{Default_Path}/logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 	""" Logs a specified message manually. Writes the log to a file and displays it to the console.
