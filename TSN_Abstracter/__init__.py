@@ -5,6 +5,7 @@ from TSN_Abstracter.File import *;
 from TSN_Abstracter.Misc import *;
 from TSN_Abstracter.Safe import *;
 from TSN_Abstracter.SNDL import *;
+from TSN_Abstracter.String import *;
 from TSN_Abstracter.Time import *;
 
 __all__ = [
@@ -15,6 +16,7 @@ __all__ = [
 	"Misc",
 	"Safe",
 	"SNDL",
+	"String",
 	"Time",
 	"TSN_Abstracter"
 ];
@@ -22,7 +24,7 @@ __all__ = [
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int] = (1,6,1);
+	Version_Tuple: tuple[int] = (1,7,0);
 	
 	class Outdated_Version(Exception):
 		def __init__(self, Asked: tuple[int], Quit_Program: bool):
