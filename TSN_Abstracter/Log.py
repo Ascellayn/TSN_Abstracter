@@ -196,17 +196,17 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
-	 """ Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "<module>".
+	""" Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "<module>".
 
-	 Arguments:
+	Arguments:
 		Depth: Integer representing how far we go back to get the function name. By default it is 2.
-	 Returns:
+	Returns:
 		String with the name of the function or module name.
-	 """
-	 Function = inspect.getouterframes(inspect.currentframe())[Depth][3];
-	 if (Function == "<module>"):
-		 Function = __name__;
-	 return Function;
+	"""
+	Function = inspect.getouterframes(inspect.currentframe())[Depth][3];
+	if (Function == "<module>"):
+		Function = __name__;
+	return Function;
 
 # Miscellaneous Logging
 def Carriage(Text: str) -> None:
