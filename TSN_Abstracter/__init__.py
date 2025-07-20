@@ -15,9 +15,29 @@ __all__ = [
 	"Misc",
 	"Safe",
 	"SNDL",
-	"Time"
+	"Time",
+	"TSN_Abstracter"
 ];
 
-class TSN_Abstrater:
-	"""Class containing some information about TSN_Abstracter"""
-	Version: str = "v1.6.0";
+class TSN_Abstracter:
+	"""Class containing some information about TSN_Abstracter & Version Checking
+	Yes this looks like a mess."""
+	Version_Tuple: tuple[int] = (1,6,1);
+	
+	class Outdated_Version(Exception):
+		def __init__(self, Asked: tuple[int], Quit_Program: bool):
+			self.Message: str = f"The program is asking us TSN_Abstracter {TSN_Abstracter.Version(Asked)} however we're using {TSN_Abstracter.Version()}!";
+			Log.Critical(self.Message);
+			if (Quit_Program): exit();
+		def __str__(self) -> str: return self.Message;
+
+	def Version(Version: tuple[int] | None = None) -> str:
+		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
+		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
+		return f"v{Version[0]}.{Version[1]}.{Version[2]}";
+	
+	def Require_Version(Minimum_Version: tuple[int], Quit_Program: bool = True) -> bool:
+		"""Returns a boolean confirming if the TSN_Abstracter version provided by the Minimum_Version tuple is equal or above, if Quit_Program is True the program will quit after the exception."""
+		if ((TSN_Abstracter.Version_Tuple[0] >= Minimum_Version[0] and TSN_Abstracter.Version_Tuple[1] >= Minimum_Version[1])): return True;
+		elif (Quit_Program): raise TSN_Abstracter.Outdated_Version(Minimum_Version, Quit_Program);
+		else: Log.Warning(f"The program is asking us TSN_Abstracter {TSN_Abstracter.Version(Minimum_Version)} however we're using {TSN_Abstracter.Version()}!");
