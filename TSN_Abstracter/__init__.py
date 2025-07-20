@@ -17,3 +17,7 @@ __all__ = [
 	"SNDL",
 	"Time"
 ];
+
+class TSN_Abstrater:
+	"""Class containing some information about TSN_Abstracter"""
+	Version: str = "v1.6.0";
