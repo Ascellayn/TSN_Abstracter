@@ -139,11 +139,20 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 	global Last_Awaited, Last_Text;
 
 	# Check if the Logs folder doesn't exist, create it if it isn't. Assuming it is allowed to do so.
-	if (Config.Logging["File"]):
-		File.Path_Require("logs");
+	if (Config.Logging["File"]): File.Path_Require("logs");
 	
 	# Configure Logger
 	Logger = logging.getLogger("TSN");
+	
+	match Level:
+		case 50: Level_Color = FC.Magenta; Level_String = "Critical";
+		case 40: Level_Color = FC.Red; Level_String = "Error";
+		case 30: Level_Color = FC.Yellow; Level_String = "Warning";
+		case 25: Level_Color = FC.Blue; Level_String = "Info";
+		case 20: Level_Color = FC.White; Level_String = "Stateless";
+		case 15: Level_Color = FC.Cyan; Level_String = "Debug";
+		case 10: Level_Color = FC.Grey; Level_String = "TSN_Debug";
+		case _: Level_Color = FC.White; Level_String = "Unknown";
 	Logger.setLevel(Level);
 
 	# Handlers
@@ -172,18 +181,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 		else:
 			Last_Awaited = False;
 
-
-	match Level:
-		case 50: Level_Color = FC.Magenta; # Critical 
-		case 40: Level_Color = FC.Red; # Error 
-		case 30: Level_Color = FC.Yellow; # Warning
-		case 25: Level_Color = FC.Blue; # Information
-		case 15: Level_Color = FC.Cyan; # Debug
-		case 10: Level_Color = FC.Grey; # TSN-Debug
-		case _: Level_Color = FC.White;
-
 	Format = logging.Formatter(
-		fmt = f"{Prefix}{FC.Grey}[%(asctime)s]{TF.Normal} {f"- {TF.Bold}{Level_Color}%(levelname)s{TF.Normal}:" if (Level != 25) else ""} %(message)s", 
+		fmt = f"{Prefix}{FC.Grey}[%(asctime)s]{TF.Normal} {f"- {TF.Bold}{Level_Color}{Level_String}{TF.Normal}:" if (Level != 20) else ""} %(message)s", 
 		datefmt = "%Y/%m/%d - %H:%M:%S"																			# ↑ Stateless Check
 	);
 
@@ -192,7 +191,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 		Handler.setFormatter(Format);
 		Logger.addHandler(Handler);
 
-	Logger.log(Level, f"{TF.Underline}{FC.Grey}{Caller}(){TF.Normal} - {Text}");
+	Logger.log(Level, f"{TF.Underline}{FC.Grey}{Caller}(){TF.Normal} - {Text}" if (Level != 20) else Text);
 	if (Return):
 		return Awaited_Log(Level, Caller, Text);
 	else: return Empty_Log();
