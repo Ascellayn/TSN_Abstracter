@@ -10,14 +10,14 @@ Default_Path = os.getcwd(); # Move this later to File.*
 
 """ Note: All the ANSI Colors and everything here are purposeful shit because they're compatible with Discord's ANSI ones. (of which they are shit)
 In the future if I have time I will add more colors which would better fit SNDL's Colors. """
-class TF():
-	# Text Format
+class TF:
+	"""Text Format"""
 	Normal = "\u001b[0m";
 	Bold = "\u001b[1m";
 	Underline = "\u001b[4m";
 
-class FC():
-	# Foreground Color
+class FC:
+	"""Foreground Color"""
 	Red = "\u001b[31m";
 	Yellow = "\u001b[33m";
 	Green = "\u001b[32m";
@@ -27,8 +27,8 @@ class FC():
 	Grey = "\u001b[30m";
 	White = "\u001b[37m";
 
-class BC():
-	# Background Color
+class BC:
+	"""Background Color"""
 	Orange = "\u001b[41m";
 	Indigo = "\u001b[45m";
 	Firefly_Dark_Blue = "\u001b[40m";
@@ -81,28 +81,31 @@ class Awaited_Log:
 class Empty_Log:
 	""" Version of Awaited_Log that contains nothing, used to prevent exceptions when the users' code expects Awaited_Log but the log level is too low  
 	Contains the same methods as Awaited_Log but they all do absolutely nothing. """
-	def __init__(self) -> None:
-		return;
+	def __init__(self) -> None: return;
 
-	def __str__(self) -> str:
-		return f"Empty";
+	def __str__(self) -> str: return f"Empty";
 
-	def Status_Update(self, Status: str) -> None:
-		return;
+	def Status_Update(self, Status: str) -> None: return;
 
-	def OK(self) -> None:
-		return;
-	def ERROR(self, Except: Exception) -> None:
-		return;
+	def OK(self) -> None: return;
+	def ERROR(self, Except: Exception) -> None: return;
 
 # Simplified logging functions
+def TSN_Debug(Text: str) -> Awaited_Log:
+	""" TSN_Debug Log """
+	return Log(Text, 10);
+
 def Debug(Text: str) -> Awaited_Log:
 	""" Debug Log """
-	return Log(Text, 10);
+	return Log(Text, 15);
+
+def Stateless(Text: str) -> Awaited_Log:
+	""" Stateless Log, only includes the time. """
+	return Log(Text, 20);
 
 def Info(Text: str) -> Awaited_Log:
 	""" Info Log """
-	return Log(Text, 20);
+	return Log(Text, 25);
 
 def Warning(Text: str) -> Awaited_Log:
 	""" Warning Log """
@@ -174,13 +177,14 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 		case 50: Level_Color = FC.Magenta; # Critical 
 		case 40: Level_Color = FC.Red; # Error 
 		case 30: Level_Color = FC.Yellow; # Warning
-		case 20: Level_Color = FC.Blue; # Information
-		case 10: Level_Color = FC.Cyan; # Debug
+		case 25: Level_Color = FC.Blue; # Information
+		case 15: Level_Color = FC.Cyan; # Debug
+		case 10: Level_Color = FC.Grey; # TSN-Debug
 		case _: Level_Color = FC.White;
 
 	Format = logging.Formatter(
-		fmt = f"{Prefix}{FC.Grey}[%(asctime)s]{TF.Normal} - {TF.Bold}{Level_Color}%(levelname)s{TF.Normal}: %(message)s", 
-		datefmt = "%Y/%m/%d - %H:%M:%S"
+		fmt = f"{Prefix}{FC.Grey}[%(asctime)s]{TF.Normal} {f"- {TF.Bold}{Level_Color}%(levelname)s{TF.Normal}:" if (Level != 25) else ""} %(message)s", 
+		datefmt = "%Y/%m/%d - %H:%M:%S"																			# ↑ Stateless Check
 	);
 
 	for Handler in Handlers:
@@ -191,8 +195,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> Awaited_Log | Empty_Log:
 	Logger.log(Level, f"{TF.Underline}{FC.Grey}{Caller}(){TF.Normal} - {Text}");
 	if (Return):
 		return Awaited_Log(Level, Caller, Text);
-	else:
-		return Empty_Log();
+	else: return Empty_Log();
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:

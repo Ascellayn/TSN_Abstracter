@@ -16,7 +16,7 @@ def Generate_Key(Key_Size: int = 4096) -> rsa.RSAPrivateKey | rsa.RSAPublicKey:
 
 def Generate_Private(Key_Size: int = 4096) -> rsa.RSAPrivateKey:
 	""" Generates a pair of RSA Private Key with a size of 4096 bits by default. """
-	Log.Debug(f"Generating RSA Private Key with a size of {Key_Size} bits...");
+	Log.TSN_Debug(f"Generating RSA Private Key with a size of {Key_Size} bits...");
 	return rsa.generate_private_key(
 		public_exponent = 65537,
 		key_size = Key_Size
@@ -24,7 +24,7 @@ def Generate_Private(Key_Size: int = 4096) -> rsa.RSAPrivateKey:
 
 def Generate_Public(Private_Key: rsa.RSAPrivateKey) -> rsa.RSAPublicKey:
 	""" Generates a RSA Public Key from its Private Key. """
-	Log.Debug(f"Generating RSA Public Key...");
+	Log.TSN_Debug(f"Generating RSA Public Key...");
 	return Private_Key.public_key();
 
 def Get_Bytes_Public(Key: rsa.RSAPublicKey) -> bytes:

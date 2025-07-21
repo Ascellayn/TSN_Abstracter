@@ -28,7 +28,7 @@ def Read(Path: str, Compressed: bool = False) -> str:
 			else:
 				with open(Path, "r", encoding="UTF8") as File: Data = File.read();
 			
-			Log.Debug(f"{Path}:\n'{Data}'");
+			Log.TSN_Debug(f"{Path}:\n'{Data}'");
 			return Data;
 		except Exception as Error:
 			Log.Error(f"Failed to read file {Path}!\n\tEXCEPTION: {Error}");
@@ -47,11 +47,11 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
 	if (Append): Mode: str = "a";
 	else: Mode: str = "w";
 
-	Log.Debug(f"File Mode used: {Mode}");
+	Log.TSN_Debug(f"File Mode used: {Mode}");
 
 
 	if Exists(Path_Folder(Path)):
-		Log.Debug(f"{Path}:\n'{Data}'");
+		Log.TSN_Debug(f"{Path}:\n'{Data}'");
 		try:
 			if (Compressed):
 				with lzma.open(Path, Mode) as File:
@@ -162,7 +162,7 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict:
 	Path_Require(Path)
 	if (Exists(Path)):
 		return json.loads(Read(Path, Compressed));
-	Log.Debug(f"JSON File at {Path} doesn't exist. Returning empty dictionary.");
+	Log.TSN_Debug(f"JSON File at {Path} doesn't exist. Returning empty dictionary.");
 	return {};
 
 def JSON_Write(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
@@ -195,7 +195,7 @@ def JSON_Append(Path: str, Dictionary: dict, Compressed: bool = False) -> bool:
 	"""
 	try:
 		if (not Exists(Path)):
-			Log.Debug(f"{Path} didn't exist before, the file has been automatically created.");
+			Log.TSN_Debug(f"{Path} didn't exist before, the file has been automatically created.");
 			return JSON_Write(Path, Dictionary, Compressed);
 
 		JSON: dict = JSON_Read(Path, Compressed);
