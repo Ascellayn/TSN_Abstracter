@@ -17,3 +17,8 @@ def Process_Start(Function, Daemon: bool = True) -> None:
 	""" Abstraction to launch a Process. """
 	multiprocessing.Process(target=Function()).start();
 	return;
+
+def NotNull(Number: int, Default: int = 1) -> int:
+	""" Returns the Number unless it is null, in this case we return Default. """
+	if (Number == 0): return Default;
+	return Number;
