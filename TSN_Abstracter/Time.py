@@ -103,6 +103,14 @@ def Unit_Power(Unit: str) -> int:
 		case "Seconds": return 0;
 		case "Milliseconds": return -1;
 
+def Unit_BnS(Time_Dict: int) -> str:
+	Biggest_Unit: int = -1; Smallest_Unit: int = -1;
+	for Key in Time_Dict.keys():
+		if (Time_Dict[Key] != 0):
+			if (Unit_Power(Key) > Biggest_Unit): Biggest_Unit = Unit_Power(Key);
+			Smallest_Unit = Unit_Power(Key);
+	return Biggest_Unit, Smallest_Unit;
+
 
 
 
@@ -128,12 +136,14 @@ def Calculate_Elapsed(Unix: int) -> dict:
 	};
 
 
-def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
+def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Bigger: bool = False, Show_Starting: int = 6, Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
 	""" Gives a dynamically sized string of the amount of time passed since the epoch.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
 		Delimiter: String representing what should follow the time string after the units.
+		Show_Bigger: Should we still display units that are bigger than the smallest unit available?
+		Show_Starting: Integer representing starting what "Unit Power" we should display.
 		Show_Smaller: Should we still display units that are smaller than the biggest unit available?
 		Show_Until: Integer representing until what "Unit Power" we should display.
 		Trailing_Until: Integer representing at what "Unit Power" we should stop adding trailing Zeros.
@@ -141,18 +151,20 @@ def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Smaller: bool = False,
 	Returns:
 		String in the format "X{Unit}{Delimiter}".
 	"""
-	Elapsed = Calculate_Elapsed(Unix);
-	Dynamic_String = ""; Biggest_Unit: int = -1; Smallest_Unit = -1;
+	Time_Dict = Calculate_Elapsed(Unix);
+	Dynamic_String = "";
 
-	for Key in Elapsed.keys():
-		if (Elapsed[Key] != 0):
-			if (Unit_Power(Key) > Biggest_Unit): Biggest_Unit = Unit_Power(Key);
-			Smallest_Unit = Unit_Power(Key);
-	if (Show_Smaller): Smallest_Unit = Show_Until;
+	Biggest_Unit, Smallest_Unit = Unit_BnS(Time_Dict);
+	Smallest_Unit = Show_Until;
 
-	for Key in Elapsed.keys():
+	for Key in Time_Dict.keys():
 		Power = Unit_Power(Key);
-		if ((Elapsed[Key] != 0 or (Show_Smaller and Biggest_Unit >= Power)) and Power >= Show_Until):
+		Display = False;
+		if ((Time_Dict[Key] != 0 and Show_Starting >= Power) or (Show_Bigger and Show_Starting >= Power)): Display = True;
+		if (Show_Smaller and Biggest_Unit >= Power): Display = True;
+		if (Show_Until > Power): Display = False;
+		#print(f"{Key}: {Display}")
+		if (Display):
 			Suffix = Delimiter if ((Power) != Smallest_Unit) else "";
-			Dynamic_String += f"{Trailing_Zero(Elapsed[Key]) if (Power < Trailing_Until) else Elapsed[Key]}{Short_Time_Units()[Key] if (Display_Units) else ""}{Suffix}";
+			Dynamic_String += f"{Trailing_Zero(Time_Dict[Key]) if (Power < Trailing_Until) else Time_Dict[Key]}{Short_Time_Units()[Key] if (Display_Units) else ""}{Suffix}";
 	return Dynamic_String;
