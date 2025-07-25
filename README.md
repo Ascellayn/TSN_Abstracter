@@ -1,5 +1,5 @@
 # TSN Abstracter (TSNA)
-Python Module used across all newer Python Projects containing a bunch of commonly used functions.  
+Python Module used across all newer "built-for-TSN" Python Projects containing a bunch of commonly used functions.  
 
 TSNA aims to facilitate development of numerous TSN Python projects such as the [Kosaka Eco-System](https://github.com/stars/Ascellayn/lists/kosaka-related-repositories), [TSN "Trinity"](https://github.com/Ascellayn/TSN_Trinity), [Caerbannog](https://github.com/Ascellayn/Caerbannog) and MANY other projects aimed to serve The Sirio Network.  
 
