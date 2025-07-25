@@ -75,7 +75,39 @@ def Get_DateStrings(Unix: int) -> str:
 
 
 
-# Time.Calculate_*
+# Time Functions that aid in String related functions.
+def Short_Time_Units() -> dict:
+	return {
+		"Years": "Y",
+		"Months": "M",
+		"Days": "D",
+		"Hours": "h",
+		"Minutes": "m",
+		"Seconds": "s",
+		"Milliseconds": "ms"
+	};
+
+def Trailing_Zero(Number: int) -> str:
+	""" Adds a trailing Zero"""
+	if (Number > 9): return Number;
+	return f"0{Number}";
+
+
+def Unit_Power(Unit: str) -> int:
+	match Unit:
+		case "Years": return 5;
+		case "Months": return 4;
+		case "Days": return 3;
+		case "Hours": return 2;
+		case "Minutes": return 1;
+		case "Seconds": return 0;
+		case "Milliseconds": return -1;
+
+
+
+
+
+# Time Functions with Calculations
 def Calculate_Elapsed(Unix: int) -> dict:
 	""" Calculate how much time since the Epoch has passed.  
 	NOTE: Everything is calculated according to a year being 365.25 days long.
@@ -85,27 +117,42 @@ def Calculate_Elapsed(Unix: int) -> dict:
 	Returns:
 		Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 	"""
-	return {
-		"Years": Unix // 31557600,
-		"Months": (Unix // 2629800) % 12,
-		"Days": int((Unix // 86400) % 30.4375), # The int is required because otherwise this is automatically a float which we do not want.
-		"Hours": (Unix // 3600) % 24,
-		"Minutes": (Unix // 60) % 60,
-		"Seconds": Unix % 60
+	return { # The ints are required because otherwise we have a trailling ".X"
+		"Years": int(Unix // 31557600),
+		"Months": int((Unix // 2629800) % 12),
+		"Days": int((Unix // 86400) % 30.4375), 
+		"Hours": int((Unix // 3600) % 24),
+		"Minutes": int((Unix // 60) % 60),
+		"Seconds": round(Unix % 60),
+		"Milliseconds": round((Unix % 60 - round(Unix % 60))*1000)
 	};
 
-def Elapsed_String(Unix: int) -> str:
+
+def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
 	""" Gives a dynamically sized string of the amount of time passed since the epoch.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
+		Delimiter: String representing what should follow the time string after the units.
+		Show_Smaller: Should we still display units that are smaller than the biggest unit available?
+		Show_Until: Integer representing until what "Unit Power" we should display.
+		Trailing_Until: Integer representing at what "Unit Power" we should stop adding trailing Zeros.
+		Display_Units: Allow the display of Short_Time_Units();
 	Returns:
-		String in the format "Xy, Xm, Xd, Xh, Xm, Xs".
+		String in the format "X{Unit}{Delimiter}".
 	"""
 	Elapsed = Calculate_Elapsed(Unix);
-	Dynamic_String = "";
+	Dynamic_String = ""; Biggest_Unit: int = -1; Smallest_Unit = -1;
+
 	for Key in Elapsed.keys():
 		if (Elapsed[Key] != 0):
-			Suffix = ", " if (Key != "Seconds") else "";
-			Dynamic_String += f"{Elapsed[Key]}{Key[:1].lower()}{Suffix}";
+			if (Unit_Power(Key) > Biggest_Unit): Biggest_Unit = Unit_Power(Key);
+			Smallest_Unit = Unit_Power(Key);
+	if (Show_Smaller): Smallest_Unit = Show_Until;
+
+	for Key in Elapsed.keys():
+		Power = Unit_Power(Key);
+		if ((Elapsed[Key] != 0 or (Show_Smaller and Biggest_Unit >= Power)) and Power >= Show_Until):
+			Suffix = Delimiter if ((Power) != Smallest_Unit) else "";
+			Dynamic_String += f"{Trailing_Zero(Elapsed[Key]) if (Power < Trailing_Until) else Elapsed[Key]}{Short_Time_Units()[Key] if (Display_Units) else ""}{Suffix}";
 	return Dynamic_String;
