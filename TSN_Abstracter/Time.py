@@ -34,6 +34,10 @@ def Convert_ISO(ISO_8601: str) -> datetime.datetime:
 	"""
 	return datetime.datetime.fromisoformat(ISO_8601.replace("Z", "+00:00"));
 
+
+
+
+
 # Time.Get_*
 def Get_Dawn(Unix: int) -> int:
 	""" Get the Unix Time of the specified date day's first second.
@@ -66,6 +70,9 @@ def Get_DateStrings(Unix: int) -> str:
 	Date = DT.strftime("%Y/%m/%d");
 	Time = DT.strftime("%H:%M:%S")
 	return Date, Time
+
+
+
 
 
 # Time.Calculate_*

@@ -8,5 +8,5 @@ def Index(Array: list, Index: int): # Isn't there a Python function to already d
 	Returns:
 		The returned item can be anything. In the case of a failed read, the return value will always be none.
 	"""
-	try: return Array[Index];
-	except: return None;
+	if (Index > len(Array)): return None;
+	return Array[Index];
