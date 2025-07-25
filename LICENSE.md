@@ -1,4 +1,4 @@
-# TSN_Abstracter © 2025 by Ascellayn is licensed under TSN License 1.0 - Base
+# TSN Abstracter (TSNA) © 2025 by Ascellayn is licensed under TSN License 1.0 - Base
 The Sirio Network License 1.0 - Base  
 *Origin: https://dev.sirio-network.com/license/1.0*  
 
