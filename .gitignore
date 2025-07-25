@@ -1,2 +1,6 @@
 # nuh uh no compiled python in MY repository
 *.pyc
+
+# Sometimes I have to try out shit and I don't want that in the repo because it's really just a temporary file
+Tests.py
+Logs/*

@@ -15,5 +15,6 @@ class Logger:
 
 	File: bool = False;
 	File_Level: int = 20;
+	File_Folder: str = "Logs";
 
 	Print_Level: int = 20;

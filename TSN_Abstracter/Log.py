@@ -7,7 +7,9 @@ import datetime, inspect, logging, os, re, shutil, sys;
 Awaited_Logs: dict = {};
 Await_Next: bool = False;
 
-def Log_Path() -> str: return f"{File.Working_Directory}/logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
+def Log_Path() -> str:
+	File.Path_Require(Config.Logger.File_Folder); # Check if the Logs folder doesn't exist, create it if it isn't.
+	return f"{File.Working_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 # Configure Loggers
 Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
@@ -224,8 +226,6 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	if (Level >= Config.Logger.Print_Level): # If this is a debug message, don't display to the console.
 		Logger_Console.log(Level, Logged_Text);
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
-		# Check if the Logs folder doesn't exist, create it if it isn't. Assuming it is allowed to do so.
-		if (Config.Logger.File): File.Path_Require("logs");
 		Logger_File.log(Level, Clear_TextFormatting(Logged_Text));
 
 	if (Await_Next): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
