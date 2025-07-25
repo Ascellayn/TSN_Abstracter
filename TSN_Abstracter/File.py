@@ -1,5 +1,6 @@
 import TSN_Abstracter.Log as Log;
 import pathlib, os, lzma, json;
+Working_Directory = os.getcwd();
 
 # General File Processing
 def Exists(Path: str) -> bool:
