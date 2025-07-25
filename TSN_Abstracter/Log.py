@@ -5,7 +5,7 @@ import datetime, inspect, logging, os, re, shutil, sys;
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Awaited_Logs: dict = {};
-Await_Next: bool = False;
+Await_Next: str = "";
 
 def Log_Path() -> str:
 	File.Path_Require(Config.Logger.File_Folder); # Check if the Logs folder doesn't exist, create it if it isn't.
@@ -50,7 +50,7 @@ class TF:
 	Normal = "\u001b[0m";
 	Bold = "\u001b[1m";
 	Underline = "\u001b[4m";
-	Return_Line = "\x1b[1A\x1b[2K" * 2;
+	Return_Line = "\x1b[1A\x1b[2K";
 
 class FC:
 	"""Foreground Color"""
@@ -106,12 +106,18 @@ class Awaited_Log:
 		global Awaited_Logs, Await_Next;
 		if (Can_Log(self.Level)):
 			if (self.Level >= Config.Logger.Print_Level):
-				if (Await_Next): Logger_Console.log(self.Level, TF.Return_Line + self.Text + Status); #print(f"\033[3D {Status}");
+				if (Await_Next == self.Caller): Logger_Console.log(self.Level, TF.Return_Line + self.Text + Status);
 				else: Logger_Console.log(self.Level, self.Text + Status);
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
-				Logger_File.log(self.Level, Clear_TextFormatting(self.Text + Status));
+				if (Await_Next == self.Caller):
+					# WARNING: This is slow, should come up with a better solution in the future
+					Lines: list[str] = open(Log_Path(), "r").readlines();
+					Lines[-1] = Clear_TextFormatting(self.Text + Status + "\n");
+					open(Log_Path(), "w").writelines(Lines);
+				else:
+					Logger_File.log(self.Level, Clear_TextFormatting(self.Text + Status));
 
-		Await_Next = False; del Awaited_Logs[self.Caller];
+		Await_Next = ""; del Awaited_Logs[self.Caller];
 
 	def OK(self) -> None:
 		""" [OK] Status Update shortcut"""
@@ -210,9 +216,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	if (Caller == ""): Caller = Get_Caller(3);
 	
 	# Detects if the logged text is going to await a status update and changes the terminator accordingly, includes prefix.
-	Await_Next = False;
 	if (len(Text) >= 3): # Avoids Exception if Text is too short
-		if ("..." == Text[-3:]): Await_Next = True;
+		if ("..." == Text[-3:]): Await_Next = Caller;
 
 	# The actual logging part.
 	Date_Str, Time_Str = Time.Get_DateStrings(Time.Get_Unix());
@@ -256,4 +261,4 @@ def Delete() -> None:
 	"""
 	Clear();
 	Critical("=== DELETING THE LOG FILE! ===");
-	File.Write(f"logs/{datetime.datetime.now().strftime("%Y-%m_%d")}.log", "");
+	File.Write(Log_Path(), "");
