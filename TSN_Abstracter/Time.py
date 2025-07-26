@@ -125,7 +125,7 @@ def Calculate_Elapsed(Unix: int) -> dict:
 	Returns:
 		Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 	"""
-	return { # The ints are required because otherwise we have a trailling ".X"
+	return { # The ints are required because otherwise we have a trailing ".X"
 		"Years": int(Unix // 31557600),
 		"Months": int((Unix // 2629800) % 12),
 		"Days": int((Unix // 86400) % 30.4375), 
@@ -136,13 +136,14 @@ def Calculate_Elapsed(Unix: int) -> dict:
 	};
 
 
-def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Bigger: bool = False, Show_Starting: int = 6, Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
+def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Bigger: bool = False, Show_Bigger_Starting: int = 2, Show_Starting: int = 6, Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
 	""" Gives a dynamically sized string of the amount of time passed since the epoch.
 
 	Arguments:
 		Unix: Integer representing the time since the Epoch.
 		Delimiter: String representing what should follow the time string after the units.
 		Show_Bigger: Should we still display units that are bigger than the smallest unit available?
+		Show_Bigger_Starting: Integer representing starting what "Unit Power" we should start forcefully displaying numbers.
 		Show_Starting: Integer representing starting what "Unit Power" we should display.
 		Show_Smaller: Should we still display units that are smaller than the biggest unit available?
 		Show_Until: Integer representing until what "Unit Power" we should display.
@@ -160,8 +161,10 @@ def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Bigger: bool = False, 
 	for Key in Time_Dict.keys():
 		Power = Unit_Power(Key);
 		Display = False;
-		if ((Time_Dict[Key] != 0 and Show_Starting >= Power) or (Show_Bigger and Show_Starting >= Power)): Display = True;
+		if (Time_Dict[Key] != 0): Display = True;
+		if (Show_Bigger and Show_Bigger_Starting >= Power): Display = True;
 		if (Show_Smaller and Biggest_Unit >= Power): Display = True;
+		if (Power >= Show_Starting): Display = False;
 		if (Show_Until > Power): Display = False;
 		#print(f"{Key}: {Display}")
 		if (Display):
