@@ -14,7 +14,7 @@ def Log_Path() -> str:
 # Configure Loggers
 Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
 Logger_File = logging.getLogger("TSN-File"); Logger_File.addHandler(logging.FileHandler(filename=Log_Path()));
-
+Handler_LogPath = Log_Path(); # Quite a janky fix for the logger file not properly changing files when it's a new day, see end of Log() for the actual usage of this
 
 # Logging Dependencies
 def Get_Caller(Depth: int = 2) -> str:
@@ -111,9 +111,9 @@ class Awaited_Log:
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
 				if (Await_Next == self.Caller):
 					# WARNING: This is slow, should come up with a better solution in the future
-					Lines: list[str] = open(Log_Path(), "r").readlines();
+					Lines: list[str] = open(Handler_LogPath, "r").readlines();
 					Lines[-1] = Clear_TextFormatting(self.Text + Status + "\n");
-					open(Log_Path(), "w").writelines(Lines);
+					open(Handler_LogPath, "w").writelines(Lines);
 				else:
 					Logger_File.log(self.Level, Clear_TextFormatting(self.Text + Status));
 
@@ -199,7 +199,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 		Level: Integer corresponding to how severe the message is.
 	"""
 	if (not Can_Log(Level)): return;
-	global Awaited_Logs, Await_Next; # Awaiting Log System Bullshit
+	global Awaited_Logs, Await_Next, Handler_LogPath, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
 
 	match Level:
 		case 50: Level_Color = FC.Magenta; Level_String = "Critical";
@@ -231,6 +231,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	if (Level >= Config.Logger.Print_Level): # If this is a debug message, don't display to the console.
 		Logger_Console.log(Level, Logged_Text);
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
+		if (Handler_LogPath != Log_Path()):
+			Logger_File.handlers =logging.FileHandler(filename=Log_Path());
 		Logger_File.log(Level, Clear_TextFormatting(Logged_Text));
 
 	if (Await_Next): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
