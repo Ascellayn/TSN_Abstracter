@@ -232,7 +232,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 		Logger_Console.log(Level, Logged_Text);
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
 		if (Handler_LogPath != Log_Path()):
-			Logger_File.handlers =logging.FileHandler(filename=Log_Path());
+			Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
 		Logger_File.log(Level, Clear_TextFormatting(Logged_Text));
 
 	if (Await_Next): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
