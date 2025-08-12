@@ -59,79 +59,79 @@ class Color:
 	- Pink → Mika"""
 	class Abyss:
 		"""Dark-Mode: Tertiary Color"""
-		Black = (20, 0, 20);
-		White = (225, 190, 225);
-		Red = (105, 0, 0);
-		Orange = (105, 5, 0);
-		Yellow = (135, 135, 0);
-		Green = (0, 135, 30);
-		Cyan = (0, 130, 135);
-		Blue = (10, 0, 75);
-		Purple = (50, 0, 75);
-		Pink = (105, 0, 105);
+		Black = (20, 0, 20);		#140014
+		White = (225, 190, 225);	#E1BEE1
+		Red = (105, 0, 0);			#690000
+		Orange = (105, 5, 0);		#690500
+		Yellow = (135, 135, 0);		#878700
+		Green = (0, 135, 30);		#00871E
+		Cyan = (0, 130, 135);		#008287
+		Blue = (10, 0, 75);			#0A004B
+		Purple = (50, 0, 75);		#32004B
+		Pink = (105, 0, 105);		#690069
 
 	class Night:
 		"""Dark-Mode: Secondary Color"""
-		Black = (30, 10, 30);
-		White = (230, 200, 230);
-		Red = (130, 5, 5);
-		Orange = (130, 30, 5);
-		Yellow = (155, 155, 5);
-		Green = (14, 155, 40);
-		Cyan = (10, 140, 155);
-		Blue = (15, 0, 105);
-		Purple = (75, 5, 105);
-		Pink = (130, 25, 130);
+		Black = (30, 10, 30);		#1E0A1E
+		White = (230, 200, 230);	#E6C8E6
+		Red = (130, 5, 5);			#820505
+		Orange = (130, 30, 5);		#821E05
+		Yellow = (155, 155, 5);		#9B9B05
+		Green = (14, 155, 40);		#0E9B28
+		Cyan = (10, 140, 155);		#0A8C9B
+		Blue = (15, 0, 105);		#0F0069
+		Purple = (75, 5, 105);		#4B0569
+		Pink = (130, 25, 130);		#821982
 
 	class Moon:
 		"""Dark-Mode: Primary Color"""
-		Black = (40, 15, 40);
-		White = (235, 210, 235);
-		Red = (155, 10, 10);
-		Orange = (155, 55, 10);
-		Yellow = (175, 175, 10);
-		Green = (28, 175, 50);
-		Cyan = (28, 150, 175);
-		Blue = (20, 0, 135);
-		Purple = (95, 10, 135);
-		Pink = (155, 50, 155);
+		Black = (40, 15, 40);		#280F28
+		White = (235, 210, 235);	#EBD2EB
+		Red = (155, 10, 10);		#9B0A0A
+		Orange = (155, 55, 10);		#9B370A
+		Yellow = (175, 175, 10);	#AFAF0A
+		Green = (28, 175, 50);		#1CAF32
+		Cyan = (28, 150, 175);		#1C96AF
+		Blue = (20, 0, 135);		#140087
+		Purple = (95, 10, 135);		#5F0A87
+		Pink = (155, 50, 155);		#9B329B
 
 	class Sky:
 		"""Light-Mode: Tertiary Color"""
-		Black = (60, 25, 60);
-		White = (245, 230, 245);
-		Red = (205, 20, 20);
-		Orange = (205, 105, 20);
-		Yellow = (215, 215, 20);
-		Green = (56, 215, 70);
-		Cyan = (40, 170, 205);
-		Blue = (30, 0, 195);
-		Purple = (135, 20, 195);
-		Pink = (205, 100, 205);
+		Black = (60, 25, 60);		#3C193C
+		White = (245, 230, 245);	#F5E6F5
+		Red = (205, 20, 20);		#CD1414
+		Orange = (205, 105, 20);	#CD6914
+		Yellow = (215, 215, 20);	#D7D714
+		Green = (56, 215, 70);		#38D746
+		Cyan = (40, 170, 205);		#28AACD
+		Blue = (30, 0, 195);		#1E00C3
+		Purple = (135, 20, 195);	#8714C3
+		Pink = (205, 100, 205);		#CD64CD
 
 	class Day:
 		"""Light-Mode: Secondary Color"""
-		Black = (70, 30, 70);
-		White = (250, 240, 250);
-		Red = (230, 25, 25);
-		Orange = (230, 130, 25);
-		Yellow = (235, 235, 25);
-		Green = (70, 240, 80);
-		Cyan = (50, 180, 230);
-		Blue = (35, 0, 225);
-		Purple = (155, 25, 225);
-		Pink = (230, 125, 230);
+		Black = (70, 30, 70);		#461E46
+		White = (250, 240, 250);	#FAF0FA
+		Red = (230, 25, 25);		#E61919
+		Orange = (230, 130, 25);	#E68219
+		Yellow = (235, 235, 25);	#EBEB19
+		Green = (70, 240, 80);		#46F050
+		Cyan = (50, 180, 230);		#32B4E6
+		Blue = (35, 0, 225);		#2300E1
+		Purple = (155, 25, 225);	#9B19E1
+		Pink = (230, 125, 230);		#E67DE6
 
 
 	class Sun:
 		"""Light-Mode: Primary Color"""
-		Black = (80, 35, 80);
-		White = (255, 250, 255);
-		Red = (255, 30, 30);
-		Orange = (255, 155, 30);
-		Yellow = (255, 255, 30);
-		Green = (84, 255, 90);
-		Cyan = (60, 190, 255);
-		Blue = (40, 0, 255);
-		Purple = (175, 30, 255);
-		Pink = (255, 150, 255);
+		Black = (80, 35, 80);		#502350
+		White = (255, 250, 255);	#FFFAFF
+		Red = (255, 30, 30);		#FF1E1E
+		Orange = (255, 155, 30);	#FF9B1E
+		Yellow = (255, 255, 30);	#FFFF1E
+		Green = (84, 255, 90);		#54FF5A
+		Cyan = (60, 190, 255);		#3CBEFF
+		Blue = (40, 0, 255);		#2800FF
+		Purple = (175, 30, 255);	#AF1EFF
+		Pink = (255, 150, 255);		#FF96FF
