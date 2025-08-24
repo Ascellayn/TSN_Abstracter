@@ -222,9 +222,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	# The actual logging part.
 	Date_Str, Time_Str = Time.Get_DateStrings(Time.Get_Unix());
 	Logged_Text: str = ""; # Prefix if previous log was Awaited
-	if (Config.Logger.Display_Date): Logged_Text += f"{FC.Grey}[{Date_Str} - {Time_Str}]{TF.Normal} "; # Date
+	if (Config.Logger.Display_Date): Logged_Text += f"{FC.Grey}[{Date_Str} - {Time_Str}]{TF.Normal} - "; # Date
 	if (Level != 20): # Stateless Check
-		Logged_Text += f"- {TF.Bold}{Level_Color}{Level_String}{TF.Normal}: "; # Log Level
+		Logged_Text += f"{TF.Bold}{Level_Color}{Level_String}{TF.Normal}: "; # Log Level
 		if (Config.Logger.Display_Caller): Logged_Text += f"{TF.Underline}{FC.Grey}{Caller}{TF.Normal} → ";
 	Logged_Text += Text;
 
