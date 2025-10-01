@@ -109,7 +109,7 @@ def Unit_Power(Unit: str) -> int:
 		case "Seconds": return 0;
 		case "Milliseconds": return -1;
 
-def Unit_BnS(Time_Dict: int) -> str:
+def Unit_BnS(Time_Dict: dict) -> str:
 	Biggest_Unit: int = -1; Smallest_Unit: int = -1;
 	for Key in Time_Dict.keys():
 		if (Time_Dict[Key] != 0):
