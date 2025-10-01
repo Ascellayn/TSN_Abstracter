@@ -2,23 +2,25 @@ import datetime, time;
 
 
 # Time.Convert_*
-def Convert_Datetime(Object: datetime.datetime) -> int | None:
+def Convert_Datetime(Object: datetime.datetime, Precise: bool = False) -> int | float | None:
 	""" Converts a Datetime Object to Unix Time.
 
 	Arguments:
 		Object: Datetime Object to be converted to an Integer.
+		Precise: Boolean defining if we want a Precise Unix Time.
 	Returns:
 		Integer representing the Unix Time the Object argument contains.
 	"""
 	if (Object != None): # For some reason we have to add this check because i dunno cosmic rays
+		if (Precise): return Object.timestamp();
 		return int(round(Object.timestamp()));
 	return None;
 
-def Convert_Unix(Unix: int) -> datetime.datetime:
+def Convert_Unix(Unix: int | float) -> datetime.datetime:
 	""" Converts Unix Timestamp to Datetime Object.
 
 	Arguments:
-		Unix: Integer representing the time since the Epoch.
+		Unix: Integer/Float representing the time since the Epoch.
 	Returns:
 		Datetime Object with the time set according to the Unix argument.
 	"""
@@ -39,29 +41,33 @@ def Convert_ISO(ISO_8601: str) -> datetime.datetime:
 
 
 # Time.Get_*
-def Get_Dawn(Unix: int) -> int:
+def Get_Dawn(Unix: int | float) -> int | float:
 	""" Get the Unix Time of the specified date day's first second.
 
 	Arguments:
-		Unix: Integer representing the time since the Epoch.
+		Unix: Integer/Float representing the time since the Epoch.
 	Returns:
-		Integer representing the first second of the current day thanks to the Unix Time passed.
+		Integer/Float representing the first second of the current day thanks to the Unix Time passed.
 	"""
-	return Convert_Datetime(Convert_Unix(Unix).replace(hour=0, minute=0, second=0));
+	if (type(Unix) == int): return Convert_Datetime(Convert_Unix(Unix).replace(hour=0, minute=0, second=0));
+	return Convert_Datetime(Convert_Unix(Unix).replace(hour=0, minute=0, second=0), True);
 
-def Get_Unix() -> int:
-	"""  Get an Integer representing Unix Time.
+def Get_Unix(Precise: bool = False) -> int | float:
+	""" Get an Integer/Float representing Unix Time.
 
+	Arguments:
+		Precise: Boolean defining if we want a Precise Unix Time.
 	Returns:
-		Integer representing the current Unix Time.
+		Integer/Float representing the current Unix Time.
 	"""
+	if (Precise): return time.time();
 	return int(round(time.time()));
 
-def Get_DateStrings(Unix: int) -> str:
+def Get_DateStrings(Unix: int | float) -> str:
 	""" Get the specified Unix's date and time string in the preferred format.
 
 	Arguments:
-		Unix: Integer representing the time since the Epoch.
+		Unix: Integer/Float representing the time since the Epoch.
 	Returns:
 		Date: String corresponding to the date in YYYY/MM/DD format.  
 		Time: String corresponding to the time in HH:MM:SS format.
@@ -116,12 +122,12 @@ def Unit_BnS(Time_Dict: int) -> str:
 
 
 # Time Functions with Calculations
-def Calculate_Elapsed(Unix: int) -> dict:
+def Calculate_Elapsed(Unix: int | float) -> dict:
 	""" Calculate how much time since the Epoch has passed.  
 	NOTE: Everything is calculated according to a year being 365.25 days long.
 
 	Arguments:
-		Unix: Integer representing the time since the Epoch.
+		Unix: Integer/Float representing the time since the Epoch.
 	Returns:
 		Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 	"""
@@ -136,11 +142,11 @@ def Calculate_Elapsed(Unix: int) -> dict:
 	};
 
 
-def Elapsed_String(Unix: int, Delimiter: str = ", ", Show_Bigger: bool = False, Show_Bigger_Starting: int = 2, Show_Starting: int = 6, Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
+def Elapsed_String(Unix: int | float, Delimiter: str = ", ", Show_Bigger: bool = False, Show_Bigger_Starting: int = 2, Show_Starting: int = 6, Show_Smaller: bool = False, Show_Until: int = 0, Trailing_Until: int = 3, Display_Units: bool = True) -> str:
 	""" Gives a dynamically sized string of the amount of time passed since the epoch.
 
 	Arguments:
-		Unix: Integer representing the time since the Epoch.
+		Unix: Integer/Float representing the time since the Epoch.
 		Delimiter: String representing what should follow the time string after the units.
 		Show_Bigger: Should we still display units that are bigger than the smallest unit available?
 		Show_Bigger_Starting: Integer representing starting what "Unit Power" we should start forcefully displaying numbers.
