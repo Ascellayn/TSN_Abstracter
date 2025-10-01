@@ -95,10 +95,13 @@ def Short_Time_Units() -> dict:
 		"Nanoseconds": "ns"
 	};
 
-def Trailing_Zero(Number: int) -> str:
-	""" Adds a trailing Zero"""
-	if (Number > 9): return Number;
-	return f"0{Number}";
+def Trailing_Zero(Number: int, Zeros: int = 1) -> str:
+	""" Adds trailing Zeros"""
+	Digits: int = len(str(Number));
+	Extra_Zeros: int = Zeros - Digits
+
+	if (Digits >= Zeros): return str(Number);
+	return f"{'0'*Extra_Zeros}{str(Number)}";
 
 
 def Unit_Power(Unit: str) -> int:
