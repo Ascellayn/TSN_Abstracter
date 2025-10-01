@@ -90,7 +90,9 @@ def Short_Time_Units() -> dict:
 		"Hours": "h",
 		"Minutes": "m",
 		"Seconds": "s",
-		"Milliseconds": "ms"
+		"Milliseconds": "ms",
+		"Microseconds": "µs",
+		"Nanoseconds": "ns"
 	};
 
 def Trailing_Zero(Number: int) -> str:
@@ -108,6 +110,8 @@ def Unit_Power(Unit: str) -> int:
 		case "Minutes": return 1;
 		case "Seconds": return 0;
 		case "Milliseconds": return -1;
+		case "Microseconds": return -2;
+		case "Nanoseconds": return -3;
 
 def Unit_BnS(Time_Dict: dict) -> str:
 	Biggest_Unit: int = -1; Smallest_Unit: int = -1;
@@ -134,11 +138,43 @@ def Calculate_Elapsed(Unix: int | float) -> dict:
 	return { # The ints are required because otherwise we have a trailing ".X"
 		"Years": int(Unix // 31557600),
 		"Months": int((Unix // 2629800) % 12),
-		"Days": int((Unix // 86400) % 30.4375), 
+		"Days": int((Unix // 86400) % 30.4375),
+
 		"Hours": int((Unix // 3600) % 24),
 		"Minutes": int((Unix // 60) % 60),
-		"Seconds": round(Unix % 60),
-		"Milliseconds": round((Unix % 60 - round(Unix % 60))*1000)
+		"Seconds": int(round(Unix % 60)),
+
+		# It gets ugly here
+		"Milliseconds": int((Unix - round(Unix))*1000),
+		"Microseconds": int(
+			round(
+				(
+					(
+						(Unix - round(Unix))*1000 - round((Unix - round(Unix))*1000)
+					)
+				)*1000
+			)
+		),
+		"Nanoseconds": int(
+			(
+				(
+					(
+						(
+							(Unix - round(Unix))*1000 - round((Unix - round(Unix))*1000)
+						)
+					)*1000
+				)
+				-
+				round(
+					(
+						(
+							(Unix - round(Unix))*1000 - round((Unix - round(Unix))*1000)
+						)
+					)*1000
+				)
+			)*100
+
+		)
 	};
 
 
@@ -175,5 +211,23 @@ def Elapsed_String(Unix: int | float, Delimiter: str = ", ", Show_Bigger: bool =
 		#print(f"{Key}: {Display}")
 		if (Display):
 			Suffix = Delimiter if ((Power) != Smallest_Unit) else "";
-			Dynamic_String += f"{Trailing_Zero(Time_Dict[Key]) if (Power < Trailing_Until) else Time_Dict[Key]}{Short_Time_Units()[Key] if (Display_Units) else ""}{Suffix}";
+
+			# Tried my best to make this slightly readable, pretty sure I failed.
+			Dynamic_String += \
+f"{
+	(
+		Trailing_Zero(Time_Dict[Key])
+		if (Key not in ["Milliseconds", "Microseconds", "Nanoseconds"])
+		else Trailing_Zero(Time_Dict[Key], 4)
+	)
+	if (Power < Trailing_Until)
+	else Time_Dict[Key]
+}\
+{
+	Short_Time_Units()[Key]
+	if (Display_Units)
+	else ""
+}\
+{Suffix}";
+
 	return Dynamic_String;
