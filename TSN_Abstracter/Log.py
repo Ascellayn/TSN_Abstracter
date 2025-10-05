@@ -1,14 +1,31 @@
+"""
+This module from TSN Abstracter contains various random functions that currently do not deserve their own dedicated TSNA Module.
+
+## Examples
+>>> from TSN_Abstracter import Log;
+>>> def MyFunction() -> None: Log.Info(f"Hello World!");
+>>> MyFunction();
+[2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
+"""
 import TSN_Abstracter.Config as Config;
 import TSN_Abstracter.File as File;
+import TSN_Abstracter.SNDL as SNDL;
+import TSN_Abstracter.String as String;
 import TSN_Abstracter.Time as Time;
-import datetime, inspect, logging, os, re, shutil, sys;
+import datetime, inspect, logging, shutil, sys;
 
-# My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
-Awaited_Logs: dict = {};
-Await_Next: str = "";
+
+
+
 
 def Log_Path() -> str:
-	File.Path_Require(Config.Logger.File_Folder); # Check if the Logs folder doesn't exist, create it if it isn't.
+	""" Get the path to where all the Log Files are located. 
+	
+	Returns:
+		str: A relative path to the Log Files Folder.
+	"""
+	# Check if the Logs folder doesn't exist, create it if it isn't, only if File Logging is enabled.
+	if (Config.Logger.File): File.Path_Require(Config.Logger.File_Folder);
 	return f"{File.Working_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 # Configure Loggers
@@ -16,63 +33,42 @@ Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(log
 Logger_File = logging.getLogger("TSN-File"); Logger_File.addHandler(logging.FileHandler(filename=Log_Path()));
 Handler_LogPath = Log_Path(); # Quite a janky fix for the logger file not properly changing files when it's a new day, see end of Log() for the actual usage of this
 
+
+
+
+
 # Logging Dependencies
-def Get_Caller(Depth: int = 2) -> str:
-	""" Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "<module>".
+def Can_Log(Level: int) -> bool:
+	""" Returns if a Log can be display anywhere according to its importance level and TSNA's Config.
 
 	Arguments:
-		Depth: Integer representing how far we go back to get the function name. By default it is 2.
+		Level (int*): Integer corresponding to how severe the message is.
+
 	Returns:
-		String with the name of the function or module name.
+		bool: Whenever the Log Level and TSNA's Config can allow Logging to either the Console or File.
+	"""
+	if (
+		Config.Logger.Disable
+		or
+		(Level < Config.Logger.Print_Level and Level < Config.Logger.File_Level)
+	): return False;
+	return True;
+
+
+
+def Get_Caller(Depth: int = 2) -> str:
+	""" Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "module".
+
+	Arguments:
+		Depth (int = 2): How far we go back to get the function name.
+
+	Returns:
+		str: The name of the function or module name.
 	"""
 	Function = inspect.getouterframes(inspect.currentframe())[Depth][3];
 	if (Function == "<module>"):
 		Function = __name__;
 	return Function;
-
-def Clear_TextFormatting(Text: str) -> str:
-	""" This function takes in a String and then clears out all the special Text formatting according to the TF/FC/BC objects. Used for making Log files look cleaner. """
-	return re.sub(r"\u001b\[\d*m", "", Text);
-
-def Can_Log(Level: int) -> bool:
-	if (Config.Logger.Disable): return False;
-	if (Level < Config.Logger.Print_Level and Level < Config.Logger.File_Level): return False; # Stop execution if the log isn't gonna display anywhere
-	return True;
-
-
-
-
-
-""" Note: All the ANSI Colors and everything here are purposeful shit because they're compatible with Discord's ANSI ones. (of which they are shit)
-In the future if I have time I will add more colors which would better fit SNDL's Colors. """
-class TF:
-	"""Text Format"""
-	Normal = "\u001b[0m";
-	Bold = "\u001b[1m";
-	Underline = "\u001b[4m";
-	Return_Line = "\x1b[1A\x1b[2K";
-
-class FC:
-	"""Foreground Color"""
-	Red = "\u001b[31m";
-	Yellow = "\u001b[33m";
-	Green = "\u001b[32m";
-	Cyan = "\u001b[36m";
-	Blue = "\u001b[34m";
-	Magenta = "\u001b[35m";
-	Grey = "\u001b[30m";
-	White = "\u001b[37m";
-
-class BC:
-	"""Background Color"""
-	Orange = "\u001b[41m";
-	Indigo = "\u001b[45m";
-	Firefly_Dark_Blue = "\u001b[40m";
-	Marble_Blue = "\u001b[42m";
-	Greyish_Turquoise = "\u001b[43m";
-	Grey = "\u001b[44m";
-	Light_Grey = "\u001b[46m";
-	White = "\u001b[47m";
 
 
 
@@ -80,13 +76,10 @@ class BC:
 
 # Awaited Logging System
 class Awaited_Log:
-	"""
-	Object used to update the "status" of the log specified. Prevents conflicts across threads at the inconvenience of using this object to correctly render logs.  
-	Call the following methods to replace "..." to:  
-	.OK() -> "[OK]"  
-	.ERROR(Error) -> "[ERROR] \n{Error}"  
-	.EXCEPTION(Except) -> "[EXCEPTION] \n{Except}"  
-	Status_Update(Status) -> "{Status}"
+	""" The Awaited Log System permits TSNA Programs to update the status of Log Entries dynamically.  
+	They're used primarily for confirming the end of loading something.  
+
+	Awaited Logs are automatically created when Log Entries end with "...", changing the status of the log will replace said ellipsis with the new status.
 	"""
 	def __init__(self, Level: int, Caller: str, Text: str) -> None:
 		self.Level = Level;
@@ -99,91 +92,183 @@ class Awaited_Log:
 		return f"{self.Level}: {self.Caller}() - {self.Text}";
 
 	def Status_Update(self, Status: str) -> None:
-		"""
-		Replaces the last 3 characters (which are assumed to be "...", done automatically) with {Text}. Used to show progress with statuses such as "[OK]".  
-		This functions handles also making changes to the Log file, although the assumed "..." will NOT be removed.
+		""" Replace the "..." part of the Awaited Log with the status of your choosing.
+
+		Arguments:
+			Status (str*): The custom status to replace the ellipsis with.
+
+		Examples:
+			>>> Log.Info("Cooking Ascellayn...");
+			[2016/05/20 - 17:00:00] - Info: Arellayn → Cooking Ascellayn...
+			>>> Log.Awaited.Status_Update("[COOKED]");
+			[2016/05/20 - 17:00:00] - Info: Arellayn → Cooking Ascellayn [COOKED]
 		"""
 		global Awaited_Logs, Await_Next;
+	
 		if (Can_Log(self.Level)):
+			if (Await_Next == self.Caller): Await_Next = ""; # Reset next await
+
+			# Update Console Log Entry
 			if (self.Level >= Config.Logger.Print_Level):
-				if (Await_Next == self.Caller): Logger_Console.log(self.Level, TF.Return_Line + self.Text + Status);
+				if (Await_Next == self.Caller): Logger_Console.log(self.Level, String.ASCII.Line.Return + self.Text + Status);
 				else: Logger_Console.log(self.Level, self.Text + Status);
+
+			# Update File Log Entry
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
+
+				# Check if we can easily overwrite the last line
 				if (Await_Next == self.Caller):
 					# WARNING: This is slow, should come up with a better solution in the future
 					Lines: list[str] = open(Handler_LogPath, "r").readlines();
-					Lines[-1] = Clear_TextFormatting(self.Text + Status + "\n");
+					Lines[-1] = String.Clear_ASCII_Formatting(self.Text + Status + "\n");
 					open(Handler_LogPath, "w").writelines(Lines);
-				else:
-					Logger_File.log(self.Level, Clear_TextFormatting(self.Text + Status));
 
-		Await_Next = ""; del Awaited_Logs[self.Caller];
+				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
+
+		del Awaited_Logs[self.Caller];
 
 	def OK(self) -> None:
-		""" [OK] Status Update shortcut"""
-		self.Status_Update(f"{FC.Green}[OK]{TF.Normal}");
+		""" >>> Log.Awaited.OK();
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
+		self.Status_Update(f"{SNDL.Log_Color("Green")}[OK]{String.ASCII.Text.Reset}");
 
 	def ERROR(self, Error: str) -> None:
-		""" [ERROR] Status Update shortcut"""
-		self.Status_Update(f"{FC.Red}[ERROR]{TF.Normal}\n{BC.Orange}{FC.White}{Error}{TF.Normal}");
+		""" >>> Log.Awaited.ERROR();
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR] """
+		self.Status_Update(f"{SNDL.Log_Color("Red")}[ERROR]{String.ASCII.Text.Reset}\n{SNDL.Log_Color("Blue", False)}{SNDL.Log_Color("White")}{Error}{String.ASCII.Text.Reset}");
 
 	def EXCEPTION(self, Except: Exception, Raise: bool = False) -> None:
-		""" [EXCEPTION] Status Update shortcut"""
-		self.Status_Update(f"{FC.Blue}[EXCEPTION]{TF.Normal}\n{BC.Indigo}{FC.White}{Except}{TF.Normal}");
+		""" >>> Log.Awaited.EXCEPTION(Except);
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
+		Cannot divide by zero.
+		"""
+		self.Status_Update(f"{SNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{SNDL.Log_Color("Blue", False)}{SNDL.Log_Color("White")}{Except}{String.ASCII.Text.Reset}");
 		if (Raise): raise Except;
 
 
-class Dummy_Awaited_Log:
-	"""Used when shits hits the fan."""
+class Awaited_Dummy(Awaited_Log):
+	""" An Awaited Log that doesn't do anything, to be used when the Caller doesn't correspond to the awaited one. """
 	def __init__(self): return;
-	def __str__(self): return;
+	def __str__(self): return "";
 	def Status_Update(self, Status: str): return;
 	def OK(self): return;
 	def ERROR(self, Error: str): return;
 	def EXCEPTION(self, Except: Exception, Raise: bool = False): return;
 
-def Fetch_ALog(Custom_Caller: str | None = None) -> Awaited_Log | Dummy_Awaited_Log:
-	""" Fetches the Awaited Log if it exists of the function who ran this.  
-	This obviously has its limitations, a singular function cannot have multiple awaited logs at the same time.  
+def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
+	""" Get the latest Awaited Log, you may specify a Custom Caller if you wish to handle the Log of another function.
 	
-	If for some reason the Awaited Log does not exist, a Dummy Awaited Log is returned instead."""
+	Arguments:
+		Custom_Caller (str | None = None): The name of the caller.
+
+	Returns:
+		Awaited_Log/Awaited_Dummy: The corresponding Log Object or a Dummy one if it wasn't found.
+
+	"""
 	Caller: str = Get_Caller() if (not Custom_Caller) else Custom_Caller;
 	if (Caller in Awaited_Logs.keys()):
 		return Awaited_Logs[Caller];
-	return Dummy_Awaited_Log();
+	return Awaited_Dummy();
 
+
+# My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
+Awaited_Logs: dict[str, Awaited_Log] = {};
+Await_Next: str = "";
 
 
 
 
 # Simplified logging functions
-def TSN_Debug(Text: str) -> Awaited_Log:
-	""" TSN_Debug Log, use to debug libraries. """
-	return Log(Text, 10);
+def TSN_Debug(Text: str) -> None:
+	""" Log a debug message for **Libraries** *(Level: 10)*.
 
-def Debug(Text: str) -> Awaited_Log:
-	""" Debug Log, use to debug your own code that uses TSNA. """
-	return Log(Text, 15);
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
 
-def Stateless(Text: str) -> Awaited_Log:
-	""" Stateless Log, only includes the time. """
-	return Log(Text, 20);
+	Examples:
+		>>> def MyFunction() -> None: Log.TSN_Debug(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - TSN_Debug: MyFunction → Hello World!
+	"""
+	Log(Text, 10);
 
-def Info(Text: str) -> Awaited_Log:
-	""" Info Log """
-	return Log(Text, 25);
+def Debug(Text: str) -> None:
+	""" Log a debug message for **TSNA Programs** *(Level: 15)*.
 
-def Warning(Text: str) -> Awaited_Log:
-	""" Warning Log """
-	return Log(Text, 30);
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
 
-def Error(Text: str) -> Awaited_Log:
-	""" Error Log """
-	return Log(Text, 40);
+	Examples:
+		>>> def MyFunction() -> None: Log.Debug(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - Debug: MyFunction → Hello World!
+	"""
+	Log(Text, 15);
 
-def Critical(Text: str) -> Awaited_Log:
-	""" Critical Log """
-	return Log(Text, 50);
+def Stateless(Text: str) -> None:
+	""" Log a message with only the time if it's enabled *(Level: 20)*.
+
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
+
+	Examples:
+		>>> def MyFunction() -> None: Log.Stateless(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - Hello World!
+	"""
+	Log(Text, 20);
+
+def Info(Text: str) -> None:
+	""" Log a standard informal message *(Level: 25)*.
+
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
+
+	Examples:
+		>>> def MyFunction() -> None: Log.Info(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
+	"""
+	Log(Text, 25);
+
+def Warning(Text: str) -> None:
+	""" Log a standard warning message *(Level: 30)*.
+
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
+
+	Examples:
+		>>> def MyFunction() -> None: Log.Warning(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - Warning: MyFunction → Hello World!
+	"""
+	Log(Text, 30);
+
+def Error(Text: str) -> None:
+	""" Log a standard error message *(Level: 40)*.
+
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
+
+	Examples:
+		>>> def MyFunction() -> None: Log.Error(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - Error: MyFunction → Hello World!
+	"""
+	Log(Text, 40);
+
+def Critical(Text: str) -> None:
+	""" Log a standard critical message *(Level: 50)*.
+
+	Arguments:
+		Text (str*): The string to be displayed in the Log.
+
+	Examples:
+		>>> def MyFunction() -> None: Log.Critical(f"Hello World!");
+		>>> MyFunction();
+		[2007/04/23 - 17:00:00] - Critical: MyFunction → Hello World!
+	"""
+	Log(Text, 50);
 
 
 
@@ -191,25 +276,32 @@ def Critical(Text: str) -> Awaited_Log:
 
 # The actual logging function
 def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
-	""" Logs a specified message manually. Writes the log to a file and displays it to the console.  
-	DO NOT USE THIS FUNCTION DIRECTLY, USE THE FUNCTIONS SUCH AS Log.Info()!  
+	""" Log a message depending on its Level, logging the Caller and Time if it was enabled or is possible into the Python Console or a File according to the TSNA Config.
+	#### **DO NOT USE THIS FUNCTION DIRECTLY, USE THE FUNCTIONS SUCH AS Log.Info()!**  
 
 	Arguments:
-		Text: String corresponding to the message to Log
-		Level: Integer corresponding to how severe the message is.
+		Text (str*): String corresponding to the message to Log.
+		Level (int = 0): Integer corresponding to how severe the message is.
+		Caller (str = ""): Enforce the displayed function that called the Logger, if left empty, automatically figure out who called the Logger.
+	
+	Examples:
+		>>> Log.Log("Hug a Mika a day, keeps your sanity away~", 30, "Ascellayn");
+		[2007/04/23 - 17:00:00] - Warning: Ascellayn → Hug a Mika a day, keeps your sanity away~
 	"""
-	if (not Can_Log(Level)): return;
 	global Awaited_Logs, Await_Next, Handler_LogPath, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
+	if (not Can_Log(Level)): return;
+
+
 
 	match Level:
-		case 50: Level_Color = FC.Magenta; Level_String = "Critical";
-		case 40: Level_Color = FC.Red; Level_String = "Error";
-		case 30: Level_Color = FC.Yellow; Level_String = "Warning";
-		case 25: Level_Color = FC.Blue; Level_String = "Info";
-		case 20: Level_Color = FC.White; Level_String = "Stateless";
-		case 15: Level_Color = FC.Cyan; Level_String = "Debug";
-		case 10: Level_Color = FC.Grey; Level_String = "TSN_Debug";
-		case _: Level_Color = FC.White; Level_String = "Unknown";
+		case 50: Level_Color = SNDL.Log_Color("Purple"); Level_String = String.ASCII.Text.Blink + "Critical" + String.ASCII.Text.Blink_OFF;
+		case 40: Level_Color = SNDL.Log_Color("Red"); Level_String = String.ASCII.Text.Blink + "Error" + String.ASCII.Text.Blink_OFF;
+		case 30: Level_Color = SNDL.Log_Color("Yellow"); Level_String = "Warning";
+		case 25: Level_Color = SNDL.Log_Color("Blue"); Level_String = "Info";
+		case 20: Level_Color = SNDL.Log_Color("White"); Level_String = "Stateless";
+		case 15: Level_Color = SNDL.Log_Color("Cyan"); Level_String = "Debug";
+		case 10: Level_Color = SNDL.Log_Color("Green"); Level_String = "TSN_Debug";
+		case _: Level_Color = SNDL.Log_Color("White"); Level_String = "Unknown";
 	Logger_Console.setLevel(Level); Logger_File.setLevel(Level);
 
 	# Get function name that called the logger
@@ -219,21 +311,32 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	if (len(Text) >= 3): # Avoids Exception if Text is too short
 		if ("..." == Text[-3:]): Await_Next = Caller;
 
-	# The actual logging part.
+
+
+	# Log Message Formatting
 	Date_Str, Time_Str = Time.Get_DateStrings(Time.Get_Unix());
 	Logged_Text: str = ""; # Prefix if previous log was Awaited
-	if (Config.Logger.Display_Date): Logged_Text += f"{FC.Grey}[{Date_Str} - {Time_Str}]{TF.Normal} - "; # Date
-	if (Level != 20): # Stateless Check
-		Logged_Text += f"{TF.Bold}{Level_Color}{Level_String}{TF.Normal}: "; # Log Level
-		if (Config.Logger.Display_Caller): Logged_Text += f"{TF.Underline}{FC.Grey}{Caller}{TF.Normal} → ";
-	Logged_Text += Text;
 
-	if (Level >= Config.Logger.Print_Level): # If this is a debug message, don't display to the console.
-		Logger_Console.log(Level, Logged_Text);
+	if (Config.Logger.Display_Date): Logged_Text += f"{SNDL.Log_Color("Black")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
+
+	if (Level != 20): # Check for Stateless before adding Caller
+		Logged_Text += f"{String.ASCII.Text.Bold}{Level_Color}{Level_String}{String.ASCII.Text.Reset}: "; # Log Level
+		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{SNDL.Log_Color("Black")}{Caller}{String.ASCII.Text.Reset} → ";
+
+	Logged_Text += Text; # Finally add the actual message we want to Log.
+
+
+
+	# Verify for both the Console and File if the Level is high enough before logging.
+	if (Level >= Config.Logger.Print_Level): Logger_Console.log(Level, Logged_Text);
+
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
-		if (Handler_LogPath != Log_Path()):
-			Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
-		Logger_File.log(Level, Clear_TextFormatting(Logged_Text));
+		# Bug Fix: Handle when the date changes
+		if (Handler_LogPath != Log_Path()): Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
+
+		Logger_File.log(Level, String.Clear_ASCII_Formatting(Logged_Text));
+
+
 
 	if (Await_Next): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
 
@@ -243,23 +346,37 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 # Miscellaneous Logging
 def Carriage(Text: str) -> None:
+	""" Print a message that can be overwritten thanks to carriage returns.
+
+	Arguments:
+		Text (str*): The message you wish to display and be able to overwrite using the same function.
+
+	Examples:
+		>>> for i in range(10): Log.Carriage(i);
+		# Every number would be displayed, but obviously they would get overwritten every time this function is run.
 	"""
-	Prints using "\r" while also completely clearing the line to be sure there won't be artifacts from the previous text.
-	"""
-	global Last_Awaited;
-	Last_Awaited = False;
+	global Last_Awaited; Last_Awaited = False;
+
 	print(" "*shutil.get_terminal_size()[0], end="\r");
 	print(Text, end="\r");
 
 def Clear() -> None:
-	"""
-	Simply empties the entire console's text.
+	""" Clear the console's text without needing to call OS specific commands.
+
+	### Examples
+	>>> Log.Clear();
+	# The console would then be effectively cleared.
 	"""
 	print(f"\033[2J");
 
 def Delete() -> None:
-	"""
-	COMPLETELY Empties the latest Log File.
+	""" COMPLETELY empties the latest Log File. To be used only during the development & debugging process!
+
+	### Examples
+	>>> Log.Delete();
+	# [Console gets cleared]
+	[2007/04/23 - 17:00:00] - CRITICAL: TSN_Abstracter.Log() → === DELETING THE LOG FILE! ===
+	# [Latest Log File emptied]
 	"""
 	Clear();
 	Critical("=== DELETING THE LOG FILE! ===");
