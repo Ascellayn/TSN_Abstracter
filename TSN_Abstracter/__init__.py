@@ -18,13 +18,14 @@ It in theory could work to just import exactly what you need, but this hasn't be
 	- TSNA Dependencies:  
 		- Config
 		- File
+		- SNDL
+		- String
 		- Time
 
 	- Python Dependencies:  
 		- datetime
 		- inspect
 		- logging
-		- re
 		- shutil
 		- sys
 - File  
@@ -42,6 +43,8 @@ It in theory could work to just import exactly what you need, but this hasn't be
 		- threading
 - Safe  
 - SNDL  
+	- TSNA Dependencies:  
+		- Config
 - String
 - Time
 	- Python Depedencies:  
@@ -82,7 +85,7 @@ __all__ = [
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (3,4,0);
+	Version_Tuple: tuple[int, int, int] = (4,0,0);
 	
 	class Bad_Version(Exception):
 		def __init__(self, Message: str, Quit_Program: bool):
