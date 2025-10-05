@@ -5,6 +5,11 @@ Example:
 	>>> String.Split_Length("The quick brown fox jumps over the lazy dog.", 16);
 	['The quick brown ', 'fox jumps over ', 'the lazy dog.']
 """
+import re;
+
+
+
+
 
 def Split_Length(Text: str, Max_Length: int) -> list[str]:
 	""" Splits a string after a new line (unless there are no line breaks, in that case it will stop after a space, otherwise raw cuts through words if neither lines breaks nor spaces are present) into an array according to Max_Length.
@@ -40,6 +45,20 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 
 	return String_List;
 
+
+
+
+
+def Clear_ASCII_Formatting(Text: str) -> str:
+	""" This function takes in a String and then clears out all the ASCII Formatting according to the TF/FC/BC objects. Used for making Log files look cleaner.
+
+	Arguments:
+		Text (str*): A "dirty" Log String that was supposed to be destined for printing on the Console.
+
+	Returns:
+		str: A "clean" Log String devoid of special ASCII Formatting text.
+	"""
+	return re.sub(r"\u001b\[\d*m", "", Text);
 
 
 
