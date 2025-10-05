@@ -62,7 +62,7 @@ def Process_Start(Function: callable, Arguments: list[object] = [], Daemon: bool
 
 # Integer related stuff
 def NotNull(Number: int, Default: int = 1) -> int:
-	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to..
+	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
 
 	Arguments:
 		Number (int*): Which number we want to check if it's potentially null.
@@ -79,3 +79,20 @@ def NotNull(Number: int, Default: int = 1) -> int:
 	"""
 	if (Number == 0): return Default;
 	return Number;
+
+def is_Even(Number: int) -> bool:
+	""" Checks if `Number` is even.
+
+	Arguments:
+		Number (int*): Which number we want to check if it's even.
+
+	Returns:
+		bool: True if it is, False otherwise.
+
+	Examples:
+		>>> Misc.is_Even(1);
+		False
+		>>> Misc.is_Even(1);
+		True
+	"""
+	return ((Number % 2) == 0);
