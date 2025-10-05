@@ -3,9 +3,10 @@ This module from TSN Abstracter is in charge of providing functions related to m
 It also contains the entire suite of SNDL Colors.
 ##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
 
-Example:
-	>>> from TSN_Abstracter import SNDL;
-	Time.Get_Unix();
+### Examples
+>>> from TSN_Abstracter import SNDL;
+>>> SNDL.Color.Sun.Pink
+(255, 150, 255)
 """
 from TSN_Abstracter import Misc;
 
