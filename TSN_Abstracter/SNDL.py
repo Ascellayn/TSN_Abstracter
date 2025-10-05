@@ -94,7 +94,7 @@ def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
 	return f"\033[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
 
 
-def Log_Color(Color: str, Foreground: bool = True) -> str:
+def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
 	""" Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.SNDL_Group` variable of the TSNA Config.
 
 	Arguments:
@@ -111,7 +111,7 @@ def Log_Color(Color: str, Foreground: bool = True) -> str:
 	return ASCII_Color(
 		getattr(
 			getattr(Color, Config.Logger.SNDL_Group),
-			Color
+			Color_Name
 		), Foreground
 	);
 
