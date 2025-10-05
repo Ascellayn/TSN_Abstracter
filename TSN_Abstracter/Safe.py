@@ -1,5 +1,4 @@
-"""
-This module from TSN Abstracter is in charge of providing ways to access elements without causing exceptions.
+""" This module from TSN Abstracter is in charge of providing ways to access elements without causing exceptions.
 
 ## Examples
 >>> from TSN_Abstracter import Safe;
@@ -15,8 +14,7 @@ None
 
 
 def Index(Array: list[object], Index: int) -> object: # Isn't there a Python function to already do this?
-	"""
-	Attempts to safely try to read an array's specified index.
+	""" Attempts to safely try to read an array's specified index.
 
 	Arguments:
 		Array (list[object]*): The List that we want to check a specific index.
