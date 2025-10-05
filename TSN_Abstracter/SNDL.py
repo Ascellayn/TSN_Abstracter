@@ -1,36 +1,60 @@
-def Hex_Tuple(Hex: str) -> tuple[int]:
+"""
+This module from TSN Abstracter is in charge of providing functions related to manipulating colors.  
+It also contains the entire suite of SNDL Colors.
+##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
+
+Example:
+	>>> from TSN_Abstracter import SNDL;
+	Time.Get_Unix();
+"""
+from TSN_Abstracter import Misc;
+
+
+
+
+
+def Hex_Tuple(Hex: str) -> tuple[int, int, int, int]:
 	"""
 	Transform a Hex Code representing colors into a Tuple containing RGB(A) colors. 
 
 	Arguments:
-		Hex: The string representing the Hex Code, such as "#FF96FF".
+		Hex (str*): The string representing the Hex Code. The hashtag at the start is not required.
+
 	Returns:
-		A Tuple containing integers such as "(255, 150, 255)".
+		tuple[int, int, int, int]: Each element is an integer from a range of 0 to 255.
 	"""
 	# Gets rid of the first character if it's an "#"
 	if (Hex[:1] == "#"): Hex = Hex[:1];
 
-	if (len(Hex) > 8): raise Exception("Invalid Hex Code Length (Too long!)");
-	elif (len(Hex) < 6): raise Exception("Invalid Hex Code Length (Too short!)");
-
+	if (len(Hex) > 8): raise ValueError("Invalid Hex Code Length (Too long!)");
+	elif (len(Hex) < 6): raise ValueError("Invalid Hex Code Length (Too short!)");
+	elif (not Misc.is_Even(len(Hex))): raise ValueError("Invalid Hex Code Length (Incorrect Length!)");
+	
 	Hex_List: list[int] = [];
-	Hex_List.append(16*Hex_To_Decimal(Hex[:1]) + Hex_To_Decimal[1:2]);
-	Hex_List.append(16*Hex_To_Decimal(Hex[2:3]) + Hex_To_Decimal[3:4]);
-	Hex_List.append(16*Hex_To_Decimal(Hex[4:5]) + Hex_To_Decimal[4:6]);
+	Hex_List.append(16 * Hex_To_Decimal(Hex[:1]) + Hex_To_Decimal(Hex[1:2]));						# R
+	Hex_List.append(16 * Hex_To_Decimal(Hex[2:3]) + Hex_To_Decimal(Hex[3:4]));						# G
+	Hex_List.append(16 * Hex_To_Decimal(Hex[4:5]) + Hex_To_Decimal(Hex[4:6])); 						# B
+	if (len(Hex) == 8): Hex_List.append(16 * Hex_To_Decimal(Hex[5:6]) + Hex_To_Decimal(Hex[5:7]));	# A
 
-	if (len(Hex) == 8):
-		Hex_List.append(16*Hex_To_Decimal(Hex[5:6]) + Hex_To_Decimal[5:7]);
-
-	return tuple(Hex_List);
+	return tuple(Hex_List); # type: ignore | SHUSH. Otherwise this function would look retarded. I could just return a list but eh.
 
 def Hex_To_Decimal(Hex: str) -> int:
 	"""
-	Transform a SINGULAR Hex Character into Base 10 alias Decimal.
+	Transform a SINGULAR Hex Character into Base 10 alias Decimal.  
+	*All further characters are IGNORED!*
 
 	Arguments:
-		Hex: The character representing the Hex Code, such as "F".
+		Hex (str*): The character representing a number in base 16.
+
 	Returns:
-		An integer such as "15".
+		int: The corresponding base 10 number.
+
+	Raises:
+		ValueError: If the provided Hex Character is not one.
+
+	Examples:
+		>>> Hex_To_Decimal("F");
+		15
 	"""
 	match Hex[1:].upper():
 		case "F": return 15;
@@ -39,99 +63,198 @@ def Hex_To_Decimal(Hex: str) -> int:
 		case "C": return 12;
 		case "B": return 11;
 		case "A": return 10;
-		case _: return int(Hex[1:])
+		case _:
+			if (Hex[1:] in ["1234567890"]): return int(Hex[1:]);
+			else: raise ValueError("Invalid Hex Character!");
 
-""" SNDL Colors v3.1 """
-# Sirio Network Design Language (c) The Sirio Network 2023-2025 // All Rights Reserved
+
+
+
 
 class Color:
-	"""SNDL-Colors Class, each color is stored as a RGB Tuple within the color type class (ie: Abyss) then followed by the name of the color (ie: Black)  
-	The provided colors have the internal SNDL names:
-	- Black → Arellayn
-	- White → Ascellyan
-	- Red → Wakamo
-	- Orange → Maple
-	- Yellow → Seia
-	- Green → Otogi
-	- Cyan → Glacier
-	- Blue → Marine
-	- Purple → Nebula
-	- Pink → Mika"""
+	""" Classes containing SNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
+	Optionally, the Hex Code is available by appending `_Hex` to the color.  
+	##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
+
+	### Examples
+	>>> SNDL.Color.Sun.Pink
+	(255, 150, 255)
+	>>> SNDL.Color.Sun.White_Hex
+	"#FFFAFF"
+
+	### Color Groups:
+	| Color Type    | Light Mode | Dark Mode |
+	|:--------------|:----------:|:---------:|
+	| **Primary**   | Sun        | Moon      |
+	| **Secondary** | Day        | Night     |
+	| **Tertiary**  | Sky        | Abyss     |
+
+	### Internal SNDL Color Schemes (Migration Reference):
+	| SNDL Version | Black    | White     | Red       | Orange    | Yellow    | Green     | Cyan      | Blue      | Purple    | Pink      |
+	|:-------------|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+	| **v3.1+**    | Arellayn | Ascellayn | Wakamo    | Maple     | Seia      | Otogi     | Glacier   | Marine    | Nebula    | Mika      |
+	| **v3.0+**    | Bismuth  | Ascellyan | Wakamo    | Holtow    | Serina    | Otogi     | Horizon   | Ocean     | Astro     | Mika      |
+
+	### SNDL Color Groups History (Migration Reference):
+	| SNDL v3.1          | Sun           | Day       | Sky       | Moon      | Night     | Abyss     |
+	|:-------------------|:-------------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+	| **v3.1 DEV**       | Flash         | Bright    | undefined | Night     | Abyss     | Void      |
+	| **v3.0+ (Colors)** | Flash         | Bright    | undefined | Night     | Abyss     | Void      |
+	| **v3.0+ (White)**  | White         | Accent    | undefined | undefined | Dark      | Darker    |
+	| **v3.0+ (Black)**  | Sirio Network | Ascellyan | undefined | undefined | Arellyan  | Bismuth   |
+	| **v3.0+ (Black)**  | Sirio Network | Ascellyan | undefined | undefined | Arellyan  | Bismuth   |
+	| **v2.0+***         | Feather       | Light     | [Nothing] | Solid     | undefined | undefined |
+
+	*: SNDL v2.0's Colors behaved SIGNIFICANTLY differently from 3.0 and onwards, while newer versions actually change the colors, SNDL v2.0 only relied on opacity to emulate lighter colors.
+	"""
+
+
+
 	class Abyss:
 		"""Dark-Mode: Tertiary Color"""
-		Black = (20, 0, 20);		#140014
-		White = (225, 190, 225);	#E1BEE1
-		Red = (105, 0, 0);			#690000
-		Orange = (105, 5, 0);		#690500
-		Yellow = (135, 135, 0);		#878700
-		Green = (0, 135, 30);		#00871E
-		Cyan = (0, 130, 135);		#008287
-		Blue = (10, 0, 75);			#0A004B
-		Purple = (50, 0, 75);		#32004B
-		Pink = (105, 0, 105);		#690069
+		Black: tuple[int, int, int] = (20, 0, 20);
+		White: tuple[int, int, int] = (225, 190, 225);
+		Red: tuple[int, int, int] = (105, 0, 0);
+		Orange: tuple[int, int, int] = (105, 5, 0);
+		Yellow: tuple[int, int, int] = (135, 135, 0);
+		Green: tuple[int, int, int] = (0, 135, 30);
+		Cyan: tuple[int, int, int] = (0, 130, 135);
+		Blue: tuple[int, int, int] = (10, 0, 75);
+		Purple: tuple[int, int, int] = (50, 0, 75);
+		Pink: tuple[int, int, int] = (105, 0, 105);
+
+		Black_Hex: str = "#140014";
+		White_Hex: str = "#E1BEE1";
+		Red_Hex: str = "#690000";
+		Orange_Hex: str = "#690500";
+		Yellow_Hex: str = "#878700";
+		Green_Hex: str = "#00871E";
+		Cyan_Hex: str = "#008287";
+		Blue_Hex: str = "#0A004B";
+		Purple_Hex: str = "#32004B";
+		Pink_Hex: str = "#690069";
+
 
 	class Night:
 		"""Dark-Mode: Secondary Color"""
-		Black = (30, 10, 30);		#1E0A1E
-		White = (230, 200, 230);	#E6C8E6
-		Red = (130, 5, 5);			#820505
-		Orange = (130, 30, 5);		#821E05
-		Yellow = (155, 155, 5);		#9B9B05
-		Green = (14, 155, 40);		#0E9B28
-		Cyan = (10, 140, 155);		#0A8C9B
-		Blue = (15, 0, 105);		#0F0069
-		Purple = (75, 5, 105);		#4B0569
-		Pink = (130, 25, 130);		#821982
+		Black: tuple[int, int, int] = (30, 10, 30);
+		White: tuple[int, int, int] = (230, 200, 230);
+		Red: tuple[int, int, int] = (130, 5, 5);
+		Orange: tuple[int, int, int] = (130, 30, 5);
+		Yellow: tuple[int, int, int] = (155, 155, 5);
+		Green: tuple[int, int, int] = (14, 155, 40);
+		Cyan: tuple[int, int, int] = (10, 140, 155);
+		Blue: tuple[int, int, int] = (15, 0, 105);
+		Purple: tuple[int, int, int] = (75, 5, 105);
+		Pink: tuple[int, int, int] = (130, 25, 130);
+
+		Black_Hex: str = "#1E0A1E";
+		White_Hex: str = "#E6C8E6";
+		Red_Hex: str = "#820505";
+		Orange_Hex: str = "#821E05";
+		Yellow_Hex: str = "#9B9B05";
+		Green_Hex: str = "#0E9B28";
+		Cyan_Hex: str = "#0A8C9B";
+		Blue_Hex: str = "#0F0069";
+		Purple_Hex: str = "#4B0569";
+		Pink_Hex: str = "#821982";
+
 
 	class Moon:
 		"""Dark-Mode: Primary Color"""
-		Black = (40, 15, 40);		#280F28
-		White = (235, 210, 235);	#EBD2EB
-		Red = (155, 10, 10);		#9B0A0A
-		Orange = (155, 55, 10);		#9B370A
-		Yellow = (175, 175, 10);	#AFAF0A
-		Green = (28, 175, 50);		#1CAF32
-		Cyan = (28, 150, 175);		#1C96AF
-		Blue = (20, 0, 135);		#140087
-		Purple = (95, 10, 135);		#5F0A87
-		Pink = (155, 50, 155);		#9B329B
+		Black: tuple[int, int, int] = (40, 15, 40);
+		White: tuple[int, int, int] = (235, 210, 235);
+		Red: tuple[int, int, int] = (155, 10, 10);
+		Orange: tuple[int, int, int] = (155, 55, 10);
+		Yellow: tuple[int, int, int] = (175, 175, 10);
+		Green: tuple[int, int, int] = (28, 175, 50);
+		Cyan: tuple[int, int, int] = (28, 150, 175);
+		Blue: tuple[int, int, int] = (20, 0, 135);
+		Purple: tuple[int, int, int] = (95, 10, 135);
+		Pink: tuple[int, int, int] = (155, 50, 155);
+
+		Black_Hex: str = "#280F28";
+		White_Hex: str = "#EBD2EB";
+		Red_Hex: str = "#9B0A0A";
+		Orange_Hex: str = "#9B370A";
+		Yellow_Hex: str = "#AFAF0A";
+		Green_Hex: str = "#1CAF32";
+		Cyan_Hex: str = "#1C96AF";
+		Blue_Hex: str = "#140087";
+		Purple_Hex: str = "#5F0A87";
+		Pink_Hex: str = "#9B329B";
+
 
 	class Sky:
 		"""Light-Mode: Tertiary Color"""
-		Black = (60, 25, 60);		#3C193C
-		White = (245, 230, 245);	#F5E6F5
-		Red = (205, 20, 20);		#CD1414
-		Orange = (205, 105, 20);	#CD6914
-		Yellow = (215, 215, 20);	#D7D714
-		Green = (56, 215, 70);		#38D746
-		Cyan = (40, 170, 205);		#28AACD
-		Blue = (30, 0, 195);		#1E00C3
-		Purple = (135, 20, 195);	#8714C3
-		Pink = (205, 100, 205);		#CD64CD
+		Black: tuple[int, int, int] = (60, 25, 60);
+		White: tuple[int, int, int] = (245, 230, 245);
+		Red: tuple[int, int, int] = (205, 20, 20);
+		Orange: tuple[int, int, int] = (205, 105, 20);
+		Yellow: tuple[int, int, int] = (215, 215, 20);
+		Green: tuple[int, int, int] = (56, 215, 70);
+		Cyan: tuple[int, int, int] = (40, 170, 205);
+		Blue: tuple[int, int, int] = (30, 0, 195);
+		Purple: tuple[int, int, int] = (135, 20, 195);
+		Pink: tuple[int, int, int] = (205, 100, 205);
+
+		Black_Hex: str = "#3C193C";
+		White_Hex: str = "#F5E6F5";
+		Red_Hex: str = "#CD1414";
+		Orange_Hex: str = "#CD6914";
+		Yellow_Hex: str = "#D7D714";
+		Green_Hex: str = "#38D746";
+		Cyan_Hex: str = "#28AACD";
+		Blue_Hex: str = "#1E00C3";
+		Purple_Hex: str = "#8714C3";
+		Pink_Hex: str = "#CD64CD";
+
 
 	class Day:
 		"""Light-Mode: Secondary Color"""
-		Black = (70, 30, 70);		#461E46
-		White = (250, 240, 250);	#FAF0FA
-		Red = (230, 25, 25);		#E61919
-		Orange = (230, 130, 25);	#E68219
-		Yellow = (235, 235, 25);	#EBEB19
-		Green = (70, 240, 80);		#46F050
-		Cyan = (50, 180, 230);		#32B4E6
-		Blue = (35, 0, 225);		#2300E1
-		Purple = (155, 25, 225);	#9B19E1
-		Pink = (230, 125, 230);		#E67DE6
+		Black: tuple[int, int, int] = (70, 30, 70);
+		White: tuple[int, int, int] = (250, 240, 250);
+		Red: tuple[int, int, int] = (230, 25, 25);
+		Orange: tuple[int, int, int] = (230, 130, 25);
+		Yellow: tuple[int, int, int] = (235, 235, 25);
+		Green: tuple[int, int, int] = (70, 240, 80);
+		Cyan: tuple[int, int, int] = (50, 180, 230);
+		Blue: tuple[int, int, int] = (35, 0, 225);
+		Purple: tuple[int, int, int] = (155, 25, 225);
+		Pink: tuple[int, int, int] = (230, 125, 230);
+
+		Black_Hex: str = "#461E46";
+		White_Hex: str = "#FAF0FA";
+		Red_Hex: str = "#E61919";
+		Orange_Hex: str = "#E68219";
+		Yellow_Hex: str = "#EBEB19";
+		Green_Hex: str = "#46F050";
+		Cyan_Hex: str = "#32B4E6";
+		Blue_Hex: str = "#2300E1";
+		Purple_Hex: str = "#9B19E1";
+		Pink_Hex: str = "#E67DE6";
 
 
 	class Sun:
 		"""Light-Mode: Primary Color"""
-		Black = (80, 35, 80);		#502350
-		White = (255, 250, 255);	#FFFAFF
-		Red = (255, 30, 30);		#FF1E1E
-		Orange = (255, 155, 30);	#FF9B1E
-		Yellow = (255, 255, 30);	#FFFF1E
-		Green = (84, 255, 90);		#54FF5A
-		Cyan = (60, 190, 255);		#3CBEFF
-		Blue = (40, 0, 255);		#2800FF
-		Purple = (175, 30, 255);	#AF1EFF
-		Pink = (255, 150, 255);		#FF96FF
+		Black: tuple[int, int, int] = (80, 35, 80);
+		White: tuple[int, int, int] = (255, 250, 255);
+		Red: tuple[int, int, int] = (255, 30, 30);
+		Orange: tuple[int, int, int] = (255, 155, 30);
+		Yellow: tuple[int, int, int] = (255, 255, 30);
+		Green: tuple[int, int, int] = (84, 255, 90);
+		Cyan: tuple[int, int, int] = (60, 190, 255);
+		Blue: tuple[int, int, int] = (40, 0, 255);
+		Purple: tuple[int, int, int] = (175, 30, 255);
+		Pink: tuple[int, int, int] = (255, 150, 255);
+
+		Black_Hex: str = "#502350";
+		White_Hex: str = "#FFFAFF";
+		Red_Hex: str = "#FF1E1E";
+		Orange_Hex: str = "#FF9B1E";
+		Yellow_Hex: str = "#FFFF1E";
+		Green_Hex: str = "#54FF5A";
+		Cyan_Hex: str = "#3CBEFF";
+		Blue_Hex: str = "#2800FF";
+		Purple_Hex: str = "#AF1EFF";
+		Pink_Hex: str = "#FF96FF";
