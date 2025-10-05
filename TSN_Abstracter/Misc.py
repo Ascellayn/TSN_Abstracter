@@ -10,6 +10,10 @@ This module from TSN Abstracter contains various random functions that currently
 """
 import multiprocessing, threading;
 
+
+
+
+
 def Void() -> None:
 	""" Does absolutely nothing. Frequently used when you want to ignore Exceptions.
 

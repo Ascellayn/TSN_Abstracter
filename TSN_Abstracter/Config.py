@@ -5,6 +5,10 @@ This module from TSN Abstracter is in charge of configuring its behavior.
 **Logger**: Class used to configure settings related to the TSNA Logger.  
 """
 
+
+
+
+
 class Logger:
 	"""
 	Class used to configure settings related to the TSNA Logger.  
