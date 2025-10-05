@@ -8,6 +8,7 @@ It also contains the entire suite of SNDL Colors.
 >>> SNDL.Color.Sun.Pink
 (255, 150, 255)
 """
+from TSN_Abstracter import Config;
 from TSN_Abstracter import Misc;
 
 
@@ -91,6 +92,29 @@ def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
 		"\033[38;2;255;250;255m"
 	"""
 	return f"\033[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
+
+
+def Log_Color(Color: str, Foreground: bool = True) -> str:
+	""" Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.SNDL_Group` variable of the TSNA Config.
+
+	Arguments:
+		Color (str*): The name of the color.
+		Foreground (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
+
+	Returns:
+		str: The ASCII Color escape sequence string depending on the TSNA Config.
+
+	Examples:
+		>>> SNDL.Log_Color("White");
+		"\033[38;2;255;250;255m"
+	"""
+	return ASCII_Color(
+		getattr(
+			getattr(Color, Config.Logger.SNDL_Group),
+			Color
+		), Foreground
+	);
+
 
 
 
