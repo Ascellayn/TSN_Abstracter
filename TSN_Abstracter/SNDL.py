@@ -14,15 +14,20 @@ from TSN_Abstracter import Misc;
 
 
 
-def Hex_Tuple(Hex: str) -> tuple[int, int, int, int]:
-	"""
-	Transform a Hex Code representing colors into a Tuple containing RGB(A) colors. 
+def Hex_Tuple(Hex: str) -> tuple[int, int, int, int] | tuple[int, int, int]:
+	""" Transform a Hex Code representing colors into a Tuple containing RGB(A) colors.
 
 	Arguments:
 		Hex (str*): The string representing the Hex Code. The hashtag at the start is not required.
 
 	Returns:
-		tuple[int, int, int, int]: Each element is an integer from a range of 0 to 255.
+		tuple (of either 3 or 4 integers): Each element is an integer from a range of 0 to 255, representing in order an RGB(A) Color.
+
+	Examples:
+		>>> SNDL.Hex_Tuple("#50235080");
+		(80, 35, 80, 128)
+		>>> SNDL.Hex_Tuple("#502350");
+		(80, 35, 80)
 	"""
 	# Gets rid of the first character if it's an "#"
 	if (Hex[:1] == "#"): Hex = Hex[:1];
@@ -39,9 +44,9 @@ def Hex_Tuple(Hex: str) -> tuple[int, int, int, int]:
 
 	return tuple(Hex_List); # type: ignore | SHUSH. Otherwise this function would look retarded. I could just return a list but eh.
 
+
 def Hex_To_Decimal(Hex: str) -> int:
-	"""
-	Transform a SINGULAR Hex Character into Base 10 alias Decimal.  
+	""" Transform a SINGULAR Hex Character into Base 10 alias Decimal.  
 	*All further characters are IGNORED!*
 
 	Arguments:
@@ -54,7 +59,7 @@ def Hex_To_Decimal(Hex: str) -> int:
 		ValueError: If the provided Hex Character is not one.
 
 	Examples:
-		>>> Hex_To_Decimal("F");
+		>>> SNDL.Hex_To_Decimal("F");
 		15
 	"""
 	match Hex[1:].upper():
@@ -70,11 +75,29 @@ def Hex_To_Decimal(Hex: str) -> int:
 
 
 
+def ASCII_Color(SNC: tuple[int, int, int]) -> str:
+	""" Transforms an SNC Tuple into an ASCII Color escape sequence string.
+
+	Arguments:
+		SNC (tuple[int, int, int]*): A tuple containing 3 integers of a range of 0 to 255 representing a 8bit RGB value.
+
+	Returns:
+		str: The ASCII Color escape sequence string.
+
+	Examples:
+		>>> SNDL.ASCII_Color(SNDL.Color.Sun.White);
+		# SNDL.Color.Sun.White = (255, 250, 255)
+		"\033[38;2;255;250;255m"
+	"""
+	return f"\033[38;2;{SNC[0]};{SNC[1]};{SNC[2]}m"
+
+
 
 
 class Color:
 	""" Classes containing SNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
 	Optionally, the Hex Code is available by appending `_Hex` to the color.  
+	*These colors may be referred as The "Sirio Network Colors" (SNC).*
 	##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
 
 	### Examples
