@@ -20,6 +20,8 @@ class Logger:
 	Toggle displaying the date at the beginning of Log Entries.  
 	**Display_Caller** : *bool = True*  
 	Toggle displaying function that called TSNA to Log a brand new Entry.  
+	**SNDL_Group** : *str = "Sun"*  
+	Which SNDL Color Group to use for the Logs' Colors.  
 
 	### File Logger:
 	**File** : *bool = False*  
@@ -36,6 +38,8 @@ class Logger:
 	Disable: bool = False;
 	Display_Date: bool = True;
 	Display_Caller: bool = True;
+
+	SNDL_Group: str = "Sun"
 
 	File: bool = False;
 	File_Level: int = 20;
