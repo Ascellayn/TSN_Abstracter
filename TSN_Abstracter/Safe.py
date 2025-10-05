@@ -10,6 +10,10 @@ This module from TSN Abstracter is in charge of providing ways to access element
 None
 """
 
+
+
+
+
 def Index(Array: list[object], Index: int) -> object: # Isn't there a Python function to already do this?
 	"""
 	Attempts to safely try to read an array's specified index.
