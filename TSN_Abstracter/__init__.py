@@ -4,7 +4,7 @@
 It was created during Kosaka's v2.X Versions and as its "Dependencies.py" file kept being ported over to other Python projects, TSNA was created to avoid sloppily copy pasting reused code and simplify the process of writing code.  
 You are entirely on your own for figuring out what TSNA does and what functions would be useful in your use case. TSNA was purposefully built to build programs for TSN, as such no feature requests will be accepted, unless they're contributing to the function of a TSN Service.  
 
-#### NOTICE: TSNA is only expected to be imported using `from TSN_Abstracter import *;`
+#### NOTICE: TSNA is only expected to be imported using `from TSN_Abstracter as Config;`
 It in theory could work to just import exactly what you need, but this hasn't been tested extensively.
 
 ### Available Modules:
@@ -55,7 +55,14 @@ It in theory could work to just import exactly what you need, but this hasn't be
 
 
 
-from TSN_Abstracter import Config, File, Log, Misc, Safe, SNDL, String, Time;
+import TSN_Abstracter.Config as Config;
+import TSN_Abstracter.Log as Log;
+import TSN_Abstracter.File as File;
+import TSN_Abstracter.Misc as Misc;
+import TSN_Abstracter.Safe as Safe;
+import TSN_Abstracter.SNDL as SNDL;
+import TSN_Abstracter.String as String;
+import TSN_Abstracter.Time as Time;
 __all__ = [
 	"Config",
 	"File",
