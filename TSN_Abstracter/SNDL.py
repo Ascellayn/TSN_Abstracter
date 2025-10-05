@@ -75,11 +75,12 @@ def Hex_To_Decimal(Hex: str) -> int:
 
 
 
-def ASCII_Color(SNC: tuple[int, int, int]) -> str:
+def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
 	""" Transforms an SNC Tuple into an ASCII Color escape sequence string.
 
 	Arguments:
 		SNC (tuple[int, int, int]*): A tuple containing 3 integers of a range of 0 to 255 representing a 8bit RGB value.
+		Foreground (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
 
 	Returns:
 		str: The ASCII Color escape sequence string.
@@ -89,7 +90,7 @@ def ASCII_Color(SNC: tuple[int, int, int]) -> str:
 		# SNDL.Color.Sun.White = (255, 250, 255)
 		"\033[38;2;255;250;255m"
 	"""
-	return f"\033[38;2;{SNC[0]};{SNC[1]};{SNC[2]}m"
+	return f"\033[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
 
 
 
