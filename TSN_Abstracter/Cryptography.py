@@ -1,5 +1,11 @@
+"""
+This module from TSN Abstracter contains various random functions handle encryption/cryptography.
+
+# THIS MODULE IS CURRENTLY DEPRECATED, DO NOT USE IT FOR NOW.
+"""
+
 import TSN_Abstracter.Log as Log;
-import hashlib
+import hashlib;
 
 import cryptography.hazmat.primitives.asymmetric.ed25519 as ed25519;
 import cryptography.hazmat.primitives.asymmetric.rsa as rsa;
