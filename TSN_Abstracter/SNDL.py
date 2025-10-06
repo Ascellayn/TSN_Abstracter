@@ -89,9 +89,9 @@ def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
 	Examples:
 		>>> SNDL.ASCII_Color(SNDL.Color.Sun.White);
 		# SNDL.Color.Sun.White = (255, 250, 255)
-		"\033[38;2;255;250;255m"
+		"\x1b[38;2;255;250;255m"
 	"""
-	return f"\033[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
+	return f"\x1b[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
 
 
 def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
@@ -106,7 +106,7 @@ def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
 
 	Examples:
 		>>> SNDL.Log_Color("White");
-		"\033[38;2;255;250;255m"
+		"\x1b[38;2;255;250;255m"
 	"""
 	return ASCII_Color(
 		getattr(
