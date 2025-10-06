@@ -367,7 +367,7 @@ def Clear() -> None:
 	>>> Log.Clear();
 	# The console would then be effectively cleared.
 	"""
-	print(f"\033[2J");
+	print(String.ASCII.Clear_Screen);
 
 def Delete() -> None:
 	""" COMPLETELY empties the latest Log File. To be used only during the development & debugging process!
