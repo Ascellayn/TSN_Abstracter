@@ -58,7 +58,7 @@ def Clear_ASCII_Formatting(Text: str) -> str:
 	Returns:
 		str: A "clean" Log String devoid of special ASCII Formatting text.
 	"""
-	return re.sub(r"\u001b\[\d*m", "", Text);
+	return re.sub(r"\x1b\[\d*m", "", Text);
 
 
 
@@ -66,6 +66,10 @@ def Clear_ASCII_Formatting(Text: str) -> str:
 class ASCII:
 	""" A class containing numerous ASCII Escape Sequences to aid with formatting. """
 	Clear_Screen: str = "\x1b[2J";
+
+	class Shortcut:
+		""" A class containing frequently used ASCII Escape Sequences combinaisons. """
+		BSOD: str = "\x1b[48;2;40;0;255m\x1b[38;2;255;250;255m";
 
 	class Line:
 		""" A class containing numerous ASCII Escape Sequences to aid with clearing lines of text. """
