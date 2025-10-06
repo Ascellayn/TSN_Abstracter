@@ -30,7 +30,9 @@ def Log_Path() -> str:
 
 # Configure Loggers
 Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
-Logger_File = logging.getLogger("TSN-File"); Logger_File.addHandler(logging.FileHandler(filename=Log_Path()));
+Logger_File = logging.getLogger("TSN-File");
+if (Config.Logger.File): Logger_File.addHandler(logging.FileHandler(filename=Log_Path()));
+
 Handler_LogPath = Log_Path(); # Quite a janky fix for the logger file not properly changing files when it's a new day, see end of Log() for the actual usage of this
 
 
@@ -135,14 +137,14 @@ class Awaited_Log:
 	def ERROR(self, Error: str) -> None:
 		""" >>> Log.Awaited.ERROR();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR] """
-		self.Status_Update(f"{SNDL.Log_Color("Red")}[ERROR]{String.ASCII.Text.Reset}\n{SNDL.Log_Color("Blue", False)}{SNDL.Log_Color("White")}{Error}{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{SNDL.Log_Color("Red")}[ERROR]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Error}{String.ASCII.Text.Reset}");
 
 	def EXCEPTION(self, Except: Exception, Raise: bool = False) -> None:
 		""" >>> Log.Awaited.EXCEPTION(Except);
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 		Cannot divide by zero.
 		"""
-		self.Status_Update(f"{SNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{SNDL.Log_Color("Blue", False)}{SNDL.Log_Color("White")}{Except}{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{SNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{String.ASCII.Text.Reset}");
 		if (Raise): raise Except;
 
 
