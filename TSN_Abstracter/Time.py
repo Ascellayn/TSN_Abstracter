@@ -46,7 +46,7 @@ def Convert_Unix(Unix: int | float) -> datetime.datetime:
 
 
 
-def Convert_ISO(ISO_8601: str) -> datetime.datetime:
+def Convert_ISO8601(ISO_8601: str) -> datetime.datetime:
 	""" Converts ISO 8601 Timestamps to datetime objects.
 
 	Arguments:
@@ -208,7 +208,7 @@ def Unit_Edges(Time_Dict: dict[str, int]) -> tuple[int, int]:
 
 
 # Time Functions with Calculations
-def Calculate_Elapsed(Unix: int | float) -> dict[str, int]:
+def Elapsed_Time(Unix: int | float) -> dict[str, int]:
 	""" Calculate how much time since the Epoch has passed.  
 	**NOTE**: Everything is calculated according to a year being **365.25 days** long. This function will breakdown the moment you reach into the days.
 
@@ -289,7 +289,7 @@ def Elapsed_String(
 		>>> Time.Elapsed_String(69420, ":", Display_Units=False)
 		"19:17:00"
 	"""
-	Time_Dict = Calculate_Elapsed(Time);
+	Time_Dict = Elapsed_Time(Time);
 	Dynamic_String = "";
 
 	Smallest_Unit: int = Unit_Edges(Time_Dict)[1];
