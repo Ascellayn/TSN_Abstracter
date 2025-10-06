@@ -31,14 +31,14 @@ It in theory could work to just import exactly what you need, but this hasn't be
 - File  
 	- TSNA Dependencies:  
 		- Log
-
+		- String
 	- Python Dependencies:  
 		- pathlib
 		- os
 		- lzma
 		- json
 - Misc  
-	- Python Depedencies:  
+	- Python Dependencies:  
 		- multiprocessing
 		- threading
 - Safe  
@@ -47,7 +47,7 @@ It in theory could work to just import exactly what you need, but this hasn't be
 		- Config
 - String
 - Time
-	- Python Depedencies:  
+	- Python Dependencies:  
 		- datetime
 		- time
 
