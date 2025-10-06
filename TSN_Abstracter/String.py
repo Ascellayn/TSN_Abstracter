@@ -1,9 +1,9 @@
 """ This module from TSN Abstracter is in charge of providing functions related to Strings.
 
-Example:
-	>>> from TSN_Abstracter import String;
-	>>> String.Split_Length("The quick brown fox jumps over the lazy dog.", 16);
-	['The quick brown ', 'fox jumps over ', 'the lazy dog.']
+### Examples
+>>> from TSN_Abstracter import String;
+>>> String.Split_Length("The quick brown fox jumps over the lazy dog.", 16);
+['The quick brown ', 'fox jumps over ', 'the lazy dog.']
 """
 import re;
 
