@@ -3,10 +3,8 @@ This module from TSN Abstracter contains various random functions that currently
 
 ## Examples
 >>> from TSN_Abstracter import Misc;
->>> 69/Safe.NotNull(0);
-69 # The 0 was replaced with a 1, resulting in no Exceptions!
->>> 420/Safe.NotNull(0, 2);
-210
+>>> Misc.is_Even(32768);
+True
 """
 import multiprocessing, threading;
 
