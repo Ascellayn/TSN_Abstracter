@@ -32,3 +32,24 @@ def Index(Array: list[object], Index: int) -> object: # Isn't there a Python fun
 	"""
 	if (Index > len(Array)): return None;
 	return Array[Index];
+
+
+
+def NotNull(Number: int, Default: int = 1) -> int:
+	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
+
+	Arguments:
+		Number (int*): Which number we want to check if it's potentially null.
+		Default (int = 1): What integer we replace `Number` with.
+
+	Returns:
+		int: Either `Number` or `Default` depending on if `Number` is equal to zero.
+
+	Examples:
+		>>> 69/Safe.NotNull(0);
+		69 # The 0 was replaced with a 1, resulting in no Exceptions!
+		>>> 420/Safe.NotNull(0, 2);
+		210 # 420/2 since a zero is a zero, shocking I know.
+	"""
+	if (Number == 0): return Default;
+	return Number;

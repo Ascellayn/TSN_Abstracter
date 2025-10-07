@@ -3,9 +3,9 @@ This module from TSN Abstracter contains various random functions that currently
 
 ## Examples
 >>> from TSN_Abstracter import Misc;
->>> 69/Misc.NotNull(0);
+>>> 69/Safe.NotNull(0);
 69 # The 0 was replaced with a 1, resulting in no Exceptions!
->>> 420/Misc.NotNull(0, 2);
+>>> 420/Safe.NotNull(0, 2);
 210
 """
 import multiprocessing, threading;
@@ -65,25 +65,6 @@ def Process_Start(Function: callable, Arguments: list[object] = [], Daemon: bool
 
 
 # Integer related stuff
-def NotNull(Number: int, Default: int = 1) -> int:
-	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
-
-	Arguments:
-		Number (int*): Which number we want to check if it's potentially null.
-		Default (int = 1): What integer we replace `Number` with.
-
-	Returns:
-		int: Either `Number` or `Default` depending on if `Number` is equal to zero.
-
-	Examples:
-		>>> 69/Misc.NotNull(0);
-		69 # The 0 was replaced with a 1, resulting in no Exceptions!
-		>>> 420/Misc.NotNull(0, 2);
-		210 # 420/2 since a zero is a zero, shocking I know.
-	"""
-	if (Number == 0): return Default;
-	return Number;
-
 def is_Even(Number: int) -> bool:
 	""" Checks if `Number` is even.
 

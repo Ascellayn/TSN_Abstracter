@@ -5,6 +5,7 @@
 >>> Time.Get_Unix();
 441759600
 """
+from TSN_Abstracter import String;
 import datetime, time, math;
 
 
@@ -155,27 +156,6 @@ Unit_Power: dict[str, int] = {
 
 
 
-def Trailing_Zero(Number: int, Zeros: int = 2) -> str:
-	""" Adds trailing Zeros to a specified Number.
-
-	Arguments:
-		Number (int*): The Number we want to potentially add zeros at the start.
-		Zeros (int = 2): The amount of digits we aim to have at the end.
-
-	Returns:
-		str: The Number, now with its trailing zeros added if needed.
-
-	Examples:
-		>>> Time.Trailing_Zero(69, 3);
-		"069"
-	"""
-	Digits: int = len(str(Number));
-	Extra_Zeros: int = Zeros - Digits;
-
-	if (Digits >= Zeros): return str(Number);
-	return f"{'0'*Extra_Zeros}{str(Number)}";
-
-
 
 def Unit_Edges(Time_Dict: dict[str, int]) -> tuple[int, int]:
 	""" Get the maximum and minimum power units of a given Time Dict.
@@ -303,7 +283,7 @@ def Elapsed_String(
 		if (Show_Smaller and Smallest_Unit >= Power): Display = True
 		if (Show_Starting < Power): Display = False;
 		if (Show_Until > Power): Display = False;
-		#print(f"{Key}: {Display} | Trailing: {Trailing_Zero(Time_Dict[Key])}");
+		#print(f"{Key}: {Display} | Trailing: {String.Trailing_Zero(Time_Dict[Key])}");
 		if (Display):
 			Suffix = Delimiter if ((Power) != Smallest_Unit) else "";
 
@@ -311,9 +291,9 @@ def Elapsed_String(
 			Dynamic_String += \
 f"{
 	(
-		Trailing_Zero(Time_Dict[Key])
+		String.Trailing_Zero(Time_Dict[Key])
 		if (Key not in ["Milliseconds", "Microseconds", "Nanoseconds"])
-		else Trailing_Zero(Time_Dict[Key], 4)
+		else String.Trailing_Zero(Time_Dict[Key], 4)
 	)
 	if (Trailing_Starting >= Power)
 	else Time_Dict[Key]

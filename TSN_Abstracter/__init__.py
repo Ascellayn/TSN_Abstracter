@@ -47,6 +47,8 @@ It in theory could work to just import exactly what you need, but this hasn't be
 		- Config
 - String
 - Time
+	- TSNA Dependencies:  
+		- String
 	- Python Dependencies:  
 		- datetime
 		- time
@@ -85,7 +87,7 @@ __all__ = [
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (4,0,0);
+	Version_Tuple: tuple[int, int, int] = (5,0,0);
 	
 	class Bad_Version(Exception):
 		def __init__(self, Message: str, Quit_Program: bool):

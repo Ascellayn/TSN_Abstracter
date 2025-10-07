@@ -10,6 +10,29 @@ import re;
 
 
 
+def Trailing_Zero(Number: int, Zeros: int = 2) -> str:
+	""" Adds trailing Zeros to a specified Number.
+
+	Arguments:
+		Number (int*): The Number we want to potentially add zeros at the start.
+		Zeros (int = 2): The amount of digits we aim to have at the end.
+
+	Returns:
+		str: The Number, now with its trailing zeros added if needed.
+
+	Examples:
+		>>> Time.Trailing_Zero(69, 3);
+		"069"
+	"""
+	Digits: int = len(str(Number));
+	Extra_Zeros: int = Zeros - Digits;
+
+	if (Digits >= Zeros): return str(Number);
+	return f"{'0'*Extra_Zeros}{str(Number)}";
+
+
+
+
 
 def Split_Length(Text: str, Max_Length: int) -> list[str]:
 	""" Splits a string after a new line (unless there are no line breaks, in that case it will stop after a space, otherwise raw cuts through words if neither lines breaks nor spaces are present) into an array according to Max_Length.
