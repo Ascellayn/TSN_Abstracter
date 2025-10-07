@@ -306,3 +306,46 @@ f"{
 {Suffix}";
 
 	return Dynamic_String;
+
+
+
+
+
+def String_Timestamp(Text: str) -> float:
+	""" Get how much time has passed according to the passed string.
+
+	Arguments:
+		Text (str*): A string in the format "X{Unit_Short} [...]".
+
+	Returns:
+		float: The amount of time that has passed.
+
+	Raises:
+		ValueError: If the unit is invalid, this exception will get raised.
+
+	Examples:
+		>>> Time.String_Timestamp("1D 1h");
+		90000
+	"""
+	Digits: list[int] = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", ".", ","];
+	Timestamp: float = 0;
+
+	Numbers: list[str] = Text.split(" ");
+
+	for Number in Numbers:
+		for Index, Character in enumerate(Number):
+			if (Character not in Digits):
+				T_Unit: str = Number[Index:];
+				T_Number: float = float(Number[:Index]);
+				match T_Unit:
+					case "Y": Timestamp += T_Number*31557600;
+					case "M": Timestamp += T_Number*2629800;
+					case "D": Timestamp += T_Number*86400;
+					case "h": Timestamp += T_Number*3600;
+					case "m": Timestamp += T_Number*60;
+					case "s": Timestamp += T_Number;
+					case "ms": Timestamp += T_Number/1000;
+					case "µs": Timestamp += T_Number/10**6;
+					case "ns": Timestamp += T_Number/10**9;
+					case _: raise ValueError(f"Invalid Unit \"{T_Unit}\".");
+	return Timestamp;
