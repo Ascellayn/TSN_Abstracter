@@ -311,7 +311,7 @@ f"{
 
 
 
-def String_Timestamp(Text: str) -> float:
+def String_Time(Text: str) -> float:
 	""" Get how much time has passed according to the passed string.
 
 	Arguments:
@@ -324,7 +324,7 @@ def String_Timestamp(Text: str) -> float:
 		ValueError: If the unit is invalid, this exception will get raised.
 
 	Examples:
-		>>> Time.String_Timestamp("1D 1h");
+		>>> Time.String_Time("1D 1h");
 		90000
 	"""
 	Digits: list[int] = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", ".", ","];
