@@ -247,7 +247,7 @@ def Elapsed_String(
 		Show_Starting: int = 6, Show_Smaller: bool = True,
 		Show_Until: int = 0,
 		Trailing_Starting: int = 2,
-		Display_Units: bool = True
+		Display_Units: bool = True, Display_Units_Long: bool = False
 	) -> str:
 	""" Gives a dynamically sized string of the amount of time passed.
 
@@ -260,7 +260,8 @@ def Elapsed_String(
 		Show_Smaller (bool = True): Should we still display units that are smaller than the smallest unit available?
 		Show_Until (int = 0): Until what "Unit Power" we should display the time passed.
 		Trailing_Starting (int = 2): At what "Unit Power" we should start adding trailing Zeros.
-		Display_Units (bool = True): Allow the display of "short" units;
+		Display_Units (bool = True): Allow the display of units.
+		Display_Units_Long (bool = False): Display full length units instead of just their short name.
 
 	Returns:
 		str: The amount of time that has passed in the format "X{Unit}{Delimiter}".
@@ -299,7 +300,15 @@ f"{
 	else Time_Dict[Key]
 }\
 {
-	Unit_Short[Key]
+	(
+		' ' + (
+			Key.lower()
+			if (Time_Dict[Key] > 1)
+			else Key.lower()[:-1]
+		)
+		if (Display_Units_Long)
+		else Unit_Short[Key]
+	)
 	if (Display_Units)
 	else ""
 }\
