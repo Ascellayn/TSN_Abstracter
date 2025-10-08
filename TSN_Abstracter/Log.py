@@ -31,9 +31,16 @@ def Log_Path() -> str:
 # Configure Loggers
 Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
 Logger_File = logging.getLogger("TSN-File");
-if (Config.Logger.File): Logger_File.addHandler(logging.FileHandler(filename=Log_Path()));
 
-Handler_LogPath = Log_Path(); # Quite a janky fix for the logger file not properly changing files when it's a new day, see end of Log() for the actual usage of this
+
+
+def Verify_Config() -> None:
+	""" Internal Logging Function used to re-add the File Handler when the TSNA Configuration updates. """
+	global Logger_File;
+	if (Config.Logger.File and not Config.Logger.Disable):
+		Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
+		File.Path_Require(Config.Logger.File_Folder);
+	else: Logger_File.handlers = []
 
 
 
@@ -116,14 +123,15 @@ class Awaited_Log:
 				else: Logger_Console.log(self.Level, self.Text + Status);
 
 			# Update File Log Entry
+			Verify_Config();
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
 
 				# Check if we can easily overwrite the last line
 				if (Await_Next == self.Caller):
 					# WARNING: This is slow, should come up with a better solution in the future
-					Lines: list[str] = open(Handler_LogPath, "r").readlines();
+					Lines: list[str] = open(Log_Path(), "r").readlines();
 					Lines[-1] = String.Clear_ASCII_Formatting(self.Text + Status + "\n");
-					open(Handler_LogPath, "w").writelines(Lines);
+					open(Log_Path(), "w").writelines(Lines);
 
 				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
 
@@ -292,7 +300,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 		>>> Log.Log("Hug a Mika a day, keeps your sanity away~", 30, "Ascellayn");
 		[2007/04/23 - 17:00:00] - Warning: Ascellayn → Hug a Mika a day, keeps your sanity away~
 	"""
-	global Awaited_Logs, Await_Next, Handler_LogPath, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
+	global Awaited_Logs, Await_Next, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
 	if (not Can_Log(Level)): return;
 
 
@@ -334,10 +342,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	# Verify for both the Console and File if the Level is high enough before logging.
 	if (Level >= Config.Logger.Print_Level): Logger_Console.log(Level, Logged_Text);
 
+	Verify_Config();
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
-		# Bug Fix: Handle when the date changes
-		if (Handler_LogPath != Log_Path()): Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
-
 		Logger_File.log(Level, String.Clear_ASCII_Formatting(Logged_Text));
 
 
