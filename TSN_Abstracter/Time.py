@@ -272,15 +272,15 @@ def Elapsed_String(
 	Time_Dict = Elapsed_Time(Time);
 	Dynamic_String = "";
 
-	Smallest_Unit: int = Unit_Edges(Time_Dict)[1];
+	Biggest_Unit, Smallest_Unit = Unit_Edges(Time_Dict);
 	if (Show_Smaller): Smallest_Unit = Show_Until;
 
 	for Key in Time_Dict.keys():
 		Power = Unit_Power[Key]; Display: bool = False;
 
 		if (Time_Dict[Key] != 0): Display = True;
-		if (Show_Bigger and Show_Bigger_Starting >= Power): Display = True;
-		if (Show_Smaller and Smallest_Unit >= Power): Display = True
+		if (Show_Bigger and (Show_Bigger_Starting >= Power)): Display = True;
+		if (Show_Smaller and (Biggest_Unit >= Power)): Display = True
 		if (Show_Starting < Power): Display = False;
 		if (Show_Until > Power): Display = False;
 		#print(f"{Key}: {Display} | Trailing: {String.Trailing_Zero(Time_Dict[Key])}");
