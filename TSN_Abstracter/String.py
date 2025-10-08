@@ -81,7 +81,7 @@ def Clear_ASCII_Formatting(Text: str) -> str:
 	Returns:
 		str: A "clean" Log String devoid of special ASCII Formatting text.
 	"""
-	return re.sub(r"\x1b\[\d*m", "", Text);
+	return re.sub(r"\[[\d;]*m", "", Text);
 
 
 
