@@ -108,7 +108,7 @@ class Awaited_Log:
 		global Awaited_Logs, Await_Next;
 	
 		if (Can_Log(self.Level)):
-			if (Await_Next == self.Caller): Await_Next = ""; # Reset next await
+			#print(f"{self.Caller} vs {Await_Next} ({self.Level}): {Await_Next == self.Caller}");
 
 			# Update Console Log Entry
 			if (self.Level >= Config.Logger.Print_Level):
@@ -126,6 +126,8 @@ class Awaited_Log:
 					open(Handler_LogPath, "w").writelines(Lines);
 
 				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
+
+			if (Await_Next == self.Caller): Await_Next = ""; # Reset next await
 
 		del Awaited_Logs[self.Caller];
 
