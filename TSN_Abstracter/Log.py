@@ -112,14 +112,15 @@ class Awaited_Log:
 			>>> Log.Awaited.Status_Update("[COOKED]");
 			[2016/05/20 - 17:00:00] - Info: Arellayn → Cooking Ascellayn [COOKED]
 		"""
-		global Awaited_Logs, Await_Next;
+		global Awaited_Logs, Awaited_Console, Awaited_File;
 	
 		if (Can_Log(self.Level)):
-			#print(f"{self.Caller} vs {Await_Next} ({self.Level}): {Await_Next == self.Caller}");
-
 			# Update Console Log Entry
 			if (self.Level >= Config.Logger.Print_Level):
-				if (Await_Next == self.Caller): Logger_Console.log(self.Level, String.ASCII.Line.Return + self.Text + Status);
+				if (Awaited_Console == self.Caller):
+					Logger_Console.log(self.Level, String.ASCII.Line.Return + self.Text + Status);
+
+					Awaited_Console = None;
 				else: Logger_Console.log(self.Level, self.Text + Status);
 
 			# Update File Log Entry
@@ -127,15 +128,15 @@ class Awaited_Log:
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
 
 				# Check if we can easily overwrite the last line
-				if (Await_Next == self.Caller):
+				if (Awaited_File == self.Caller):
 					# WARNING: This is slow, should come up with a better solution in the future
 					Lines: list[str] = open(Log_Path(), "r").readlines();
 					Lines[-1] = String.Clear_ASCII_Formatting(self.Text + Status + "\n");
 					open(Log_Path(), "w").writelines(Lines);
 
+					Awaited_File = None;
 				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
 
-			if (Await_Next == self.Caller): Await_Next = ""; # Reset next await
 
 		del Awaited_Logs[self.Caller];
 
@@ -185,8 +186,8 @@ def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Awaited_Logs: dict[str, Awaited_Log] = {};
-Await_Next: str = "";
-
+Awaited_Console: str | None = None;
+Awaited_File: str | None = None;
 
 
 
@@ -300,7 +301,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 		>>> Log.Log("Hug a Mika a day, keeps your sanity away~", 30, "Ascellayn");
 		[2007/04/23 - 17:00:00] - Warning: Ascellayn → Hug a Mika a day, keeps your sanity away~
 	"""
-	global Awaited_Logs, Await_Next, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
+	global Awaited_Logs, Awaited_Console, Awaited_File, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
 	if (not Can_Log(Level)): return;
 
 
@@ -321,7 +322,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	
 	# Detects if the logged text is going to await a status update and changes the terminator accordingly, includes prefix.
 	if (len(Text) >= 3): # Avoids Exception if Text is too short
-		if ("..." == Text[-3:]): Await_Next = Caller;
+		if ("..." == Text[-3:]):
+			if (Level >= Config.Logger.Print_Level): Awaited_Console = Caller;
+			if (Level >= Config.Logger.File_Level): Awaited_File = Caller;
 
 
 
@@ -348,7 +351,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 
-	if (Await_Next): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
+	if (Awaited_Console or Awaited_File): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
 
 
 
