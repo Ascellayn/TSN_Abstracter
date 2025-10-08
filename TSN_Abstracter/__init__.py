@@ -87,7 +87,7 @@ __all__ = [
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (5,1,0);
+	Version_Tuple: tuple[int, int, int] = (5,2,0);
 	
 	class Bad_Version(Exception):
 		def __init__(self, Message: str, Quit_Program: bool):
