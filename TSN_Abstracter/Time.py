@@ -350,7 +350,7 @@ def String_Time(Text: str) -> float:
 		>>> Time.String_Time("1D 1h");
 		90000
 	"""
-	Digits: list[int] = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", ".", ","];
+	Digits: list[str] = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", ".", ","];
 	Timestamp: float = 0;
 
 	Numbers: list[str] = Text.split(" ");
