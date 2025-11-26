@@ -70,7 +70,7 @@ def Convert_ISO8601(ISO_8601: str) -> datetime.datetime:
 @typing.overload
 def Get_Unix(Precise: bool = False) -> int: ...;
 @typing.overload
-def Get_Unix(Precise: bool = True) -> float: ...;
+def Get_Unix(Precise: bool = True) -> float: ...; # pyright: ignore[reportOverlappingOverload]
 
 def Get_Unix(Precise: bool = False) -> int | float:
 	""" Get an Integer/Float representing Unix Time.
