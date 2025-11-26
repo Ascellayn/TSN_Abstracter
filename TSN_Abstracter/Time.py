@@ -6,7 +6,7 @@
 441759600
 """
 from TSN_Abstracter import String;
-import datetime, time, math;
+import datetime, time, math, typing;
 
 
 
@@ -67,6 +67,11 @@ def Convert_ISO8601(ISO_8601: str) -> datetime.datetime:
 
 
 # Time.Get_*
+@typing.overload
+def Get_Unix(Precise: bool = False) -> int: ...;
+@typing.overload
+def Get_Unix(Precise: bool = True) -> float: ...;
+
 def Get_Unix(Precise: bool = False) -> int | float:
 	""" Get an Integer/Float representing Unix Time.
 
@@ -151,6 +156,15 @@ Unit_Power: dict[str, int] = {
 	"Microseconds": -2,
 	"Nanoseconds": -3
 };
+
+
+class Unit_Unix:
+	""" Class containing the amount of seconds required to pass to equate to a full unit. """
+	Year: int = 31557600;
+	Month: int = 2629800;
+	Days: int = 86400;
+	Hour: int = 86400;
+	Minute: int = 3600;
 
 
 
