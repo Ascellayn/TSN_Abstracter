@@ -162,7 +162,7 @@ class Unit_Unix:
 	""" Class containing the amount of seconds required to pass to equate to a full unit. """
 	Year: int = 31557600;
 	Month: int = 2629800;
-	Days: int = 86400;
+	Day: int = 86400;
 	Hour: int = 86400;
 	Minute: int = 3600;
 
