@@ -140,10 +140,10 @@ class Awaited_Log:
 
 		del Awaited_Logs[self.Caller];
 
-	def OK(self) -> None:
+	def OK(self, Status: str | None = None) -> None:
 		""" >>> Log.Awaited.OK();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
-		self.Status_Update(f"{SNDL.Log_Color("Green")}[OK]{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{SNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
 	def ERROR(self, Error: str) -> None:
 		""" >>> Log.Awaited.ERROR();
@@ -164,7 +164,7 @@ class Awaited_Dummy(Awaited_Log):
 	def __init__(self): return;
 	def __str__(self): return "";
 	def Status_Update(self, Status: str): return;
-	def OK(self): return;
+	def OK(self, Status: str | None = None): return;
 	def ERROR(self, Error: str): return;
 	def EXCEPTION(self, Except: Exception, Raise: bool = False): return;
 
