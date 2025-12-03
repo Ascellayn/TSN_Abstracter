@@ -182,6 +182,7 @@ type Folder_Contents = tuple[
 	tuple[str, ...], # Sub-Folders, NOT Recursive
 	tuple[str, ...] # Files
 ];
+type Folder_Tree = tuple[tuple[Folder_Matrix, ...], Folder_Contents];
 
 
 
@@ -210,7 +211,7 @@ def List(Path: str) -> Folder_Contents:
 	);
 
 
-def Tree(Path: str) -> tuple[tuple[Folder_Matrix, ...], Folder_Contents]:
+def Tree(Path: str) -> Folder_Tree:
 	""" Returns a matrix of ALL folders and files inside Path.  
 	**WARNING**: You will loose your sanity using this function.
 
