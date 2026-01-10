@@ -7,11 +7,11 @@ This module from TSN Abstracter contains various random functions that currently
 >>> MyFunction();
 [2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
 """
-import TSN_Abstracter.Config as Config;
-import TSN_Abstracter.File as File;
-import TSN_Abstracter.SNDL as SNDL;
-import TSN_Abstracter.String as String;
-import TSN_Abstracter.Time as Time;
+from . import Config;
+from . import File;
+from . import SNDL;
+from . import String;
+from . import Time;
 import datetime, inspect, logging, shutil, sys;
 
 

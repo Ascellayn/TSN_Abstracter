@@ -8,8 +8,8 @@ It also contains the entire suite of SNDL Colors.
 >>> SNDL.Color.Sun.Pink
 (255, 150, 255)
 """
-from TSN_Abstracter import Config;
-from TSN_Abstracter import Misc;
+from . import Config;
+from . import Misc;
 
 
 

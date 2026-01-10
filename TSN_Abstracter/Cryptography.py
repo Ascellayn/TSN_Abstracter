@@ -3,7 +3,7 @@ This module from TSN Abstracter contains various random functions handle encrypt
 
 # THIS MODULE IS CURRENTLY UNSUPPORTED/DEPRECATED, DO NOT USE IT FOR NOW.
 """
-import TSN_Abstracter.Log as Log;
+from . import Log;
 import hashlib;
 
 from cryptography.hazmat.primitives.asymmetric import ed25519, rsa, padding, types;
