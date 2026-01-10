@@ -16,7 +16,7 @@ Root_CFG: dict = File.JSON_Read("Root_CFG.json");
 Debug_Mode: bool = Root_CFG["Debug"];
 
 if (__name__ == '__main__'):
-	Log.Clear(); TSN_Abstracter.Require_Version((3,1,0)); # Change (3.1.0) to which ever minimal TSNA version you want to target.
+	Log.Clear(); TSN_Abstracter.Require_Version((5,2,0)); # Change (5.2.0) to which ever minimal TSNA version you want to target.
 	Config.Logger.Print_Level = 15 if (Debug_Mode) else 20;
 	Config.Logger.File = True;
 	
@@ -29,4 +29,4 @@ TSN Abstracter is obviously __developer oriented__, it is **your job to look at 
 - python3-cryptography
 - The "LZMA" Python Module (should be shipped with your OS's Libraries)
 
-###### [TSN Abstracter (TSNA) © Ascellayn (2025) - TSN License 1.0 - Base](https://github.com/Ascellayn/TSN_Abstracter/LICENSE.md)
+###### [TSN Abstracter (TSNA) © Ascellayn (2025-2026) - TSN License 2.1 - Base](https://github.com/Ascellayn/TSN_Abstracter/LICENSE.md)
