@@ -1,0 +1,21 @@
+[project]
+name = "TSN_Abstracter"
+version = "5.4.1"
+authors = [
+  { name="Ascellayn", email="ascellayn.sagittarii+pypi_tsna@sirio-network.com" },
+  { name="The Sirio Network", email="contact+pypi_tsna@sirio-network.com" },
+]
+description = "The Abstraction Library for The Sirio Network's numerous projects."
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+	"Natural Language :: English",
+]
+license = "TSNL-2.1_Base"
+license-files = ["LICENSE.md"]
+
+[project.urls]
+Homepage = "https://github.com/Ascellayn/TSN_Abstracter"
+Issues = "https://github.com/Ascellayn/TSN_Abstracter/issues"
