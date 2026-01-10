@@ -2,8 +2,8 @@
 name = "TSN_Abstracter"
 version = "5.4.1"
 authors = [
-  { name="Ascellayn", email="ascellayn.sagittarii+pypi_tsna@sirio-network.com" },
-  { name="The Sirio Network", email="contact+pypi_tsna@sirio-network.com" },
+  { name="Ascellayn", email="ascellayn.sagittarii+pypi@sirio-network.com" },
+  { name="The Sirio Network", email="contact+pypi@sirio-network.com" },
 ]
 description = "The Abstraction Library for The Sirio Network's numerous projects."
 readme = "README.md"
