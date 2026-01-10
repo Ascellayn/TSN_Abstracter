@@ -13,8 +13,7 @@ classifiers = [
     "Operating System :: OS Independent",
 	"Natural Language :: English",
 ]
-license = "TSNL-2.1_Base"
-license-files = ["LICENSE.md"]
+license = { file = "LICENSE.md" }
 
 [project.urls]
 Homepage = "https://github.com/Ascellayn/TSN_Abstracter"
