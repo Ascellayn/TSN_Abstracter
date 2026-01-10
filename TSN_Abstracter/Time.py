@@ -5,7 +5,7 @@
 >>> Time.Get_Unix();
 441759600
 """
-from TSN_Abstracter import String;
+from . import String;
 import datetime, time, math, typing;
 
 

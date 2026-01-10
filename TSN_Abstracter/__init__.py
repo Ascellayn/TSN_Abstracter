@@ -4,8 +4,7 @@
 It was created during Kosaka's v2.X Versions and as its "Dependencies.py" file kept being ported over to other Python projects, TSNA was created to avoid sloppily copy pasting reused code and simplify the process of writing code.  
 You are entirely on your own for figuring out what TSNA does and what functions would be useful in your use case. TSNA was purposefully built to build programs for TSN, as such no feature requests will be accepted, unless they're contributing to the function of a TSN Service.  
 
-#### NOTICE: TSNA is only expected to be imported using `from TSN_Abstracter import *;`
-It in theory could work to just import exactly what you need, but this hasn't been tested extensively.
+#### NOTICE: TSNA is only expected to be  import fromed TSN_Abstracter from  import *;` theory could work to just from  import exactly need, but this hasn't been tested extensively.
 
 ### Available Modules:
 - Config  
@@ -60,14 +59,14 @@ It in theory could work to just import exactly what you need, but this hasn't be
 
 
 
-import TSN_Abstracter.Config as Config;
-import TSN_Abstracter.Log as Log;
-import TSN_Abstracter.File as File;
-import TSN_Abstracter.Misc as Misc;
-import TSN_Abstracter.Safe as Safe;
-import TSN_Abstracter.SNDL as SNDL;
-import TSN_Abstracter.String as String;
-import TSN_Abstracter.Time as Time;
+from . import Config;
+from . import Log;
+from . import File;
+from . import Misc;
+from . import Safe;
+from . import SNDL;
+from . import String;
+from . import Time;
 __all__ = [
 	"Config",
 	"File",
@@ -87,7 +86,7 @@ __all__ = [
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (5,4,0);
+	Version_Tuple: tuple[int, int, int] = (5,4,1);
 	
 	class Bad_Version(Exception):
 		def __init__(self, Message: str, Quit_Program: bool):

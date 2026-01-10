@@ -5,7 +5,7 @@
 >>> File.Exists("README.MD");
 True
 """
-from TSN_Abstracter import Log, String;
+from . import Log, String;
 import pathlib, os, lzma, json, typing;
 Working_Directory: str = os.getcwd();
 
