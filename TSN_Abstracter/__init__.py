@@ -52,7 +52,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 		- datetime
 		- time
 
-###### TSN Abstracter (TSNA) © 2025 by Ascellayn is licensed under TSN License 1.0 - Base
+###### TSN Abstracter (TSNA) © 2025-2026 by Ascellayn is licensed under TSN License 2.1 - Base
 """
 
 
