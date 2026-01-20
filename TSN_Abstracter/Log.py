@@ -332,11 +332,11 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	Date_Str, Time_Str = Time.Get_DateStrings(Time.Get_Unix());
 	Logged_Text: str = ""; # Prefix if previous log was Awaited
 
-	if (Config.Logger.Display_Date): Logged_Text += f"{SNDL.Log_Color("Black")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
+	if (Config.Logger.Display_Date): Logged_Text += f"{SNDL.Log_Color("Grey")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
 
 	if (Level != 20): # Check for Stateless before adding Caller
 		Logged_Text += f"{String.ASCII.Text.Bold}{Level_Color}{Level_String}{String.ASCII.Text.Reset}: "; # Log Level
-		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{SNDL.Log_Color("Black")}{Caller}{String.ASCII.Text.Reset} → ";
+		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{SNDL.Log_Color("Grey")}{Caller}{String.ASCII.Text.Reset} → ";
 
 	Logged_Text += Text; # Finally add the actual message we want to Log.
 
