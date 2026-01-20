@@ -52,7 +52,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 		- datetime
 		- time
 
-###### TSN Abstracter (TSNA) © 2025-2026 by Ascellayn is licensed under TSN License 2.1 - Base
+###### TSN Abstracter (TSNA) © 2025-2026 by Ascellayn / The Sirio Network is licensed under TSN License 2.1 - Base
 """
 
 
@@ -67,6 +67,7 @@ from . import Safe;
 from . import SNDL;
 from . import String;
 from . import Time;
+from typing import Any, TypedDict;
 __all__ = [
 	"Config",
 	"File",
@@ -76,7 +77,8 @@ __all__ = [
 	"SNDL",
 	"String",
 	"Time",
-	"TSN_Abstracter"
+	"TSN_Abstracter",
+	"Any", "TypedDict"
 ];
 
 
