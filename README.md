@@ -29,4 +29,4 @@ TSN Abstracter is obviously __developer oriented__, it is **your job to look at 
 - python3-cryptography
 - The "LZMA" Python Module (should be shipped with your OS's Libraries)
 
-###### [TSN Abstracter (TSNA) © Ascellayn (2025-2026) - TSN License 2.1 - Base](https://github.com/Ascellayn/TSN_Abstracter/LICENSE.md)
+###### [TSN Abstracter (TSNA) © Ascellayn / The Sirio Network (2025-2026) - TSN License 2.1 - Base](https://github.com/Ascellayn/TSN_Abstracter/LICENSE.md)
