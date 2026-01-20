@@ -154,7 +154,8 @@ class Color:
 	| **v3.0+ (Black)**  | Sirio Network | Ascellyan | undefined | undefined | Arellyan  | Bismuth   |
 	| **v2.0+***         | Feather       | Light     | [Nothing] | Solid     | undefined | undefined |
 
-	*: SNDL v2.0's Colors behaved SIGNIFICANTLY differently from 3.0 and onwards, while newer versions actually change the colors, SNDL v2.0 only relied on opacity to emulate lighter colors.
+	*: SNDL v2.0's Colors behaved SIGNIFICANTLY differently from 3.0 and onwards, while newer versions actually change the colors, SNDL v2.0 only relied on opacity to emulate lighter colors.  
+	The color Grey was added in SNDL v3.2 and does not have any old colors that can be migrated from.  
 	"""
 
 
@@ -162,6 +163,7 @@ class Color:
 	class Abyss:
 		"""Dark-Mode: Tertiary Color"""
 		Black: tuple[int, int, int] = (20, 0, 20);
+		Grey: tuple[int, int, int] = (90, 70, 90);
 		White: tuple[int, int, int] = (225, 190, 225);
 		Red: tuple[int, int, int] = (105, 0, 0);
 		Orange: tuple[int, int, int] = (105, 5, 0);
@@ -173,6 +175,7 @@ class Color:
 		Pink: tuple[int, int, int] = (105, 0, 105);
 
 		Black_Hex: str = "#140014";
+		Grey_Hex: str = "#5A465A";
 		White_Hex: str = "#E1BEE1";
 		Red_Hex: str = "#690000";
 		Orange_Hex: str = "#690500";
@@ -187,6 +190,7 @@ class Color:
 	class Night:
 		"""Dark-Mode: Secondary Color"""
 		Black: tuple[int, int, int] = (30, 10, 30);
+		Grey: tuple[int, int, int] = (110, 90, 110);
 		White: tuple[int, int, int] = (230, 200, 230);
 		Red: tuple[int, int, int] = (130, 5, 5);
 		Orange: tuple[int, int, int] = (130, 30, 5);
@@ -198,6 +202,7 @@ class Color:
 		Pink: tuple[int, int, int] = (130, 25, 130);
 
 		Black_Hex: str = "#1E0A1E";
+		Grey_Hex: str = "#6E5A6E";
 		White_Hex: str = "#E6C8E6";
 		Red_Hex: str = "#820505";
 		Orange_Hex: str = "#821E05";
@@ -212,6 +217,7 @@ class Color:
 	class Moon:
 		"""Dark-Mode: Primary Color"""
 		Black: tuple[int, int, int] = (40, 15, 40);
+		Grey: tuple[int, int, int] = (130, 110, 130);
 		White: tuple[int, int, int] = (235, 210, 235);
 		Red: tuple[int, int, int] = (155, 10, 10);
 		Orange: tuple[int, int, int] = (155, 55, 10);
@@ -223,6 +229,7 @@ class Color:
 		Pink: tuple[int, int, int] = (155, 50, 155);
 
 		Black_Hex: str = "#280F28";
+		Grey_Hex: str = "#826E82";
 		White_Hex: str = "#EBD2EB";
 		Red_Hex: str = "#9B0A0A";
 		Orange_Hex: str = "#9B370A";
@@ -237,6 +244,7 @@ class Color:
 	class Sky:
 		"""Light-Mode: Tertiary Color"""
 		Black: tuple[int, int, int] = (60, 25, 60);
+		Grey: tuple[int, int, int] = (170, 150, 170);
 		White: tuple[int, int, int] = (245, 230, 245);
 		Red: tuple[int, int, int] = (205, 20, 20);
 		Orange: tuple[int, int, int] = (205, 105, 20);
@@ -248,6 +256,7 @@ class Color:
 		Pink: tuple[int, int, int] = (205, 100, 205);
 
 		Black_Hex: str = "#3C193C";
+		Grey_Hex: str = "#AA96AA";
 		White_Hex: str = "#F5E6F5";
 		Red_Hex: str = "#CD1414";
 		Orange_Hex: str = "#CD6914";
@@ -262,6 +271,7 @@ class Color:
 	class Day:
 		"""Light-Mode: Secondary Color"""
 		Black: tuple[int, int, int] = (70, 30, 70);
+		Grey: tuple[int, int, int] = (190, 170, 190);
 		White: tuple[int, int, int] = (250, 240, 250);
 		Red: tuple[int, int, int] = (230, 25, 25);
 		Orange: tuple[int, int, int] = (230, 130, 25);
@@ -273,6 +283,7 @@ class Color:
 		Pink: tuple[int, int, int] = (230, 125, 230);
 
 		Black_Hex: str = "#461E46";
+		Grey_Hex: str = "#BEAABE";
 		White_Hex: str = "#FAF0FA";
 		Red_Hex: str = "#E61919";
 		Orange_Hex: str = "#E68219";
@@ -287,6 +298,7 @@ class Color:
 	class Sun:
 		"""Light-Mode: Primary Color"""
 		Black: tuple[int, int, int] = (80, 35, 80);
+		Grey: tuple[int, int, int] = (210, 190, 210);
 		White: tuple[int, int, int] = (255, 250, 255);
 		Red: tuple[int, int, int] = (255, 30, 30);
 		Orange: tuple[int, int, int] = (255, 155, 30);
@@ -298,6 +310,7 @@ class Color:
 		Pink: tuple[int, int, int] = (255, 150, 255);
 
 		Black_Hex: str = "#502350";
+		Grey_Hex: str = "#D2BED2";
 		White_Hex: str = "#FFFAFF";
 		Red_Hex: str = "#FF1E1E";
 		Orange_Hex: str = "#FF9B1E";
