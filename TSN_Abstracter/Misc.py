@@ -76,13 +76,6 @@ def All_Includes(A: typing.Iterable[typing.Any], B: typing.Iterable[typing.Any])
 		if (Item not in A): return False;
 	return True;
 
-def Bulk_Replace(A: list[tuple[str, str] | list[str]], String: str, New: str = "") -> str:
-	""" bulk replace every old strings in A to A[.][1] or New from str String """
-	for Item in A:
-		if (isinstance(Item, str)): String = String.replace(Item, New);
-		else: String = String.replace(Item[0], Item[1]);
-	return String;
-
 def Under_At(A: tuple[int, ...] | list[int], B: tuple[int, ...] | list[int]) -> int:
 	""" use to compare version tuples"""
 	B_Length: int = len(B);

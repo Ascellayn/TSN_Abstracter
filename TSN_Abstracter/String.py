@@ -10,6 +10,17 @@ import re;
 
 
 
+def Bulk_Replace(A: list[tuple[str, str] | list[str]], String: str, New: str = "") -> str:
+	""" bulk replace every old strings in A to A[.][1] or New from str String """
+	for Item in A:
+		if (isinstance(Item, str)): String = String.replace(Item, New);
+		else: String = String.replace(Item[0], Item[1]);
+	return String;
+
+
+
+
+
 def Trailing_Zero(Number: int, Zeros: int = 2) -> str:
 	""" Adds trailing Zeros to a specified Number.
 
