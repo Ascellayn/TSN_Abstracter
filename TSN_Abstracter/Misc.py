@@ -12,17 +12,6 @@ import multiprocessing, threading, typing;
 
 
 
-def Void() -> None:
-	""" Does absolutely nothing. Frequently used when you want to ignore Exceptions.
-
-	## Examples
-	>>> try: print(80082/0);
-	>>> except: Misc.Void();
-	"""
-	return None;
-
-
-
 # Multi-Tasking
 def Thread_Start(Function: callable, Arguments: list[object] = [], Daemon: bool = True) -> None: # type: ignore | "callable" isn't taken seriously
 	""" Abstraction to launch a new thread
