@@ -78,7 +78,7 @@ from typing import Any, TypedDict;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,0,0);
+	Version_Tuple: tuple[int, int, int] = (6,1,0);
 
 
 
