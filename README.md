@@ -35,7 +35,7 @@ TSNA automatically attempts to read data from `App.tsna`, this file contains bas
 	"Codename": "TSN_Tachibana",
 	"Branch": "Azure",
 	"Version": "v0_dev",
-	"TSNA": [5,6,0]
+	"TSNA": [5,6,0] # Minimum required TSNA Version for the Application to run
 }
 ```
 TSN Abstracter is obviously __developer oriented__, it is **your job to look at TSNA and find functions that are deemed useful** to you.
