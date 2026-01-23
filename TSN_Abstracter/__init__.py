@@ -78,7 +78,7 @@ from typing import Any, TypedDict;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (5,6,0);
+	Version_Tuple: tuple[int, int, int] = (6,0,0);
 
 
 
@@ -127,12 +127,18 @@ class TSN_Abstracter:
 
 
 	@staticmethod
+	def App_Version() -> str:
+		"""Returns a readable string of the TSNA-Based Application Version."""
+		return f"v{App.Version_Prefix}{".".join(str(INT) for INT in App.Version)}{App.Version_Prefix}";
+
+
+	@staticmethod
 	def App_Init(Clear_Console: bool = False) -> None:
 		"""When your TSNA-Based Application runs, use this command to print basic information about your Application. (When `(__name__ == "__main__")`)  
 		Provides a single argument to specify if we should clear the console on the App's successful launch."""
 		TSN_Abstracter.Require_Version(App.TSNA);
 		if (Clear_Console): Log.Clear();
-		Log.Stateless(f"{App.Name} {App.Branch} {App.Version} © ({App.License_Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
+		Log.Stateless(f"{App.Name} {App.Branch} {TSN_Abstracter.App_Version()} © ({App.License_Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
 
 
 	@staticmethod
