@@ -6,7 +6,7 @@ This module from TSN Abstracter contains various random functions that currently
 >>> Misc.is_Even(32768);
 True
 """
-import multiprocessing, threading;
+import multiprocessing, threading, typing;
 
 
 
@@ -79,3 +79,17 @@ def is_Even(Number: int) -> bool:
 		True
 	"""
 	return ((Number % 2) == 0);
+
+
+def All_Includes(A: typing.Iterable[typing.Any], B: typing.Iterable[typing.Any]) -> bool:
+	""" verify every item in B is present in A"""
+	for Item in B:
+		if (Item not in A): return False;
+	return True;
+
+def Bulk_Replace(A: list[tuple[str, str] | list[str]], String: str, New: str = "") -> str:
+	""" bulk replace every old strings in A to A[.][1] or New from str String """
+	for Item in A:
+		if (isinstance(Item, str)): String = String.replace(Item, New);
+		else: String = String.replace(Item[0], Item[1]);
+	return String;
