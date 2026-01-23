@@ -22,7 +22,9 @@ License_Year: str = str(Time.Elapsed_Time(Time.Get_Unix())["Years"] + 1970); # C
 
 Codename: str = "NoCodename";
 Branch: str = "Main";
-Version: str = "v0";
+Version: tuple[int, ...] = (0, 0, 0);
+Version_Prefix: str = "";
+Version_Suffix: str = "";
 TSNA: tuple[int, int, int] = (5,0,0);
 
 
@@ -39,7 +41,9 @@ if (File.Exists("App.tsna")):
 
 	Codename = AppTSNA.get("Codename", Codename);
 	Branch = AppTSNA.get("Branch", Branch);
-	Version = AppTSNA.get("Version", Version);
+	Version = tuple(AppTSNA.get("Version", Version));
+	Version_Prefix = AppTSNA.get("Version_Prefix", Version_Prefix);
+	Version_Suffix = AppTSNA.get("Version_Suffix", Version_Suffix);
 
 	TSNA = tuple(AppTSNA.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
 	del AppTSNA;
