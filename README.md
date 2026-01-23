@@ -7,21 +7,36 @@ TSNA aims to facilitate development of numerous TSN Python projects such as the 
 TSNA does not come with a proper pip Python Package, you must MANUALLY install TSNA on your computer by downloading the whole repository and unzipping it somewhere.  
 In the case of Linux, with an installation at `/System/Library/TSN_Abstracter`, you must add to your `.bashrc` the following line: `export PYTHONPATH=/System/Library/TSN_Abstracter:$`.  
 All that's left to do is simply include at the very top of your Python script `from TSN_Abstracter import *;` and then get to roll with it.  
-We recommend the following template file to start your TSNA fueled programs:
+We recommend the following template file Python File to start your TSNA fueled programs:
 ```python
 # [Program] (c) [Author] (Date) - [License]
 from TSN_Abstracter import *;
 
-Root_CFG: dict = File.JSON_Read("Root_CFG.json");
 Debug_Mode: bool = Root_CFG["Debug"];
 
-if (__name__ == '__main__'):
-	Log.Clear(); TSN_Abstracter.Require_Version((5,2,0)); # Change (5.2.0) to which ever minimal TSNA version you want to target.
+if (__name__ != "__main__"): TSN_Abstracter.Import_Unsupported(); # Remove this if your script can be imported as a Python Module
+else:
+	TSN_Abstracter.App_Init(True);
 	Config.Logger.Print_Level = 15 if (Debug_Mode) else 20;
 	Config.Logger.File = True;
-	
-	Log.Stateless(f"[Program Name] {Root_CFG["Version"]}");
+
 	# Do whatever your program does here
+	...
+```
+TSNA automatically attempts to read data from `App.tsna`, this file contains basic information about your application:
+```json
+{
+	"Name": "Tachibana",
+	"Description": "Tachibana is a (work in progress) TSNA-Based rewrite of Adellian's SSHMan Application.",
+	"Author": ["Ascellayn", "The Sirio Network"],
+	"Contributors": [],
+	"License": "TSN License 2.1 - Base",
+	"License_Year": "2026",
+	"Codename": "TSN_Tachibana",
+	"Branch": "Azure",
+	"Version": "v0_dev",
+	"TSNA": [5,6,0]
+}
 ```
 TSN Abstracter is obviously __developer oriented__, it is **your job to look at TSNA and find functions that are deemed useful** to you.
 
