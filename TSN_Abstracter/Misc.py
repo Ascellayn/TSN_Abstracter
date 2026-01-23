@@ -93,3 +93,11 @@ def Bulk_Replace(A: list[tuple[str, str] | list[str]], String: str, New: str = "
 		if (isinstance(Item, str)): String = String.replace(Item, New);
 		else: String = String.replace(Item[0], Item[1]);
 	return String;
+
+def Under_At(A: tuple[int, ...], B: tuple[int, ...]) -> int:
+	""" use to compare version tuples"""
+	B_Length: int = len(B);
+	for Index, Number in enumerate(B):
+		if (Index == B_Length): return -1;
+		if (Number < B[Index]): return Index;
+	return -1;
