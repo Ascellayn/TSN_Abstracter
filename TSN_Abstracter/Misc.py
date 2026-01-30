@@ -78,8 +78,8 @@ def All_Includes(A: typing.Iterable[typing.Any], B: typing.Iterable[typing.Any])
 
 def Under_At(A: tuple[int, ...] | list[int], B: tuple[int, ...] | list[int]) -> int:
 	""" use to compare version tuples"""
-	B_Length: int = len(B);
-	for Index, Number in enumerate(A):
-		if (Index == B_Length): return -1;
-		if (Number < B[Index]): return Index;
+	A_Length: int = len(B);
+	for Index, Number in enumerate(B):
+		if (Index == A_Length): break;
+		if (Number > A[Index]): return Index;
 	return -1;
