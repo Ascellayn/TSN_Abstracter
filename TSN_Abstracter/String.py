@@ -10,7 +10,7 @@ import re;
 
 
 
-def Bulk_Replace(A: list[tuple[str, str] | list[str]], String: str, New: str = "") -> str:
+def Bulk_Replace(A: list[tuple[str, str] | list[str] | str], String: str, New: str = "") -> str:
 	""" bulk replace every old strings in A to A[.][1] or New from str String """
 	for Item in A:
 		if (isinstance(Item, str)): String = String.replace(Item, New);
