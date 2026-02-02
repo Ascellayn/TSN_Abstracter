@@ -69,8 +69,11 @@ from . import Safe;
 from . import SNDL;
 from . import String;
 from . import Time;
-from typing import Any, cast, TypedDict;
+from typing import Any, cast, TypeAlias, TypedDict;
 
+NULL: TypeAlias = None;
+true: bool = bool(True);
+false: bool = bool(False);
 
 
 
