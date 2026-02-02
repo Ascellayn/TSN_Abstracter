@@ -103,7 +103,7 @@ class TSN_Abstracter:
 	def Version(Version: tuple[int, int, int] | None = None) -> str:
 		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
 		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
-		return f"v{".".join(String.ify_Array(Version)}";
+		return f"v{".".join(String.ify_Array(Version))}";
 
 
 	@staticmethod
