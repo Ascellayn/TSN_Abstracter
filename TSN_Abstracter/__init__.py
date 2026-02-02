@@ -103,7 +103,7 @@ class TSN_Abstracter:
 	def Version(Version: tuple[int, int, int] | None = None) -> str:
 		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
 		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
-		return f"v{".".join(str(INT) for INT in Version)}";
+		return f"v{".".join(String.ify_Array(Version)}";
 
 
 	@staticmethod
@@ -129,7 +129,7 @@ class TSN_Abstracter:
 	@staticmethod
 	def App_Version() -> str:
 		"""Returns a readable string of the TSNA-Based Application Version."""
-		return f"v{App.Version_Prefix}{".".join(str(INT) for INT in App.Version)}{App.Version_Prefix}";
+		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Prefix}";
 
 
 	@staticmethod
