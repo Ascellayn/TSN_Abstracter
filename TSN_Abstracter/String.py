@@ -9,7 +9,7 @@ import re;
 from typing import Any;
 
 
-def ify_Array(Array: list[Any]) -> list[str]:
+def ify_Array(Array: list[Any] | tuple[Any, ...]) -> list[str]:
 	""" transforms all elements inside arrays to be strings """
 	return [str(Item) for Item in Array];
 
