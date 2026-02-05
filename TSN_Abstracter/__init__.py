@@ -70,6 +70,7 @@ from . import SNDL;
 from . import String;
 from . import Time;
 from typing import Any, TypeAlias, TypedDict, assert_type, cast;
+from collections.abc import Callable;
 
 NULL: TypeAlias = None;
 
@@ -174,5 +175,6 @@ __all__ = [
 	"TSN_Abstracter",
 	"Any", "TypeAlias", "TypedDict",
 	"assert_type", "cast",
+	"Callable",
 	"NULL"
 ];
