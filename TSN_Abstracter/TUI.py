@@ -174,6 +174,8 @@ class Menu:
 			self.Toggled = False if (self.Toggled) else True;
 			return self.Toggled;
 
+	type Entries = list[Entry] | tuple[Entry, ...];
+
 
 
 
@@ -193,7 +195,7 @@ class Menu:
 
 
 	@staticmethod
-	def Interactive(Entries: list[Entry] | tuple[Entry, ...]) -> typing.Any:
+	def Interactive(Entries: Entries) -> typing.Any:
 		x: int; y: int = 2;
 		Index: int = 0;
 		while True:
