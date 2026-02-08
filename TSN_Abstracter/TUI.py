@@ -331,9 +331,10 @@ class Menu:
 
 
 			# Cursor Display
-			if (Entries[Index].Type != 1): # No cursor on Finalize
-				if (Entries[Index].Type != 10): # Don't overwrite the toggle state
-					Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
+			if (Entries[Index].Indentation != -2): # Ignore on -2 Indent
+				if (Entries[Index].Type != 1): # No cursor on Finalize
+					if (Entries[Index].Type != 10): # Don't overwrite the toggle state
+						Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
 
 			# Description
 			Description: str = f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}";
@@ -345,7 +346,9 @@ class Menu:
 			# Cursor & Refresh
 			match (Entries[Index].Type):
 				case 1: Window.move(y, 2 + len(Entries[Index].Name));
-				case _: Window.move(y, 3 + (2 * Entries[Index].Indentation));
+				case _:
+					if (Entries[Index].Indentation == -2): Window.move(y, 2 + len(Entries[Index].Name));
+					else: Window.move(y, 3 + (2 * Entries[Index].Indentation));
 			Window.refresh();
 
 
@@ -402,7 +405,7 @@ class Menu:
 
 
 
-				case 27: curses.flash(); return ""; # ESC
+				case 27: curses.flash(); return None; # ESC
 				case 10: # Enter
 					if (Entries[Index].Unavailable): curses.beep(); curses.flash(); continue;
 
