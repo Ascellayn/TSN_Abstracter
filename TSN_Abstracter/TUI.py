@@ -150,7 +150,8 @@ class Menu:
 				Indentation: int = 0, Unavailable: bool = False,
 				Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Log.Clear,
 				Arguments: list[typing.Any] | tuple[typing.Any, ...] = (),
-				Toggled: bool = False, Bold: bool = False, Value: str = ""
+				Bold: bool = False,
+				Value: str | bool = ""
 			) -> None:
 			self.Type: int = Type;
 
@@ -161,8 +162,8 @@ class Menu:
 
 			self.Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Function;
 			self.Arguments: list[typing.Any] | tuple[typing.Any, ...] = tuple(Arguments);
-			self.Toggled: bool = Toggled; self.Bold = Bold;
-			self.Value: str = Value;
+			self.Bold = Bold;
+			self.Value: str | bool = Value;
 
 			match self.Type:
 				case 1: self.Indentation = self.Indentation - 2;
@@ -172,8 +173,8 @@ class Menu:
 
 
 		def Toggle(self) -> bool:
-			self.Toggled = False if (self.Toggled) else True;
-			return self.Toggled;
+			self.Value = False if (self.Value) else True;
+			return self.Value;
 
 	type Entries = list[Entry] | tuple[Entry, ...];
 
@@ -223,7 +224,7 @@ class Menu:
 
 				# Type Quirks
 				match (Entry.Type):
-					case 10: Window.addstr(eY, 2 + (2 * Entry.Indentation), "[X]" if (Entry.Toggled) else "[ ]");
+					case 10: Window.addstr(eY, 2 + (2 * Entry.Indentation), "[X]" if (Entry.Value) else "[ ]");
 					case 11: Window.insstr(eY, eX + len(Entry.Name), f" - '{Entry.Value}'");
 					case 12: # Arrays
 						Values: str = "[";
@@ -319,7 +320,7 @@ class Menu:
 						case 1: return Entries[Index].Function(Entries); # pyright: ignore[reportCallIssue]
 
 						case 10: Entries[Index].Toggle(); continue;
-						case 11: Entries[Index].Value = Input.Text(Entries[Index].Value, *Entries[Index].Arguments); continue;
+						case 11: Entries[Index].Value = Input.Text(typing.cast(str, Entries[Index].Value), *Entries[Index].Arguments); continue;
 						case 12: continue; # TBD: Add prompt to select from list instead of using arrow keys
 						case _: pass;
 
