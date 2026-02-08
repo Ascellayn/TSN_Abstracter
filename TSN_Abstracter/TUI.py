@@ -198,6 +198,8 @@ class Menu:
 	def Interactive(Entries: Entries) -> typing.Any:
 		x: int; y: int = 2;
 		Index: int = 0;
+		while (Entries[Index].Type == 20): Index += 1; y += 1;
+
 		while True:
 			Menu.Base();
 			Max_Visible: int = curses.LINES - 5;
@@ -250,9 +252,14 @@ class Menu:
 			match (Key):
 				case curses.KEY_DOWN:
 					Index += 1; Repeat: int = 1;
-					while (Index != 0 and Index != len(Entries)):
+					while (True): # Go down one more if Unselectable Type
+						if (Index > (len(Entries) - 1)): Index = 0; y = 2; Repeat = 0;
 						match (Entries[Index].Type):
-							case 20: Index += 1; Repeat += 1;
+							case 20:
+								Index += 1; Repeat += 1;
+								if (Index > (len(Entries) - 1)):
+									Index = 0; Repeat = 0;
+									y = 2;
 							case _: break;
 
 					if (Index == len(Entries)): y = 2; Index = 0; continue;
@@ -263,9 +270,13 @@ class Menu:
 
 				case curses.KEY_UP:
 					Index -= 1; Repeat: int = 1;
-					while (Index != 0 and Index != len(Entries)):
+					while (True): # Go Up one more if Unselectable Type
 						match (Entries[Index].Type):
-							case 20: Index -= 1; Repeat += 1;
+							case 20:
+								Index -= 1; Repeat += 1;
+								if (Index < 0):
+									Index = len(Entries) - 1; Repeat = 0;
+									y = min(len(Entries) + 1, curses.LINES - 5);
 							case _: break;
 
 					if (y == 2 and Index == -1): y = min(Displayed + 1, len(Entries) + 1, curses.LINES - 4); Index = len(Entries) - 1; continue;
