@@ -69,8 +69,10 @@ from . import Safe;
 from . import SNDL;
 from . import String;
 from . import Time;
-from typing import Any, TypedDict;
+from typing import Any, TypeAlias, TypedDict, assert_type, cast;
+from collections.abc import Callable;
 
+NULL: TypeAlias = None;
 
 
 
@@ -78,7 +80,7 @@ from typing import Any, TypedDict;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,0,0);
+	Version_Tuple: tuple[int, int, int] = (6,1,0);
 
 
 
@@ -103,7 +105,7 @@ class TSN_Abstracter:
 	def Version(Version: tuple[int, int, int] | None = None) -> str:
 		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
 		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
-		return f"v{".".join(str(INT) for INT in Version)}";
+		return f"v{".".join(String.ify_Array(Version))}";
 
 
 	@staticmethod
@@ -129,7 +131,7 @@ class TSN_Abstracter:
 	@staticmethod
 	def App_Version() -> str:
 		"""Returns a readable string of the TSNA-Based Application Version."""
-		return f"v{App.Version_Prefix}{".".join(str(INT) for INT in App.Version)}{App.Version_Prefix}";
+		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Prefix}";
 
 
 	@staticmethod
@@ -171,5 +173,8 @@ __all__ = [
 	"String",
 	"Time",
 	"TSN_Abstracter",
-	"Any", "TypedDict"
+	"Any", "TypeAlias", "TypedDict",
+	"assert_type", "cast",
+	"Callable",
+	"NULL"
 ];

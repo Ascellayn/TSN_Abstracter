@@ -122,8 +122,9 @@ def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
 class Color:
 	""" Classes containing SNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
 	Optionally, the Hex Code is available by appending `_Hex` to the color.  
+	If you are using TSNA's `TUI.*` functions, the curses colors are available by appending `_TERM`.  
 	*These colors may be referred as The "Sirio Network Colors" (SNC).*
-	##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
+	##### Sirio Network Design Language © The Sirio Network 2023-2026 // All Rights Reserved
 
 	### Examples
 	>>> SNDL.Color.Sun.Pink
@@ -186,6 +187,18 @@ class Color:
 		Purple_Hex: str = "#32004B";
 		Pink_Hex: str = "#690069";
 
+		Black_TERM: int = 0;
+		Grey_TERM: int = 1;
+		White_TERM: int = 2;
+		Red_TERM: int = 3;
+		Orange_TERM: int = 4;
+		Yellow_TERM: int = 5;
+		Green_TERM: int = 6;
+		Cyan_TERM: int = 7;
+		Blue_TERM: int = 8;
+		Purple_TERM: int = 9;
+		Pink_TERM: int = 10;
+
 
 	class Night:
 		"""Dark-Mode: Secondary Color"""
@@ -213,6 +226,18 @@ class Color:
 		Purple_Hex: str = "#4B0569";
 		Pink_Hex: str = "#821982";
 
+		Black_TERM: int = 20;
+		Grey_TERM: int = 21;
+		White_TERM: int = 22;
+		Red_TERM: int = 23;
+		Orange_TERM: int = 24;
+		Yellow_TERM: int = 25;
+		Green_TERM: int = 26;
+		Cyan_TERM: int = 27;
+		Blue_TERM: int = 28;
+		Purple_TERM: int = 29;
+		Pink_TERM: int = 30;
+	
 
 	class Moon:
 		"""Dark-Mode: Primary Color"""
@@ -239,6 +264,18 @@ class Color:
 		Blue_Hex: str = "#140087";
 		Purple_Hex: str = "#5F0A87";
 		Pink_Hex: str = "#9B329B";
+
+		Black_TERM: int = 40;
+		Grey_TERM: int = 41;
+		White_TERM: int = 42;
+		Red_TERM: int = 43;
+		Orange_TERM: int = 44;
+		Yellow_TERM: int = 45;
+		Green_TERM: int = 46;
+		Cyan_TERM: int = 47;
+		Blue_TERM: int = 48;
+		Purple_TERM: int = 49;
+		Pink_TERM: int = 50;
 
 
 	class Sky:
@@ -267,6 +304,18 @@ class Color:
 		Purple_Hex: str = "#8714C3";
 		Pink_Hex: str = "#CD64CD";
 
+		Black_TERM: int = 60;
+		Grey_TERM: int = 61;
+		White_TERM: int = 62;
+		Red_TERM: int = 63;
+		Orange_TERM: int = 64;
+		Yellow_TERM: int = 65;
+		Green_TERM: int = 66;
+		Cyan_TERM: int = 67;
+		Blue_TERM: int = 68;
+		Purple_TERM: int = 69;
+		Pink_TERM: int = 70;
+
 
 	class Day:
 		"""Light-Mode: Secondary Color"""
@@ -294,6 +343,18 @@ class Color:
 		Purple_Hex: str = "#9B19E1";
 		Pink_Hex: str = "#E67DE6";
 
+		Black_TERM: int = 80;
+		Grey_TERM: int = 81;
+		White_TERM: int = 82;
+		Red_TERM: int = 83;
+		Orange_TERM: int = 84;
+		Yellow_TERM: int = 85;
+		Green_TERM: int = 86;
+		Cyan_TERM: int = 87;
+		Blue_TERM: int = 88;
+		Purple_TERM: int = 89;
+		Pink_TERM: int = 90;
+
 
 	class Sun:
 		"""Light-Mode: Primary Color"""
@@ -320,3 +381,15 @@ class Color:
 		Blue_Hex: str = "#2800FF";
 		Purple_Hex: str = "#AF1EFF";
 		Pink_Hex: str = "#FF96FF";
+
+		Black_TERM: int = 100;
+		Grey_TERM: int = 101;
+		White_TERM: int = 102;
+		Red_TERM: int = 103;
+		Orange_TERM: int = 104;
+		Yellow_TERM: int = 105;
+		Green_TERM: int = 106;
+		Cyan_TERM: int = 107;
+		Blue_TERM: int = 108;
+		Purple_TERM: int = 109;
+		Pink_TERM: int = 110;
