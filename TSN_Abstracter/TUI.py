@@ -138,7 +138,7 @@ class Menu:
 			IOText = 11;
 
 			# DISPLAY GROUP - 2X
-			Title = 20;
+			Text = 20;
 
 
 
@@ -149,7 +149,7 @@ class Menu:
 				Indentation: int = 0, Unavailable: bool = False,
 				Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Log.Clear,
 				Arguments: list[typing.Any] | tuple[typing.Any, ...] = (),
-				Toggled: bool = False, Value: str = ""
+				Toggled: bool = False, Bold: bool = False, Value: str = ""
 			) -> None:
 			self.Type: int = Type;
 
@@ -160,7 +160,7 @@ class Menu:
 
 			self.Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Function;
 			self.Arguments: list[typing.Any] | tuple[typing.Any, ...] = tuple(Arguments);
-			self.Toggled: bool = Toggled;
+			self.Toggled: bool = Toggled; self.Bold = Bold;
 			self.Value: str = Value;
 
 			match self.Type:
@@ -215,7 +215,7 @@ class Menu:
 
 				# Text Display
 				if (Entry.Unavailable): _ColorAttribute(SNDL.Color.Moon.Grey_TERM);
-				if (Entry.Type == 20): Window.attron(curses.A_BOLD);
+				if (Entry.Bold): Window.attron(curses.A_BOLD);
 				Window.insstr(eY, eX, Entry.Name);
 				Window.attrset(0);
 
