@@ -136,6 +136,7 @@ class Menu:
 			# INPUT GROUP - 1X
 			Toggle = 10;
 			IOText = 11;
+			Array = 12;
 
 			# DISPLAY GROUP - 2X
 			Text = 20;
@@ -224,6 +225,15 @@ class Menu:
 				match (Entry.Type):
 					case 10: Window.addstr(eY, 2 + (2 * Entry.Indentation), "[X]" if (Entry.Toggled) else "[ ]");
 					case 11: Window.insstr(eY, eX + len(Entry.Name), f" - '{Entry.Value}'");
+					case 12: # Arrays
+						Values: str = "[";
+						for Count, Possibility in enumerate(Entry.Arguments):
+							if (Possibility == Entry.Value): Values += f"{'|' if (Count != 0) else ''} → {Possibility} ← ";
+							else: Values += f"{'|' if (Count != 0) else ''} {Possibility} ";
+						Values += "]";
+
+						Window.insstr(eY, eX + len(Entry.Name), f" - {Values}");
+
 					case _: pass;
 				Displayed += 1;
 
@@ -286,6 +296,19 @@ class Menu:
 
 					y -= 1 * Repeat;
 
+				# ARRAY ONLY INPUTS
+				case curses.KEY_LEFT:
+					if (Entries[Index].Type != 12): continue;
+					aIndex: int = Entries[Index].Arguments.index(Entries[Index].Value);
+					if (aIndex == 0): Entries[Index].Value = Entries[Index].Arguments[len(Entries[Index].Arguments) - 1];
+					else: Entries[Index].Value = Entries[Index].Arguments[aIndex - 1];
+
+				case curses.KEY_RIGHT:
+					if (Entries[Index].Type != 12): continue;
+					aIndex: int = Entries[Index].Arguments.index(Entries[Index].Value);
+					if (aIndex == len(Entries[Index].Arguments) - 1): Entries[Index].Value = Entries[Index].Arguments[0];
+					else: Entries[Index].Value = Entries[Index].Arguments[aIndex + 1];
+
 
 
 				case 27: curses.flash(); return ""; # ESC
@@ -297,6 +320,7 @@ class Menu:
 
 						case 10: Entries[Index].Toggle(); continue;
 						case 11: Entries[Index].Value = Input.Text(Entries[Index].Value, *Entries[Index].Arguments); continue;
+						case 12: continue; # TBD: Add prompt to select from list instead of using arrow keys
 						case _: pass;
 
 					return Entries[Index].Function(*Entries[Index].Arguments);
