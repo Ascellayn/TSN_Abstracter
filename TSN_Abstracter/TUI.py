@@ -127,16 +127,6 @@ class Input:
 
 
 class Menu:
-	@staticmethod
-	def Entries_To_Dict(Entries: Entries) -> dict[str, typing.Any]:
-		Data: dict[str, typing.Any] = {};
-		for Entry in Entries:
-			if (Entry.ID): Data[Entry.ID] = Entry.Value;
-	
-		return Data;
-
-
-
 	@dataclass
 	class Entry:
 		class Action(enum.Enum):
@@ -192,6 +182,23 @@ class Menu:
 			return self.Value;
 
 	type Entries = list[Entry] | tuple[Entry, ...];
+
+
+
+
+
+	@staticmethod
+	def Entries_To_Dict(Entries: Entries) -> dict[str, typing.Any]:
+		Data: dict[str, typing.Any] = {};
+		for Entry in Entries:
+			if (Entry.ID): Data[Entry.ID] = Entry.Value;
+	
+		return Data;
+
+
+
+
+
 
 
 
