@@ -2,7 +2,8 @@ from . import App, Log, SNDL, String; # pyright: ignore[reportUnusedImport] | SN
 from . import TSN_Abstracter;
 from dataclasses import dataclass;
 from collections.abc import Callable;
-import curses, enum, re, typing;
+import curses, curses.textpad;
+import enum, re, typing;
 
 
 Window: curses.window = curses.initscr();
@@ -126,6 +127,16 @@ class Input:
 
 
 class Menu:
+	@staticmethod
+	def Entries_To_Dict(Entries: Entries) -> dict[str, typing.Any]:
+		Data: dict[str, typing.Any] = {};
+		for Entry in Entries:
+			if (Entry.ID): Data[Entry.ID] = Entry.Value;
+	
+		return Data;
+
+
+
 	@dataclass
 	class Entry:
 		class Action(enum.Enum):
@@ -147,22 +158,26 @@ class Menu:
 				Type: int,
 				Name: str = "Unnamed Entry",
 				Description: str = "This entry does not have any description.",
-				Indentation: int = 0, Unavailable: bool = False,
+				ID: str | None = None,
+
+				Indentation: int = 0, Unavailable: bool = False, Bold: bool = False,
+
 				Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Log.Clear,
 				Arguments: list[typing.Any] | tuple[typing.Any, ...] = (),
-				Bold: bool = False,
-				Value: str | bool = ""
+				Value: str | bool = "",
 			) -> None:
 			self.Type: int = Type;
 
 			self.Name: str = Name;
 			self.Description: str = Description;
+			self.ID: str | None = ID;
+
 			self.Indentation: int = Indentation;
 			self.Unavailable: bool = Unavailable;
+			self.Bold = Bold;
 
 			self.Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Function;
 			self.Arguments: list[typing.Any] | tuple[typing.Any, ...] = tuple(Arguments);
-			self.Bold = Bold;
 			self.Value: str | bool = Value;
 
 			match self.Type:
@@ -193,6 +208,74 @@ class Menu:
 		Window.hline(curses.LINES - 3, 1, curses.ACS_HLINE, curses.COLS -2);
 		Window.addch(curses.LINES - 3, 0, curses.ACS_SSSB);
 		Window.addch(curses.LINES - 3, curses.COLS -1, curses.ACS_SBSS);
+
+
+
+	@staticmethod
+	def Popup(Title: str, Description: str, Entry: Entry) -> typing.Any: # pyright: ignore[reportRedeclaration]
+		""" Entry type must be Array """
+		def _CenterX(Text: str) -> int:
+			return ULX - round((len(Text) - (LRX - ULX)) / 2);
+
+		Index: int = 0; iDescription: list[str] = Description.split("\n");
+		Initial: str = typing.cast(str, Entry.Value);
+
+		while True:
+			# Get Selection
+			Values: str = "[";
+			for Count, Possibility in enumerate(Entry.Arguments):
+				if (Possibility == Entry.Value): Values += f"{'|' if (Count != 0) else ''} → {Possibility} ← ";
+				else: Values += f"{'|' if (Count != 0) else ''} {Possibility} ";
+			Values += "]";
+
+			# Failsafe if Description is too long, creates automatic spacing
+			Description: list[str] = [];
+			for Line in iDescription:
+				if (len(Line) > curses.COLS - 2):
+					Description.append(*String.Split_Length(Line, curses.COLS - 2));
+				else: Description.append(Line);
+
+
+			# Drawing Textbox
+			Horizontal: int = max(len(Title), *[len(x) for x in Description], len(Values)) + 3;
+			Vertical: int = 4 + len(Description);
+
+			ULX: int = round(((curses.COLS - Horizontal) / 2));
+			ULY: int = round(((curses.LINES - Vertical) / 2));
+			LRY: int = round(((curses.LINES - Vertical) / 2)) + Vertical;
+			LRX: int = round(((curses.COLS - Horizontal) / 2)) + Horizontal;
+
+
+			Menu.Base();
+			curses.textpad.rectangle(Window, ULY, ULX, LRY, LRX);
+			Window.addstr(ULY, _CenterX(Title), Title, curses.A_BOLD); # Title
+
+			dY: int = ULY + 2; # Description
+			for Line in Description:
+				Window.addstr(dY, _CenterX(Line), Line);
+				dY += 1;
+
+			Window.addstr(LRY - 1, LRX - 1 - len(Values), Values); # Selection
+
+			# Input Handling
+			Key: int = Input.Get();
+			match (Key):
+				case curses.KEY_LEFT:
+					if (Index == 0): Index = len(Entry.Arguments) - 1;
+					else: Index -= 1;
+
+				case curses.KEY_RIGHT:
+					if (Index == (len(Entry.Arguments) - 1)): Index = 0;
+					else: Index += 1;
+				case 27: curses.flash(); return Initial; # ESC
+				case 10: return Entry.Value; # Enter
+				case _: pass;
+
+			Entry.Value = Entry.Arguments[Index];
+
+
+
+
 
 
 
@@ -317,7 +400,7 @@ class Menu:
 					if (Entries[Index].Unavailable): curses.beep(); curses.flash(); continue;
 
 					match (Entries[Index].Type):
-						case 1: return Entries[Index].Function(Entries); # pyright: ignore[reportCallIssue]
+						case 1: return Menu.Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
 
 						case 10: Entries[Index].Toggle(); continue;
 						case 11: Entries[Index].Value = Input.Text(typing.cast(str, Entries[Index].Value), *Entries[Index].Arguments); continue;
