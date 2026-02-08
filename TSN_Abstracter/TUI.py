@@ -235,7 +235,9 @@ class Menu:
 					Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
 
 			# Description
-			Window.insstr(curses.LINES - 2, 2, f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}");
+			Description: str = f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}";
+			if (len(Description) >= curses.COLS - 4): Description = Description[:curses.COLS - 9] + "(...)";
+			Window.insstr(curses.LINES - 2, 2, Description);
 			Window.addch(curses.LINES - 2, curses.COLS -1, curses.ACS_VLINE);
 			# insstr breaks the final character so we add it back
 
