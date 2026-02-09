@@ -351,7 +351,9 @@ class Menu:
 
 			# Low Res. Terms: Give scroll Hint
 			if (Index != (len(Entries) - 1) and Max_Visible < len(Entries)):
-				Window.insstr(curses.LINES - 4, 2, f" ... ({len(Entries) - Index - round(Max_Visible / 2)} more)");
+				Remaining: int = len(Entries) - Index - round(Max_Visible / 2);
+				if (Remaining != 0): # Rounding error correction band-aid fix
+					Window.insstr(curses.LINES - 4, 2, f" ... ({Remaining} more)");
 
 			# Cursor & Refresh
 			match (Entries[Index].Type):
