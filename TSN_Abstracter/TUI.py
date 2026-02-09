@@ -290,11 +290,17 @@ class Menu:
 	def Interactive(Entries: Entries) -> typing.Any:
 		x: int; y: int = 2;
 		Index: int = 0;
-		while (Entries[Index].Type == 20): Index += 1; y += 1;
-
 		while True:
 			Menu.Base();
-			Max_Visible: int = curses.LINES - 5;
+			Max_Visible: int = curses.LINES - 6;
+
+			# Failsafe when Entry Type is not selectable
+			while (Entries[Index].Type == 20):
+				Index += 1;
+
+			if ((len(Entries) - 1) >= Max_Visible and Index > round(Max_Visible / 2)): y = 2 + round(Max_Visible / 2);
+			else: y = 2 + Index;
+
 			x = 3 + (2 * Entries[Index].Indentation);
 
 			# Display entries
@@ -302,7 +308,7 @@ class Menu:
 			for Number, Entry in enumerate(Entries):
 				if (Max_Visible < len(Entries)):
 					if (Displayed >= Max_Visible): break;
-					if (Number < Index): continue;
+					if (Number + round(Max_Visible / 2) < Index): continue;
 				eX: int = 6 + (2 * Entry.Indentation); eY = 2 + Displayed;
 
 				# Text Display
@@ -343,6 +349,10 @@ class Menu:
 			Window.addch(curses.LINES - 2, curses.COLS -1, curses.ACS_VLINE);
 			# insstr breaks the final character so we add it back
 
+			# Low Res. Terms: Give scroll Hint
+			if (Index != (len(Entries) - 1) and Max_Visible < len(Entries)):
+				Window.insstr(curses.LINES - 4, 2, f" ... ({len(Entries) - Index - round(Max_Visible / 2)} more)");
+
 			# Cursor & Refresh
 			match (Entries[Index].Type):
 				case 1: Window.move(y, 2 + len(Entries[Index].Name));
@@ -357,38 +367,23 @@ class Menu:
 			Key: int = Input.Get();
 			match (Key):
 				case curses.KEY_DOWN:
-					Index += 1; Repeat: int = 1;
-					while (True): # Go down one more if Unselectable Type
-						if (Index > (len(Entries) - 1)): Index = 0; y = 2; Repeat = 0;
+					Index += 1;
+					while (True): # Go Up one more if Unselectable Type
+						if (Index > len(Entries) - 1): Index = 0;
 						match (Entries[Index].Type):
-							case 20:
-								Index += 1; Repeat += 1;
-								if (Index > (len(Entries) - 1)):
-									Index = 0; Repeat = 0;
-									y = 2;
+							case 20: Index += 1;
 							case _: break;
-
-					if (Index == len(Entries)): y = 2; Index = 0; continue;
-					elif ((y == curses.LINES - 5)): y = 2; continue;
-
-					y += 1 * Repeat;
 
 
 				case curses.KEY_UP:
-					Index -= 1; Repeat: int = 1;
+					Index -= 1;
 					while (True): # Go Up one more if Unselectable Type
+						if (Index == -1): Index = len(Entries) - 1;
 						match (Entries[Index].Type):
-							case 20:
-								Index -= 1; Repeat += 1;
-								if (Index < 0):
-									Index = len(Entries) - 1; Repeat = 0;
-									y = min(len(Entries) + 1, curses.LINES - 5);
+							case 20: Index -= 1;
 							case _: break;
 
-					if (y == 2 and Index == -1): y = min(Displayed + 1, len(Entries) + 1, curses.LINES - 4); Index = len(Entries) - 1; continue;
-					elif (y == 2): y = min(len(Entries) + 1, curses.LINES - 5); continue;
 
-					y -= 1 * Repeat;
 
 				# ARRAY ONLY INPUTS
 				case curses.KEY_LEFT:
