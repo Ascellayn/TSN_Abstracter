@@ -198,7 +198,7 @@ def List(Path: str) -> Folder_Contents:
 	Examples:
 		>>> File.List("TSN_Abstracter");
 		(
-			('__pycache__',), # WARNING: The extra "," when there's *only one* folder, is a visual bug! I'm not sure how to get rid of it...
+			('__pycache__',), # Reminder that a `,` inside a tuple of a single element is required or otherwise Python thinks it's a literal which is BAD
 			('String.py', 'Cryptography.py', 'Time.py', 'File.py', 'Log.py', 'Misc.py', '__init__.py', 'Config.py', 'Safe.py', 'SNDL.py')
 		)
 	"""
