@@ -8,6 +8,7 @@
 >>> Safe.Index(Array, 1);
 None
 """
+import typing;
 
 
 
@@ -53,3 +54,11 @@ def NotNull(Number: int, Default: int = 1) -> int:
 	"""
 	if (Number == 0): return Default;
 	return Number;
+
+
+
+def Nested_Dict(Dict: dict[str, typing.Any], Keys: list[str], Default: typing.Any = None) -> typing.Any:
+	""" safely get data from nested dicts with an argument for a default value """
+	for Key in Keys:
+		Dict = Dict.get(Key, Default);
+	return Dict;
