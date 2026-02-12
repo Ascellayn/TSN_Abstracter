@@ -83,9 +83,3 @@ def Under_At(A: tuple[int, ...] | list[int], B: tuple[int, ...] | list[int]) -> 
 		if (Index == A_Length): break;
 		if (Number > A[Index]): return Index;
 	return -1;
-
-def Nested_Get(Dict: dict[str, typing.Any], Keys: list[str], Default: typing.Any = None) -> typing.Any:
-	""" safely get data from nested dicts with an argument for a default value """
-	for Key in Keys:
-		Dict = Dict.get(Key, Default);
-	return Dict;
