@@ -80,16 +80,16 @@ class Input:
 
 		while True:
 			# Empty Description Field
-			Window.insstr(y, 0, " " * curses.COLS);
+			Window.addstr(y, 0, " " * curses.COLS);
 			Window.hline(y - 1, 1, curses.ACS_HLINE, curses.COLS - 2);
 
 			if (len(Value) > curses.COLS - 3):
-				Window.insstr(y, 1,
+				Window.addstr(y, 1,
 					Value[
 						max(len(Value) - (curses.COLS - 3) + Cursor, 0):
 					]
 				);
-			else: Window.insstr(y, 1, Value);
+			else: Window.addstr(y, 1, Value);
 
 			Menu.Base(False);
 			Window.move(y, min(x + Cursor, curses.COLS - 2));
@@ -286,7 +286,7 @@ class Menu:
 
 			Menu.Base(False if (iLINES == curses.LINES and iCOLS == curses.COLS) else True);
 			for Y in range(ULY + 1, LRY):
-				Window.insstr(Y, ULX + 1, " " * (LRX - ULX - 1));
+				Window.addstr(Y, ULX + 1, " " * (LRX - ULX - 1));
 			curses.textpad.rectangle(Window, ULY, ULX, LRY, LRX);
 
 			Window.addstr(ULY, _GetTextX(Title, "Center"), Title, curses.A_BOLD); # Title
@@ -395,9 +395,7 @@ class Menu:
 			# Description
 			Description: str = f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}";
 			if (len(Description) >= curses.COLS - 4): Description = Description[:curses.COLS - 9] + "(...)";
-			Window.insstr(curses.LINES - 2, 2, Description);
-			Window.addch(curses.LINES - 2, curses.COLS -1, curses.ACS_VLINE);
-			# insstr breaks the final character so we add it back
+			Window.addstr(curses.LINES - 2, 2, Description);
 
 			# Low Res. Terms: Give scroll Hint
 			if (Index != (len(Entries) - 1) and Max_Visible < len(Entries)):
