@@ -278,8 +278,11 @@ class Menu:
 			LRX: int = round(((curses.COLS - Horizontal) / 2)) + Horizontal;
 
 
-			Menu.Base();
+			Menu.Base(False);
+			for Y in range(ULY + 1, LRY):
+				Window.insstr(Y, ULX + 1, " " * (LRX - ULX - 1));
 			curses.textpad.rectangle(Window, ULY, ULX, LRY, LRX);
+
 			Window.addstr(ULY, _GetTextX(Title, "Center"), Title, curses.A_BOLD); # Title
 
 			dY: int = ULY + 2; # Description
