@@ -245,7 +245,8 @@ class Menu:
 			Description: list[str] = [];
 			for Line in iDescription:
 				if (len(Line) > curses.COLS - 2):
-					Description.append(*String.Split_Length(Line, curses.COLS - 2));
+					for Splitted in String.Split_Length(Line, curses.COLS - 2):
+						Description.append(Splitted);
 				else: Description.append(Line);
 
 
