@@ -294,6 +294,16 @@ class Menu:
 	def Interactive(Entries: Entries) -> typing.Any:
 		x: int; y: int = 2;
 		Index: int = 0;
+
+
+		# Init default value for supported types where a dev potentially forgot to set a default value.
+		for Entry in Entries:
+			if (Entry.Type == 10): # Toggle
+				if (not Entry.Value): Entry.Value = False;
+			if (Entry.Type == 12): # Array:
+				if (not Entry.Value): Entry.Value = Entry.Arguments[0];
+
+
 		while True:
 			Menu.Base();
 			Max_Visible: int = curses.LINES - 6;
