@@ -171,6 +171,8 @@ class Menu:
 			self.Arguments: list[typing.Any] | tuple[typing.Any, ...] = tuple(Arguments);
 			self.Value: str | bool = Value;
 
+			self.__ValueInitial: typing.Any = None;
+
 			match self.Type:
 				case 1: self.Indentation = self.Indentation - 2;
 				case 20: self.Indentation = self.Indentation - 2;
@@ -182,7 +184,23 @@ class Menu:
 			self.Value = False if (self.Value) else True;
 			return self.Value;
 
+
+
+	@dataclass
+	class Keybind:
+		def __init__(self,
+				Key: int,
+				Name: str,
+				Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any],
+				Arguments: list[typing.Any] | tuple[typing.Any, ...] = (),
+			) -> None:
+			self.Key: int = Key;
+			self.Name: str = Name;
+			self.Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Function;
+			self.Arguments: list[typing.Any] | tuple[typing.Any, ...] = tuple(Arguments);
+
 	type Entries = list[Entry] | tuple[Entry, ...];
+	type Keybinds = list[Keybind] | tuple[Keybind, ...];
 
 
 
@@ -294,7 +312,7 @@ class Menu:
 
 
 	@staticmethod
-	def Interactive(Entries: Entries) -> typing.Any:
+	def Interactive(Entries: Entries, Keybinds: Keybinds = []) -> typing.Any:
 		x: int; y: int = 2;
 		Index: int = 0;
 
@@ -305,6 +323,12 @@ class Menu:
 				if (not Entry.Value): Entry.Value = False;
 			if (Entry.Type == 12): # Array:
 				if (not Entry.Value): Entry.Value = Entry.Arguments[0];
+
+		# Set default values for Reset function
+		for Entry in Entries:
+			if (Entry.Type in [10, 11, 12]): # Toggle
+				Entry.__ValueInitial = Entry.Value; # pyright: ignore[reportPrivateUsage]
+
 
 
 		while True:
@@ -421,9 +445,55 @@ class Menu:
 
 
 				# MISC INPUTS
-				case 104 | 72: # "h" - Help Key
+				case 104: # "h" - Help for Selected Entry
 					Menu.Popup(Entries[Index].Name, Entries[Index].Description, Menu.Entry(12, Arguments=["Ok"]));
 
+
+				case 72: # "H" - Help for Keybinds
+					Description: str = f"\
+TSN Abstracter Default Keybinds:\n\
+[h] - Show Entry Description\n\
+[H] - Show Available Keybinds\n\
+\n\
+[r] - Reset Selected Entry to Initial Value\n\
+[R] - Reset All Entry to their Initial Value\n\
+\n\
+{App.Name} Keybinds (for this Menu):\n\
+";
+
+					for Keybind in Keybinds:
+						Description += f"[{chr(Keybind.Key)}] {Keybind.Name}:\n";
+					Description += "\n";
+
+					Menu.Popup("Keybinds Help", Description[:-1], Menu.Entry(12, Arguments=["Ok"]), "Left");
+					del Description;
+
+
+
+				case 114: # "r" - Reset Selected Entry to initial value
+					if (not Entries[Index].Type in [10, 11, 12]): continue;
+					Description: str = f"\
+Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n\
+\"{Entries[Index].Value}\"\n\
+\n... will be reset to:\n\n\
+\"{Entries[Index].__ValueInitial}\"\n"; # pyright: ignore[reportPrivateUsage]
+
+					if ("Yes" == Menu.Popup(
+						"Reset Selected Entry to Initial Value", Description,
+						Menu.Entry(12, Arguments=["Yes", "No"], Value="No")
+					)):
+						Entries[Index].Value = Entries[Index].__ValueInitial; # pyright: ignore[reportPrivateUsage]
+					del Description;
+
+
+				case 82: # "R" - Reset Every Entry to their Initial Value
+					if ("Yes" == Menu.Popup(
+						"Reset All Entries to their Initial Value", "Are you sure you want to reset every entries to their default values?",
+						Menu.Entry(12, Arguments=["Yes", "No"], Value="No")
+					)):
+						for Entry in Entries:
+							if (not Entry.Type in [10, 11, 12]): continue;
+							Entry.Value = Entry.__ValueInitial; # pyright: ignore[reportPrivateUsage]
 
 
 
@@ -438,6 +508,7 @@ class Menu:
 						case 0: # Execute Function
 							return Entries[Index].Function(*Entries[Index].Arguments);
 
+
 						case 1: # Finalize
 							Data: str = "";
 							for Key, Value in Menu.Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
@@ -446,15 +517,20 @@ class Menu:
 							if ("Yes" == Menu.Popup("Confirm Input", f"You will be saving the following settings:\n\n{Data[:-1]}", Menu.Entry(12, Value="No", Arguments=["Yes", "No"]), "Left")):
 								return Menu.Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
 
+
 						case 2: # Hard Return
 							return Entries[Index].Value;
+
+
 
 						# Input Group
 						case 10: # Toggle
 							Entries[Index].Toggle(); continue;
 
+
 						case 11: # Text Input
 							Entries[Index].Value = Input.Text(typing.cast(str, Entries[Index].Value), *Entries[Index].Arguments); continue;
+
 
 						case 12: # Array Input
 							Sub_Entries: list[Menu.Entry] = [
@@ -467,7 +543,13 @@ class Menu:
 								Sub_Entries.append(Menu.Entry(2, Value, Value=Value));
 
 							Entries[Index].Value = Menu.Interactive(Sub_Entries);
-							continue;
+							del Sub_Entries; continue;
+
+
 
 						case _: pass;
-				case _: pass;
+				# Keybinds Logic
+				case _:
+					for Keybind in Keybinds:
+						if (Key == Keybind.Key):
+							Keybind.Function(*Keybind.Arguments);
