@@ -133,6 +133,7 @@ class Menu:
 			# FUNCTION GROUP - 0X
 			Function = 0;
 			Finalize = 1;
+			Return = 2;
 
 			# INPUT GROUP - 1X
 			Toggle = 10;
@@ -379,6 +380,8 @@ class Menu:
 
 
 
+
+
 			# Input Logic
 			Key: int = Input.Get();
 			match (Key):
@@ -390,7 +393,6 @@ class Menu:
 							case 20: Index += 1;
 							case _: break;
 
-
 				case curses.KEY_UP:
 					Index -= 1;
 					while (True): # Go Up one more if Unselectable Type
@@ -399,6 +401,7 @@ class Menu:
 							case 20: Index -= 1;
 							case _: break;
 
+				case 27: curses.flash(); return None; # ESC
 
 
 				# ARRAY ONLY INPUTS
@@ -416,12 +419,17 @@ class Menu:
 
 
 
-				case 27: curses.flash(); return None; # ESC
-				case 10: # Enter
+
+
+				case 10: # Enter - Execute Entry Features
 					if (Entries[Index].Unavailable): curses.beep(); curses.flash(); continue;
 
 					match (Entries[Index].Type):
-						case 1:
+						# Function Group
+						case 0: # Execute Function
+							return Entries[Index].Function(*Entries[Index].Arguments);
+
+						case 1: # Finalize
 							Data: str = "";
 							for Key, Value in Menu.Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
 								Data += f"{Key}: {Value}\n";
@@ -429,10 +437,28 @@ class Menu:
 							if ("Yes" == Menu.Popup("Confirm Input", f"You will be saving the following settings:\n\n{Data[:-1]}", Menu.Entry(12, Value="No", Arguments=["Yes", "No"]), "Left")):
 								return Menu.Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
 
-						case 10: Entries[Index].Toggle(); continue;
-						case 11: Entries[Index].Value = Input.Text(typing.cast(str, Entries[Index].Value), *Entries[Index].Arguments); continue;
-						case 12: continue; # TBD: Add prompt to select from list instead of using arrow keys
-						case _: pass;
+						case 2: # Hard Return
+							return Entries[Index].Value;
 
-					return Entries[Index].Function(*Entries[Index].Arguments);
+						# Input Group
+						case 10: # Toggle
+							Entries[Index].Toggle(); continue;
+
+						case 11: # Text Input
+							Entries[Index].Value = Input.Text(typing.cast(str, Entries[Index].Value), *Entries[Index].Arguments); continue;
+
+						case 12: # Array Input
+							Sub_Entries: list[Menu.Entry] = [
+								Menu.Entry(20, Entries[Index].Name, Bold=True),
+								Menu.Entry(20, Entries[Index].Description),
+								Menu.Entry(20, "")
+							];
+
+							for Value in Entries[Index].Arguments: # pyright: ignore[reportAssignmentType]
+								Sub_Entries.append(Menu.Entry(2, Value, Value=Value));
+
+							Entries[Index].Value = Menu.Interactive(Sub_Entries);
+							continue;
+
+						case _: pass;
 				case _: pass;
