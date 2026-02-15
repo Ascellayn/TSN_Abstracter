@@ -79,15 +79,20 @@ class Input:
 		x: int = 2 + (len(Value) - 1); y: int = curses.LINES - 2; Cursor: int = 0;
 
 		while True:
-			Menu.Base(False);
-
 			# Empty Description Field
 			Window.insstr(y, 0, " " * curses.COLS);
-			Window.hline(y - 1, 1, curses.ACS_HLINE, curses.COLS -2);
+			Window.hline(y - 1, 1, curses.ACS_HLINE, curses.COLS - 2);
 
-			Window.insstr(y, 1, Value);
-			Window.move(y, x + Cursor);
+			if (len(Value) > curses.COLS - 3):
+				Window.insstr(y, 1,
+					Value[
+						max(len(Value) - (curses.COLS - 3) + Cursor, 0):
+					]
+				);
+			else: Window.insstr(y, 1, Value);
 
+			Menu.Base(False);
+			Window.move(y, min(x + Cursor, curses.COLS - 2));
 			Key = Input.Get();
 			match (Key): # We use ints here because the predefined numbers by curses don't work for some reason.
 				case 10: return Value; # Enter
