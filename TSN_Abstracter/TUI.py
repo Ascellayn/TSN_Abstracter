@@ -251,6 +251,7 @@ class Menu:
 		Index: int = Entry.Arguments.index(Entry.Value); iDescription: list[str] = Description.split("\n");
 		Initial: str = typing.cast(str, Entry.Value);
 
+		iLINES: int = curses.LINES; iCOLS: int = curses.COLS;
 		while True:
 			# Get Selection
 			Values: str = "[";
@@ -262,8 +263,8 @@ class Menu:
 			# Failsafe if Description is too long, creates automatic spacing
 			Description: list[str] = [];
 			for Line in iDescription:
-				if (len(Line) > curses.COLS - 2):
-					for Splitted in String.Split_Length(Line, curses.COLS - 2):
+				if (len(Line) > curses.COLS - 8):
+					for Splitted in String.Split_Length(Line, curses.COLS - 8):
 						Description.append(Splitted);
 				else: Description.append(Line);
 
@@ -278,7 +279,7 @@ class Menu:
 			LRX: int = round(((curses.COLS - Horizontal) / 2)) + Horizontal;
 
 
-			Menu.Base(False);
+			Menu.Base(False if (iLINES == curses.LINES and iCOLS == curses.COLS) else True);
 			for Y in range(ULY + 1, LRY):
 				Window.insstr(Y, ULX + 1, " " * (LRX - ULX - 1));
 			curses.textpad.rectangle(Window, ULY, ULX, LRY, LRX);
