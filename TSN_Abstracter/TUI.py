@@ -229,6 +229,7 @@ class Menu:
 				case "Right": return LRX - len(Text);
 				case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.")
 
+		if (not Entry.Value): Entry.Value = Entry.Arguments[0];
 		Index: int = Entry.Arguments.index(Entry.Value); iDescription: list[str] = Description.split("\n");
 		Initial: str = typing.cast(str, Entry.Value);
 
@@ -416,6 +417,13 @@ class Menu:
 					aIndex: int = Entries[Index].Arguments.index(Entries[Index].Value);
 					if (aIndex == len(Entries[Index].Arguments) - 1): Entries[Index].Value = Entries[Index].Arguments[0];
 					else: Entries[Index].Value = Entries[Index].Arguments[aIndex + 1];
+
+
+				# MISC INPUTS
+				case 104 | 72: # "h" - Help Key
+					Menu.Popup(Entries[Index].Name, Entries[Index].Description, Menu.Entry(12, Arguments=["Ok"]));
+
+
 
 
 
