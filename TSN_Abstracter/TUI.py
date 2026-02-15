@@ -462,7 +462,7 @@ TSN Abstracter Default Keybinds:\n\
 ";
 
 					for Keybind in Keybinds:
-						Description += f"[{chr(Keybind.Key)}] {Keybind.Name}:\n";
+						Description += f"[{chr(Keybind.Key)}] {Keybind.Name}\n";
 					Description += "\n";
 
 					Menu.Popup("Keybinds Help", Description[:-1], Menu.Entry(12, Arguments=["Ok"]), "Left");
@@ -552,4 +552,4 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 				case _:
 					for Keybind in Keybinds:
 						if (Key == Keybind.Key):
-							Keybind.Function(*Keybind.Arguments);
+							Keybind.Function(Entries[Index], *Keybind.Arguments); # pyright: ignore[reportCallIssue]
