@@ -219,12 +219,16 @@ class Menu:
 
 
 	@staticmethod
-	def Popup(Title: str, Description: str, Entry: Entry) -> typing.Any: # pyright: ignore[reportRedeclaration]
+	def Popup(Title: str, Description: str, Entry: Entry, Align: str = "Center") -> typing.Any: # pyright: ignore[reportRedeclaration]
 		""" Entry type must be Array """
-		def _CenterX(Text: str) -> int:
-			return ULX - round((len(Text) - (LRX - ULX)) / 2);
+		def _GetTextX(Text: str, Align: str) -> int:
+			match Align:
+				case "Center": return ULX - round((len(Text) - (LRX - ULX)) / 2);
+				case "Left": return ULX + 2;
+				case "Right": return LRX - len(Text);
+				case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.")
 
-		Index: int = 0; iDescription: list[str] = Description.split("\n");
+		Index: int = Entry.Arguments.index(Entry.Value); iDescription: list[str] = Description.split("\n");
 		Initial: str = typing.cast(str, Entry.Value);
 
 		while True:
@@ -255,11 +259,11 @@ class Menu:
 
 			Menu.Base();
 			curses.textpad.rectangle(Window, ULY, ULX, LRY, LRX);
-			Window.addstr(ULY, _CenterX(Title), Title, curses.A_BOLD); # Title
+			Window.addstr(ULY, _GetTextX(Title, "Center"), Title, curses.A_BOLD); # Title
 
 			dY: int = ULY + 2; # Description
 			for Line in Description:
-				Window.addstr(dY, _CenterX(Line), Line);
+				Window.addstr(dY, _GetTextX(Line, Align), Line);
 				dY += 1;
 
 			Window.addstr(LRY - 1, LRX - 1 - len(Values), Values); # Selection
@@ -407,7 +411,13 @@ class Menu:
 					if (Entries[Index].Unavailable): curses.beep(); curses.flash(); continue;
 
 					match (Entries[Index].Type):
-						case 1: return Menu.Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
+						case 1:
+							Data: str = "";
+							for Key, Value in Menu.Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
+								Data += f"{Key}: {Value}\n";
+
+							if ("Yes" == Menu.Popup("Confirm Input", f"You will be saving the following settings:\n\n{Data[:-1]}", Menu.Entry(12, Value="No", Arguments=["Yes", "No"]), "Left")):
+								return Menu.Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
 
 						case 10: Entries[Index].Toggle(); continue;
 						case 11: Entries[Index].Value = Input.Text(typing.cast(str, Entries[Index].Value), *Entries[Index].Arguments); continue;
