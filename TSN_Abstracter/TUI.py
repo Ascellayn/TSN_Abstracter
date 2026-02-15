@@ -552,4 +552,4 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 				case _:
 					for Keybind in Keybinds:
 						if (Key == Keybind.Key):
-							Keybind.Function(Entries[Index], *Keybind.Arguments); # pyright: ignore[reportCallIssue]
+							return Keybind.Function(Entries[Index], *Keybind.Arguments); # pyright: ignore[reportCallIssue]
