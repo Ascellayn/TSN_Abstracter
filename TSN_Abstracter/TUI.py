@@ -472,6 +472,8 @@ TSN Abstracter Default Keybinds:\n\
 
 				case 114: # "r" - Reset Selected Entry to initial value
 					if (not Entries[Index].Type in [10, 11, 12]): continue;
+					if (Entries[Index].Value == Entries[Index].__ValueInitial): continue; # pyright: ignore[reportPrivateUsage]
+
 					Description: str = f"\
 Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n\
 \"{Entries[Index].Value}\"\n\
