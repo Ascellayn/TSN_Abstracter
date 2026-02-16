@@ -7,7 +7,9 @@ True
 """
 from . import Log, String;
 import pathlib, os, lzma, json, typing;
-Working_Directory: str = os.getcwd();
+
+from __main__ import __file__ as __mainF__; # Useful for TSNA Apps if they need to fetch files from their directories
+Main_Directory: str = os.path.dirname(os.path.abspath(__mainF__));
 
 
 
