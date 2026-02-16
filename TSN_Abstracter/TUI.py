@@ -45,6 +45,7 @@ def Exit() -> None:
 	Window.keypad(False);
 	Window.nodelay(False);
 	curses.endwin();
+	curses.reset_shell_mode();
 
 
 
