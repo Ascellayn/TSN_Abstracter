@@ -6,6 +6,21 @@
 ['The quick brown ', 'fox jumps over ', 'the lazy dog.']
 """
 import re;
+from typing import Any;
+
+
+def ify_Array(Array: list[Any] | tuple[Any, ...]) -> list[str]:
+	""" transforms all elements inside arrays to be strings """
+	return [str(Item) for Item in Array];
+
+
+def Bulk_Replace(A: list[tuple[str, str] | list[str] | str], String: str, New: str = "") -> str:
+	""" bulk replace every old strings in A to A[.][1] or New from str String """
+	for Item in A:
+		if (isinstance(Item, str)): String = String.replace(Item, New);
+		else: String = String.replace(Item[0], Item[1]);
+	return String;
+
 
 
 

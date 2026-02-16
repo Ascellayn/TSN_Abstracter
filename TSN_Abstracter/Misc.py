@@ -6,20 +6,9 @@ This module from TSN Abstracter contains various random functions that currently
 >>> Misc.is_Even(32768);
 True
 """
-import multiprocessing, threading;
+import multiprocessing, threading, typing;
 
 
-
-
-
-def Void() -> None:
-	""" Does absolutely nothing. Frequently used when you want to ignore Exceptions.
-
-	## Examples
-	>>> try: print(80082/0);
-	>>> except: Misc.Void();
-	"""
-	return None;
 
 
 
@@ -79,3 +68,18 @@ def is_Even(Number: int) -> bool:
 		True
 	"""
 	return ((Number % 2) == 0);
+
+
+def All_Includes(A: typing.Iterable[typing.Any], B: typing.Iterable[typing.Any]) -> bool:
+	""" verify every item in B is present in A"""
+	for Item in B:
+		if (Item not in A): return False;
+	return True;
+
+def Under_At(A: tuple[int, ...] | list[int], B: tuple[int, ...] | list[int]) -> int:
+	""" use to compare version tuples"""
+	A_Length: int = len(B);
+	for Index, Number in enumerate(B):
+		if (Index == A_Length): break;
+		if (Number > A[Index]): return Index;
+	return -1;
