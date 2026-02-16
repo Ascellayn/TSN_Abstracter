@@ -27,9 +27,8 @@ Version_Prefix: str = "";
 Version_Suffix: str = "";
 TSNA: tuple[int, int, int] = (5,0,0);
 
-
-if (File.Exists("App.tsna")):
-	AppTSNA = File.JSON_Read("App.tsna");
+if (File.Exists(f"{File.Main_Directory}/App.tsna")):
+	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
 	Name = AppTSNA.get("Name", Name);
 	Description = AppTSNA.get("Description", Description);
 
