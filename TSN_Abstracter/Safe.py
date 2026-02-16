@@ -60,6 +60,6 @@ def NotNull(Number: int, Default: int = 1) -> int:
 def Nested_Dict(Dict: dict[str, typing.Any], Keys: list[str], Default: typing.Any = None) -> typing.Any:
 	""" safely get data from nested dicts with an argument for a default value """
 	for Key in Keys:
-		if (type(Key) != dict): return Default;
+		if (type(Dict) != dict): return Default;
 		Dict = Dict.get(Key, Default);
 	return Dict;
