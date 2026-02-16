@@ -67,4 +67,14 @@ TSN Abstracter is obviously __developer oriented__, it is **your job to look at 
 - **If you import the "TUI" TSNA Module"**:
 	- python3-curses
 
+<br>
+
+### Random facts about TSNA
+TSN Abstracter was created in early 2025 after things started getting hectic when it came to creating stuff such as (at the time) Kosaka and [TSN Trinity](https://github.com/Ascellayn/TSN_Trinity). I would constantly have this `TSNDB_Dependencies.py` or `SN_PyDepends` file that I'd have to manually synchronize across all those projects. At some point I decided enough was enough and thus TSN Abstracter was born.  
+If we have to take in *when* TSNA was truly created then it was created during Kosaka's Pre-Ceres Lifecycle, which was in the middle of 2024.  
+TSNA was created so early it does not follow TSN's naming conventions, thus, a Blue Archive character or thing was never attributed as its codename / name.  
+New coding style conventions or things such as the [TSN Commit Guideline](https://sirio-network.com/guideline/commit) had their start in TSNA.  
+
+<br>
+
 ###### [TSN Abstracter (TSNA) © Ascellayn / The Sirio Network (2025-2026) - TSN License 2.1 - Base](https://github.com/Ascellayn/TSN_Abstracter/LICENSE.md)
