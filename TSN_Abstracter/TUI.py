@@ -97,6 +97,7 @@ class Input:
 			else: Window.addstr(y, 1, Value);
 
 			Menu.Base(False);
+			Menu.Base_Box();
 			Window.move(y, min(x + Cursor, curses.COLS - 2));
 			Key = Input.Get();
 			match (Key): # We use ints here because the predefined numbers by curses don't work for some reason.
@@ -244,11 +245,21 @@ class Menu:
 		if (curses.LINES < 6): Exit(); Log.Critical("Terminal size is way too small! TSN Abstracter's TUI Menu requires a terminal that's at the very least 6 lines long."); exit(78);
 		if (Clear): Window.clear();
 		Window.border();
-		Window.insstr(0, 2, f" {App.Name} - {TSN_Abstracter.App_Version()} ", curses.A_BOLD);
 
-		Window.hline(curses.LINES - 3, 1, curses.ACS_HLINE, curses.COLS -2);
-		Window.addch(curses.LINES - 3, 0, curses.ACS_SSSB);
-		Window.addch(curses.LINES - 3, curses.COLS -1, curses.ACS_SBSS);
+		Title: str = String.Abbreviate(f" {App.Name} - {TSN_Abstracter.App_Version()} ", curses.COLS - 4);
+		Window.addstr(0, 2, Title, curses.A_BOLD);
+
+
+	@staticmethod
+	def Base_Box(Offset: int = 0) -> None:
+		Window.hline(curses.LINES - 3 - Offset, 1, curses.ACS_HLINE, curses.COLS -2);
+
+
+
+
+
+
+
 
 
 
@@ -354,6 +365,7 @@ class Menu:
 
 		while True:
 			Menu.Base();
+			Menu.Base_Box();
 			Max_Visible: int = curses.LINES - 6;
 
 			# Failsafe when Entry Type is not selectable
@@ -386,16 +398,10 @@ class Menu:
 					Entry.Unavailable = False;
 
 				# Text Display
-				if (Entry.Unavailable): _ColorAttribute(SNDL.Color.Moon.Grey_TERM);
-				if (Entry.Bold): Window.attron(curses.A_BOLD);
-				Window.insstr(eY, eX, Entry.Name);
-				Window.attrset(0);
-
-
-				# Type Quirks
+				Entry_Quirk: str = "";
 				match (Entry.Type):
-					case 10: Window.addstr(eY, 2 + (2 * Entry.Indentation), "[X]" if (Entry.Value) else "[ ]");
-					case 11: Window.insstr(eY, eX + len(Entry.Name), f" - '{Entry.Value}'");
+					case 10: Entry_Quirk += "[X]" if (Entry.Value) else "[ ]";
+					case 11: Entry_Quirk += f" - '{Entry.Value}'";
 					case 12: # Arrays
 						Values: str = "[";
 						for Count, Possibility in enumerate(Entry.Arguments):
@@ -403,10 +409,25 @@ class Menu:
 							else: Values += f"{'|' if (Count != 0) else ''} {Possibility} ";
 						Values += "]";
 
-						Window.insstr(eY, eX + len(Entry.Name), f" - {Values}");
+						Entry_Quirk += f" - {Values}";
 
 					case _: pass;
+
+				Entry_Text: str = Entry.Name + " " + Entry_Quirk;
+				if (Entry_Text != String.Abbreviate(Entry_Text, curses.COLS - eX - 1)):
+					match (Entry.Type):
+						case 10: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2 - len(Entry_Quirk)) + f" {Entry_Quirk}";
+						case 11 | 12: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 1);
+						case _: pass;
+
+				if (Entry.Unavailable): _ColorAttribute(SNDL.Color.Moon.Grey_TERM);
+				if (Entry.Bold): Window.attron(curses.A_BOLD);
+				Window.addstr(eY, eX, Entry_Text);
+				Window.attrset(0);
+	
 				Displayed += 1;
+
+
 
 
 
@@ -417,15 +438,14 @@ class Menu:
 						Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
 
 			# Description
-			Description: str = f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}";
-			if (len(Description) >= curses.COLS - 4): Description = Description[:curses.COLS - 9] + "(...)";
+			Description: str = String.Abbreviate(f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}", curses.COLS - 4);
 			Window.addstr(curses.LINES - 2, 2, Description);
 
 			# Low Res. Terms: Give scroll Hint
 			if (Index != (len(Entries) - 1) and Max_Visible < len(Entries)):
 				Remaining: int = len(Entries) - Index - round(Max_Visible / 2) + 1;
 				if (Remaining > 0): # Rounding error correction band-aid fix
-					Window.insstr(curses.LINES - 4, 2, f" ... ({Remaining} more)");
+					Window.addstr(curses.LINES - 4, 2, String.Abbreviate(f" ... ({Remaining} more)", curses.COLS - 5));
 
 			# Cursor & Refresh
 			match (Entries[Index].Type):
