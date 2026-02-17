@@ -84,6 +84,12 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 	return String_List;
 
 
+def Abbreviate(Text: str, Max_Length: int, Abbreviate: str = "(...)") -> str:
+	if (len(Text) > Max_Length):
+		Text = Text[:Max_Length - len(Abbreviate)] + Abbreviate;
+	return Text;
+
+
 
 
 
