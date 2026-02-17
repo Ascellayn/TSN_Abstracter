@@ -262,6 +262,8 @@ class Menu:
 				case "Right": return LRX - len(Text);
 				case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.")
 
+		Title = " [" + Title + "] ";
+
 		if (not Entry.Value): Entry.Value = Entry.Arguments[0];
 		Index: int = Entry.Arguments.index(Entry.Value); iDescription: list[str] = Description.split("\n");
 		Initial: str = typing.cast(str, Entry.Value);
