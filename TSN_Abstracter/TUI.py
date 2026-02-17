@@ -1,4 +1,4 @@
-from . import App, Log, SNDL, String; # pyright: ignore[reportUnusedImport] | SNDL is used inside an eval
+from . import App, Config, Log, SNDL, String; # pyright: ignore[reportUnusedImport] | SNDL is used inside an eval
 from . import TSN_Abstracter;
 from dataclasses import dataclass;
 from collections.abc import Callable;
@@ -35,6 +35,8 @@ def Init() -> None:
 			curses.init_color(Number, *[round(x*(1000/255)) for x in eval(f"SNDL.Color.{Scheme}.{Color}")]);
 			curses.init_pair(Number, Number, -1);
 
+	Config.System.TUI_Enabled = True;
+
 
 def Exit() -> None:
 	Window.move(0,0);
@@ -46,6 +48,8 @@ def Exit() -> None:
 	Window.nodelay(False);
 	curses.endwin();
 	curses.reset_shell_mode();
+
+	Config.System.TUI_Enabled = False;
 
 
 

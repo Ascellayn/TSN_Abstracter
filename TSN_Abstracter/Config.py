@@ -4,6 +4,15 @@ This module from TSN Abstracter is in charge of configuring its behavior.
 ### Available Configuration Classes:
 **Logger**: Class used to configure settings related to the TSNA Logger.  
 """
+import platform;
+
+
+
+
+
+class System:
+	OS: str = platform.system();
+	TUI_Enabled: bool = False;
 
 
 
@@ -46,3 +55,4 @@ class Logger:
 	File_Folder: str = "Logs";
 
 	Print_Level: int = 20;
+
