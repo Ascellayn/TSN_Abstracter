@@ -26,7 +26,7 @@ def Log_Path() -> str:
 	"""
 	# Check if the Logs folder doesn't exist, create it if it isn't, only if File Logging is enabled.
 	if (Config.Logger.File): File.Path_Require(Config.Logger.File_Folder);
-	return f"{File.Working_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
+	return f"{File.Main_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 # Configure Loggers
 Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
