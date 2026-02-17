@@ -161,7 +161,10 @@ class Menu:
 				Description: str = "This entry does not have any description.",
 				ID: str | None = None,
 
-				Indentation: int = 0, Unavailable: bool = False, Bold: bool = False,
+				Indentation: int = 0,
+				Unavailable: bool = False,
+				Required: bool = False,
+				Bold: bool = False,
 
 				Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Log.Clear,
 				Arguments: list[typing.Any] | tuple[typing.Any, ...] = (),
@@ -175,7 +178,9 @@ class Menu:
 
 			self.Indentation: int = Indentation;
 			self.Unavailable: bool = Unavailable;
+			self.Required: bool = Required;
 			self.Bold = Bold;
+
 
 			self.Function: Callable[[], typing.Any] | Callable[[typing.Any], typing.Any] = Function;
 			self.Arguments: list[typing.Any] | tuple[typing.Any, ...] = tuple(Arguments);
@@ -358,6 +363,13 @@ class Menu:
 
 			x = 3 + (2 * Entries[Index].Indentation);
 
+
+			# Used to automatically unavailable Finalizers if every other entry isn't filled.
+			Missing_Entries: list[str | None] = [];
+			for Entry in Entries:
+				if (Entry.Type == 11 and Entry.Value == "" and Entry.Required): Missing_Entries.append(Entry.ID);
+
+
 			# Display entries
 			Displayed: int = 0;
 			for Number, Entry in enumerate(Entries):
@@ -365,6 +377,11 @@ class Menu:
 					if (Displayed >= Max_Visible): break;
 					if (Number + round(Max_Visible / 2) < Index): continue;
 				eX: int = 6 + (2 * Entry.Indentation); eY = 2 + Displayed;
+
+				if (Entry.Type == 1 and Entry.Required and len(Missing_Entries) > 0):
+					Entry.Unavailable = True;
+				elif (Entry.Type == 1 and Entry.Required):
+					Entry.Unavailable = False;
 
 				# Text Display
 				if (Entry.Unavailable): _ColorAttribute(SNDL.Color.Moon.Grey_TERM);
@@ -515,7 +532,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 
 
 				case 10: # Enter - Execute Entry Features
-					if (Entries[Index].Unavailable): curses.beep(); curses.flash(); continue;
+					if (Entries[Index].Unavailable and Entries[Index].Type != 1): curses.beep(); curses.flash(); continue;
 
 					match (Entries[Index].Type):
 						# Function Group
@@ -524,6 +541,14 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 
 
 						case 1: # Finalize
+							if (Entries[Index].Unavailable):
+								Description: str = f"You have not filled the following remaining {f'{len(Missing_Entries)} required entries' if (len(Missing_Entries) > 1) else 'required entry'}:\n";
+								for Missed in Missing_Entries:
+									Description += f"- {Missed if (Missed) else '<NO ENTRY ID>'}\n";
+								Menu.Popup("Missing Information", Description[:-1], Menu.Entry(12, Value="Ok", Arguments=["Ok"]), "Left");
+								del Description;
+								continue;
+
 							Data: str = "";
 							for Key, Value in Menu.Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
 								Data += f"{Key}: {Value}\n";
