@@ -417,8 +417,7 @@ class Menu:
 				if (Entry_Text != String.Abbreviate(Entry_Text, curses.COLS - eX - 1)):
 					match (Entry.Type):
 						case 10: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2 - len(Entry_Quirk)) + f" {Entry_Quirk}";
-						case 11 | 12: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 1);
-						case _: pass;
+						case _: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2);
 
 				if (Entry.Unavailable): _ColorAttribute(SNDL.Color.Moon.Grey_TERM);
 				if (Entry.Bold): Window.attron(curses.A_BOLD);
