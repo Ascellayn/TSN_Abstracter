@@ -356,11 +356,18 @@ class Menu:
 			if (Entry.Type == 12): # Array:
 				if (not Entry.Value): Entry.Value = Entry.Arguments[0];
 
-		# Set default values for Reset function
-		for Entry in Entries:
+
+		Fake_Indices: dict[str, int] = {};
+		fakeIndex: int = 1;
+		for tIndex, Entry in enumerate(Entries):
+			# Get Fake Index for more accurate selection
+			if (Entry.Type != 20):
+				Fake_Indices[str(tIndex)] = fakeIndex;
+				fakeIndex += 1;
+
+			# Set default values for Reset function
 			if (Entry.Type in [10, 11, 12]): # Toggle
 				Entry.__ValueInitial = Entry.Value; # pyright: ignore[reportPrivateUsage]
-
 
 
 		while True:
@@ -368,14 +375,14 @@ class Menu:
 			Menu.Base_Box();
 			Max_Visible: int = curses.LINES - 6;
 
-			# Failsafe when Entry Type is not selectable
-			while (Entries[Index].Type == 20):
-				Index += 1;
 
+			# Failsafe when Entry Type is not selectable
+			while (Entries[Index].Type == 20): Index += 1;
+			
 			if ((len(Entries) - 1) >= Max_Visible and Index > round(Max_Visible / 2)): y = 2 + round(Max_Visible / 2);
 			else: y = 2 + Index;
 
-			x = 3 + (2 * Entries[Index].Indentation);
+			fakeIndex = Fake_Indices[str(Index)] if (str(Index) in Fake_Indices) else Index;
 
 
 			# Used to automatically unavailable Finalizers if every other entry isn't filled.
@@ -384,6 +391,7 @@ class Menu:
 				if (Entry.Type == 11 and Entry.Value == "" and Entry.Required): Missing_Entries.append(Entry.ID);
 
 
+			x = 3 + (2 * Entries[Index].Indentation);
 			# Display entries
 			Displayed: int = 0;
 			for Number, Entry in enumerate(Entries):
@@ -437,7 +445,7 @@ class Menu:
 						Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
 
 			# Description
-			Description: str = String.Abbreviate(f"[{String.Trailing_Zero(Index, len(str(len(Entries))))}] {Entries[Index].Description}", curses.COLS - 4);
+			Description: str = String.Abbreviate(f"[{String.Trailing_Zero(fakeIndex, len(str(len(Entries))))}] {Entries[Index].Description}", curses.COLS - 4);
 			Window.addstr(curses.LINES - 2, 2, Description);
 
 			# Low Res. Terms: Give scroll Hint
@@ -500,16 +508,16 @@ class Menu:
 
 
 				case 72: # "H" - Help for Keybinds
-					Description: str = f"\
-TSN Abstracter Default Keybinds:\n\
-[h] - Show Entry Description\n\
-[H] - Show Available Keybinds\n\
-\n\
-[r] - Reset Selected Entry to Initial Value\n\
-[R] - Reset All Entry to their Initial Value\n\
-\n\
-{App.Name} Keybinds (for this Menu):\n\
-";
+					Description: str = f"""
+TSN Abstracter Default Keybinds:\n
+[h] - Show Entry Description\n
+[H] - Show Available Keybinds\n
+\n
+[r] - Reset Selected Entry to Initial Value\n
+[R] - Reset All Entry to their Initial Value\n
+\n
+{App.Name} Keybinds (for this Menu):\n
+""";
 
 					for Keybind in Keybinds:
 						Description += f"[{chr(Keybind.Key)}] {Keybind.Name}\n";
@@ -524,11 +532,11 @@ TSN Abstracter Default Keybinds:\n\
 					if (not Entries[Index].Type in [10, 11, 12]): continue;
 					if (Entries[Index].Value == Entries[Index].__ValueInitial): continue; # pyright: ignore[reportPrivateUsage]
 
-					Description: str = f"\
-Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n\
-\"{Entries[Index].Value}\"\n\
-\n... will be reset to:\n\n\
-\"{Entries[Index].__ValueInitial}\"\n"; # pyright: ignore[reportPrivateUsage]
+					Description: str = f"""
+Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
+\"{Entries[Index].Value}\"\n
+\n... will be reset to:\n\n
+\"{Entries[Index].__ValueInitial}\"\n"""; # pyright: ignore[reportPrivateUsage]
 
 					if ("Yes" == Menu.Popup(
 						"Reset Selected Entry to Initial Value", Description,
