@@ -194,6 +194,8 @@ class Menu:
 				case 20: self.Indentation = self.Indentation - 2;
 				case _: pass;
 
+			self.Index: int = 0;
+
 
 
 		def Toggle(self) -> bool:
@@ -344,9 +346,8 @@ class Menu:
 
 
 	@staticmethod
-	def Interactive(Entries: Entries, Keybinds: Keybinds = []) -> typing.Any:
+	def Interactive(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0) -> typing.Any:
 		x: int; y: int = 2;
-		Index: int = 0;
 
 
 		# Init default value for supported types where a dev potentially forgot to set a default value.
@@ -360,6 +361,8 @@ class Menu:
 		Fake_Indices: dict[str, int] = {};
 		fakeIndex: int = 1;
 		for tIndex, Entry in enumerate(Entries):
+			Entry.Index = tIndex; # Ability to retrieve Index from Object to go back to previous option in previous menu if possible.
+
 			# Get Fake Index for more accurate selection
 			if (Entry.Type != 20):
 				Fake_Indices[str(tIndex)] = fakeIndex;
@@ -610,7 +613,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 							for Value in Entries[Index].Arguments: # pyright: ignore[reportAssignmentType]
 								Sub_Entries.append(Menu.Entry(2, Value, Value=Value));
 
-							Entries[Index].Value = Menu.Interactive(Sub_Entries);
+							Entries[Index].Value = Menu.Interactive(Sub_Entries, Index=Entries[Index].Arguments.index(Entries[Index].Value) + 3);
 							del Sub_Entries; continue;
 
 
