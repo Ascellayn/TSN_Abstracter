@@ -62,6 +62,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 
 from . import Config;
 from . import App;
+from . import Deco;
 from . import Log;
 from . import File;
 from . import Misc;
@@ -164,6 +165,7 @@ class TSN_Abstracter:
 
 __all__ = [
 	"App",
+	"Deco",
 	"Config",
 	"File",
 	"Log",
