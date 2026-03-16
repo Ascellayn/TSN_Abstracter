@@ -60,8 +60,8 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 
 
 
-from . import App;
 from . import Config;
+from . import App;
 from . import Log;
 from . import File;
 from . import Misc;
