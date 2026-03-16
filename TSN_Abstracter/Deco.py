@@ -56,10 +56,10 @@ class Progresser():
 .replace("{ETA}", str(ETA))
 
 
-	def Count(self) -> None:
+	def Count(self, Increment: int = 1) -> None:
 		""" Increment the progression counter. Automatically displays progress when the update rate for it is reached. """
-		self.Done += 1; self.Done_Cycle += 1;
-		if ((self._Unix_Last + self.Delay) < Time.Get_Unix(self.__Precise)): return;
+		self.Done += Increment; self.Done_Cycle += Increment;
+		if ((self._Unix_Last + self.Delay) > Time.Get_Unix(self.__Precise)): return;
 
 		self.Cycles.append(self.Done_Cycle);
 		self.Done_Cycle = 0;
