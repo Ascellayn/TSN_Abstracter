@@ -170,7 +170,8 @@ class Awaited_Dummy(Awaited_Log):
 	def __str__(self): return "";
 	def Status_Update(self, Status: str): return;
 	def OK(self, Status: str | None = None): return;
-	def ERROR(self, Error: str): return;
+	def Warning(self, Status: str): return;
+	def ERROR(self, Status: str): return;
 	def EXCEPTION(self, Except: Exception, Raise: bool = False): return;
 
 def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
