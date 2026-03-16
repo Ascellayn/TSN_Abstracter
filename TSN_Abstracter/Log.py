@@ -145,15 +145,15 @@ class Awaited_Log:
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
 		self.Status_Update(f"{SNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
-	def WARNING(self, Message: str) -> None:
+	def WARNING(self, Status: str) -> None:
 		""" >>> Log.Awaited.WARNING("2 Modules Skipped");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped] """
-		self.Status_Update(f"{SNDL.Log_Color("Yellow")}[WARNING{f": {Message}" if (Message) else ""}]{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{SNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
-	def ERROR(self, Error: str) -> None:
-		""" >>> Log.Awaited.ERROR();
-		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR] """
-		self.Status_Update(f"{SNDL.Log_Color("Red")}[ERROR]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Error}{String.ASCII.Text.Reset}");
+	def ERROR(self, Status: str) -> None:
+		""" >>> Log.Awaited.ERROR("1 Outdated Module");
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 1 Outdated Module] """
+		self.Status_Update(f"{SNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
 	def EXCEPTION(self, Except: Exception, Raise: bool = False) -> None:
 		""" >>> Log.Awaited.EXCEPTION(Except);
