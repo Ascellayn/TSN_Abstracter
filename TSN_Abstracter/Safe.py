@@ -36,7 +36,7 @@ def Index(Array: list[object], Index: int) -> object: # Isn't there a Python fun
 
 
 
-def NotNull(Number: int, Default: int = 1) -> int:
+def NotNull(Number: int | float, Default: int = 1) -> int | float:
 	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
 
 	Arguments:
