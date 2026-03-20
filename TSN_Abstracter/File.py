@@ -284,7 +284,7 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 	return json.loads(JSON if (JSON) else "{}");
 
 
-def JSON_Write(Path: str, Dictionary: dict[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
+def JSON_Write(Path: str, Dictionary: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for writing JSON Files.  
 	Automatically creates the file structure and file if it doesn't exist.
 	
@@ -308,7 +308,7 @@ def JSON_Write(Path: str, Dictionary: dict[str, typing.Any] | list[typing.Any], 
 	return False;
 
 
-def JSON_Update(Path: str, Dictionary: dict[str, typing.Any], Compressed: bool = False) -> bool:
+def JSON_Update(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for updating data to JSON Files.  
 	**QUIRK**: Acts as a regular `JSON_Write()` if the file did not exist prior.
 	
