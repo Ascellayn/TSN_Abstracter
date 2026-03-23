@@ -8,11 +8,12 @@ True
 from . import Log, String;
 import pathlib, os, lzma, json, typing;
 
-# from __main__ import __file__ as __mainF__; # Useful for TSNA Apps if they need to fetch files from their directories
-# Main_Directory: str = os.path.dirname(os.path.abspath(__mainF__));
-# ↑ Causes crash when importing TSNA from Python Console
+try:
+	from __main__ import __file__ as __mainF__; # Useful for TSNA Apps if they need to fetch files from their directories
+	Main_Directory: str = os.path.dirname(os.path.abspath(__mainF__));
+except: Main_Directory: str = os.path.dirname(os.path.abspath(__file__));
+# ↑ Causes crash when importing TSNA from Python Console, so try catch gaming.
 
-Main_Directory: str = os.path.dirname(os.path.abspath(__file__));
 
 
 
