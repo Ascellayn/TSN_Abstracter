@@ -382,9 +382,8 @@ class Menu:
 
 			# Failsafe when Entry Type is not selectable
 			while (Entries[Index].Type == 20): Index += 1;
-			
-			if ((len(Entries) - 1) >= Max_Visible and Index > round(Max_Visible / 2)): y = 2 + round(Max_Visible / 2);
-			else: y = 2 + Index;
+
+			y = 2 + round(Max_Visible / 2) if ((len(Entries) - 1) >= Max_Visible and Index > round(Max_Visible / 2)) else 2 + Index;
 
 			fakeIndex = Fake_Indices[str(Index)] if (str(Index) in Fake_Indices) else Index;
 
@@ -484,10 +483,29 @@ class Menu:
 				case curses.KEY_UP:
 					Index -= 1;
 					while (True): # Go Up one more if Unselectable Type
-						if (Index == -1): Index = len(Entries) - 1;
+						if (Index <= -1): Index = len(Entries) - 1;
 						match (Entries[Index].Type):
 							case 20: Index -= 1;
 							case _: break;
+
+
+				case 338: # PAGE DOWN:
+					Index += Max_Visible;
+					while (True): # Go Up one more if Unselectable Type
+						if (Index > len(Entries) - 1): Index = len(Entries) - 1; curses.flash();
+						match (Entries[Index].Type):
+							case 20: Index -= 1;
+							case _: break;
+
+				case 339: # PAGE UP:
+					Index -= Max_Visible;
+					while (True): # Go Up one more if Unselectable Type
+						if (Index <= -1): Index = 0; curses.flash();
+						match (Entries[Index].Type):
+							case 20: Index += 1;
+							case _: break;
+
+
 
 				case 27: curses.flash(); return None; # ESC
 
