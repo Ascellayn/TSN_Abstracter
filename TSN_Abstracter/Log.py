@@ -7,11 +7,7 @@ This module from TSN Abstracter contains various random functions that currently
 >>> MyFunction();
 [2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
 """
-from . import Config;
-from . import File;
-from . import SNDL;
-from . import String;
-from . import Time;
+from . import Config, File, SNDL, String, Time;
 import datetime, inspect, logging, shutil, sys;
 
 
@@ -348,8 +344,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 
-	# Verify for both the Console and File if the Level is high enough before logging.
-	if (Level >= Config.Logger.Print_Level): Logger_Console.log(Level, Logged_Text);
+	# Verify for both the Console and File if the Level is high enough before logging. Also refuses to log if the TUI is currently enabled.
+	if (Level >= Config.Logger.Print_Level and not Config.System.TUI_Enabled): Logger_Console.log(Level, Logged_Text);
 
 	Verify_Config();
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
