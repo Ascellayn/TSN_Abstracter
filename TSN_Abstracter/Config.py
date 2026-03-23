@@ -10,6 +10,7 @@ import platform;
 
 
 
+# Read Only Attributes, not meant to be modified by the Developer, only by TSNA itself.
 class System:
 	OS: str = platform.system();
 	TUI_Enabled: bool = False;
