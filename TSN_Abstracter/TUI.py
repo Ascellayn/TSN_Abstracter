@@ -153,6 +153,7 @@ class Menu:
 
 			# DISPLAY GROUP - 2X
 			Text = 20;
+			TextSelectable = 21;
 
 
 
@@ -616,6 +617,11 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 							Entries[Index].Value = Menu.Interactive(Sub_Entries, Index=Entries[Index].Arguments.index(Entries[Index].Value) + 3);
 							del Sub_Entries; continue;
 
+
+
+						# Display Group
+						case 21: # TextSelectable
+							curses.flash();
 
 
 						case _: pass;
