@@ -1,18 +1,18 @@
 from .Globals import *;
-from . import Draw, Entry, Input;
-
+from . import Draw, Input;
+from .Entry import Entry as __Entry, eType;
 
 
 __all__: list[str] = [
-	"Popup"
+	"Prompt"
 ];
 
 
 
 
 
-def Popup(Title: str, Description: str, Entry: Entry, Align: str = "Center") -> Any: # pyright: ignore[reportRedeclaration]
-	""" Entry type must be Array """
+def Prompt(Title: str, Description: str, Entry: __Entry, Align: str = "Center") -> Any: # pyright: ignore[reportRedeclaration]
+	""" Entry type must be Array or IOText """
 	def _GetTextX(Text: str, Align: str) -> int:
 		match Align:
 			case "Center": return ULX - round((len(Text) - (LRX - ULX)) / 2);
@@ -20,15 +20,26 @@ def Popup(Title: str, Description: str, Entry: Entry, Align: str = "Center") -> 
 			case "Right": return LRX - len(Text);
 			case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.")
 
-	Title = " [" + Title + "] ";
+	if (Entry.Type not in [eType.Array, eType.IOText]):
+		Log.Critical(f"Entry Type of ID {Entry.Type} is unsupported by TUI.Prompt");
+		return;
 
-	if (not Entry.Value): Entry.Value = Entry.Arguments[0];
-	Index: int = Entry.Arguments.index(Entry.Value); iDescription: list[str] = Description.split("\n");
-	Initial: str = cast(str, Entry.Value);
+
+
+	Title = " [" + Title + "] ";
+	iDescription: list[str] = Description.split("\n");
 
 	iLINES: int = curses.LINES; iCOLS: int = curses.COLS;
+
+	if (Entry.Type == eType.Array):
+		if (not Entry.Value): Entry.Value = Entry.Arguments[0];
+		Index: int = Entry.Arguments.index(Entry.Value); 
+		Initial: str = cast(str, Entry.Value);
+
+
+	# Input Handling for Array
 	while True:
-		# Get Selection
+		# Get Selection, only really applicable for Array Types but still helps for IOText
 		Values: str = "[";
 		for Count, Possibility in enumerate(Entry.Arguments):
 			if (Possibility == Entry.Value): Values += f"{'|' if (Count != 0) else ''} → {Possibility} ← ";
@@ -66,20 +77,23 @@ def Popup(Title: str, Description: str, Entry: Entry, Align: str = "Center") -> 
 			Window.addstr(dY, _GetTextX(Line, Align), Line);
 			dY += 1;
 
-		Window.addstr(LRY - 1, LRX - 1 - len(Values), Values); # Selection
 
-		# Input Handling
+		if (Entry.Type == eType.IOText):
+			return Input.Text(cast(str, Entry.Value), cast(str, Entry.Arguments[0]), Limitation=(ULX + 2, LRX - 1, LRY - 1));
+
+
+		Window.addstr(LRY - 1, LRX - 1 - len(Values), Values); # Selection
 		Key: int = Input.Get();
 		match (Key):
 			case curses.KEY_LEFT:
-				if (Index == 0): Index = len(Entry.Arguments) - 1;
-				else: Index -= 1;
+				if (Index == 0): Index = len(Entry.Arguments) - 1; # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point
+				else: Index -= 1; # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point
 
 			case curses.KEY_RIGHT:
-				if (Index == (len(Entry.Arguments) - 1)): Index = 0;
-				else: Index += 1;
-			case 27: curses.flash(); return Initial; # ESC
+				if (Index == (len(Entry.Arguments) - 1)): Index = 0; # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point
+				else: Index += 1; # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point
+			case 27: curses.flash(); return Initial; # ESC # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point
 			case 10: return Entry.Value; # Enter
 			case _: pass;
 
-		Entry.Value = Entry.Arguments[Index];
+		Entry.Value = Entry.Arguments[Index]; # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point

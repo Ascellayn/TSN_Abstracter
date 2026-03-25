@@ -1,6 +1,6 @@
 from .Globals import *;
 
-from .Popup import *;
+from .Prompt import *;
 from .Keybind import Keybinds;
 from .Entry import Entry as __Entry, eType, Entries, Entries_To_Dict;
 
@@ -200,7 +200,7 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0) -> Any:
 
 			# MISC INPUTS
 			case 104: # "h" - Help for Selected Entry
-				Popup(Entries[Index].Name, Entries[Index].Description, __Entry(eType.Array, Arguments=["Ok"]));
+				Prompt(Entries[Index].Name, Entries[Index].Description, __Entry(eType.Array, Arguments=["Ok"]));
 
 
 			case 72: # "H" - Help for Keybinds
@@ -219,7 +219,7 @@ TSN Abstracter Default Keybinds:\n
 					Description += f"[{chr(Keybind.Key)}] {Keybind.Name}\n";
 				Description += "\n";
 
-				Popup("Keybinds Help", Description[:-1], __Entry(eType.Array, Arguments=["Ok"]), "Left");
+				Prompt("Keybinds Help", Description[:-1], __Entry(eType.Array, Arguments=["Ok"]), "Left");
 				del Description;
 
 
@@ -234,7 +234,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 \n... will be reset to:\n\n
 \"{Entries[Index].__ValueInitial}\"\n"""; # pyright: ignore[reportPrivateUsage]
 
-				if ("Yes" == Popup(
+				if ("Yes" == Prompt(
 					"Reset Selected Entry to Initial Value", Description,
 					__Entry(eType.Array, Arguments=["Yes", "No"], Value="No")
 				)):
@@ -243,7 +243,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 
 
 			case 82: # "R" - Reset Every Entry to their Initial Value
-				if ("Yes" == Popup(
+				if ("Yes" == Prompt(
 					"Reset All Entries to their Initial Value", "Are you sure you want to reset every entries to their default values?",
 					__Entry(eType.Array, Arguments=["Yes", "No"], Value="No")
 				)):
@@ -270,7 +270,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 							Description: str = f"You have not filled the following remaining {f'{len(Missing_Entries)} required entries' if (len(Missing_Entries) > 1) else 'required entry'}:\n";
 							for Missed in Missing_Entries:
 								Description += f"- {Missed if (Missed) else '<NO ENTRY ID>'}\n";
-							Popup("Missing Information", Description[:-1], __Entry(eType.Array, Value="Ok", Arguments=["Ok"]), "Left");
+							Prompt("Missing Information", Description[:-1], __Entry(eType.Array, Value="Ok", Arguments=["Ok"]), "Left");
 							del Description;
 							continue;
 
@@ -278,7 +278,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 						for Key, Value in Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
 							Data += f"{Key}: {Value}\n";
 
-						if ("Yes" == Popup("Confirm Input", f"You will be saving the following settings:\n\n{Data[:-1]}", __Entry(eType.Array, Value="No", Arguments=["Yes", "No"]), "Left")):
+						if ("Yes" == Prompt("Confirm Input", f"You will be saving the following settings:\n\n{Data[:-1]}", __Entry(eType.Array, Value="No", Arguments=["Yes", "No"]), "Left")):
 							return Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
 
 

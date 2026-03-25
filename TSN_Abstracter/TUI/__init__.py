@@ -2,7 +2,7 @@ from .Entry import *;
 from .Keybind import *;
 
 from .Menu import *;
-from .Popup import *;
+from .Prompt import *;
 
 from .Globals import *;
 from . import Draw, Input;
