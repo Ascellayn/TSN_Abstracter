@@ -141,9 +141,9 @@ class Color:
 
 	### Internal TSNDL Color Schemes (Migration Reference):
 	| TSNDL Version | Black    | White     | Red       | Orange    | Yellow    | Green     | Cyan      | Blue      | Purple    | Pink      |
-	|:-------------|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
-	| **v3.1+**    | Arellayn | Ascellayn | Wakamo    | Maple     | Seia      | Otogi     | Glacier   | Marine    | Nebula    | Mika      |
-	| **v3.0+**    | Bismuth  | Ascellyan | Wakamo    | Holtow    | Serina    | Otogi     | Horizon   | Ocean     | Astro     | Mika      |
+	|:--------------|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+	| **v3.1+**     | Arellayn | Ascellayn | Wakamo    | Maple     | Seia      | Otogi     | Glacier   | Marine    | Nebula    | Mika      |
+	| **v3.0+**     | Bismuth  | Ascellyan | Wakamo    | Holtow    | Serina    | Otogi     | Horizon   | Ocean     | Astro     | Mika      |
 
 	### TSNDL Color Groups History (Migration Reference):
 	| TSNDL v3.1          | Sun           | Day       | Sky       | Moon      | Night     | Abyss     |
