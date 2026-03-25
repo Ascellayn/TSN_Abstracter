@@ -73,7 +73,7 @@ def Text(Value: str = "", Allowed: str = r".", Limitation: tuple[int, int, int] 
 				else: curses.flash(); curses.beep();
 
 			case 263: # Delete
-				if (len(Value) == 0): curses.flash(); curses.beep(); continue;
+				if ((len(Value) + Cursor) == 0): curses.flash(); curses.beep(); continue;
 
 				x -= 1;
 				if (Cursor == 0): Value = Value[:-1];
