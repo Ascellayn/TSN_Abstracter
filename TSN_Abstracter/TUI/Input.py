@@ -29,27 +29,37 @@ def Get() -> int:
 
 
 
-def Text(Value: str = "", Allowed: str = r".") -> str:
-	""" allowed represents regex, if regex fails then character is not inputted, value is default """
+def Text(Value: str = "", Allowed: str = r".", Limitation: tuple[int, int, int] | None = None) -> str:
+	""" allowed represents regex, if regex fails then character is not inputted, value is default 
+	limitation is minX, maxX, Y"""
 	Initial: str = Value;
-	x: int = 2 + (len(Value) - 1); y: int = curses.LINES - 2; Cursor: int = 0;
+	Cursor: int = 0;
+
+	if (not Limitation):
+		minX: int = 2;
+		maxX: int = curses.COLS - 2;
+		y: int = curses.LINES - 2;
+	else:
+		minX: int = Limitation[0];
+		maxX: int = Limitation[1];
+		y: int = Limitation[2];
+
+	x: int = minX + (len(Value) - 1);
 
 	while True:
 		# Empty Description Field
-		Window.addstr(y, 0, " " * curses.COLS);
-		Window.hline(y - 1, 1, curses.ACS_HLINE, curses.COLS - 2);
+		Window.addstr(y, minX - 1, " " * (maxX - minX + 2));
 
-		if (len(Value) > curses.COLS - 3):
-			Window.addstr(y, 1,
-				Value[
-					max(len(Value) - (curses.COLS - 3) + Cursor, 0):
-				]
+		if (len(Value) > (maxX - minX)):
+			Window.addstr(y, minX - 1,
+				(Value[
+					max(len(Value) - (maxX - minX) + Cursor, 0):
+				])[:(maxX - minX)]
 			);
-		else: Window.addstr(y, 1, Value);
+		else: Window.addstr(y, minX - 1, Value[:(maxX - minX)]);
 
 		Draw.Base(False);
-		Draw.Base_Box();
-		Window.move(y, min(x + Cursor, curses.COLS - 2));
+		Window.move(y, min(x + Cursor, maxX));
 		Key = Get();
 		match (Key): # We use ints here because the predefined numbers by curses don't work for some reason.
 			case 10: return Value; # Enter
