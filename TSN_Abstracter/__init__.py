@@ -18,7 +18,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 	- TSNA Dependencies:  
 		- Config
 		- File
-		- SNDL
+		- TSNDL
 		- String
 		- Time
 
@@ -42,7 +42,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 		- multiprocessing
 		- threading
 - Safe  
-- SNDL  
+- TSNDL  
 	- TSNA Dependencies:  
 		- Config
 - String
@@ -67,7 +67,7 @@ from . import Log;
 from . import File;
 from . import Misc;
 from . import Safe;
-from . import SNDL;
+from . import TSNDL;
 from . import String;
 from . import Time;
 from typing import Any, TypeAlias, TypedDict, assert_type, cast;
@@ -171,7 +171,7 @@ __all__ = [
 	"Log",
 	"Misc",
 	"Safe",
-	"SNDL",
+	"TSNDL",
 	"String",
 	"Time",
 	"TSN_Abstracter",

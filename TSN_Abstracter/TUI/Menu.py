@@ -104,7 +104,7 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0) -> Any:
 					case eType.Toggle: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2 - len(Entry_Quirk)) + f" {Entry_Quirk}";
 					case _: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2);
 
-			if (Entry.Unavailable): __ColorAttribute(SNDL.Color.Moon.Grey_TERM);
+			if (Entry.Unavailable): __ColorAttribute(TSNDL.Color.Moon.Grey_TERM);
 			if (Entry.Bold): Window.attron(curses.A_BOLD);
 			Window.addstr(eY, eX, Entry_Text);
 			Window.attrset(0);

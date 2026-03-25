@@ -1,4 +1,4 @@
-from .. import App, Config, Log, String, SNDL, TSN_Abstracter; # pyright: ignore[reportUnusedImport]
+from .. import App, Config, Log, String, TSNDL, TSN_Abstracter; # pyright: ignore[reportUnusedImport]
 
 import curses, curses.textpad, enum, re; # pyright: ignore[reportUnusedImport]
 
@@ -30,7 +30,7 @@ def Init() -> None:
 	for sIndex, Scheme in enumerate(_Schemes):
 		for cIndex, Color in enumerate(_Colors):
 			Number: int = (sIndex * 20) + cIndex;
-			curses.init_color(Number, *[round(x*(1000/255)) for x in eval(f"SNDL.Color.{Scheme}.{Color}")]);
+			curses.init_color(Number, *[round(x*(1000/255)) for x in eval(f"TSNDL.Color.{Scheme}.{Color}")]);
 			curses.init_pair(Number, Number, -1);
 
 	Config.System.TUI_Enabled = True;
