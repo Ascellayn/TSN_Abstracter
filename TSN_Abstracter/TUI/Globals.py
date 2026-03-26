@@ -49,3 +49,5 @@ def Exit() -> None:
 	curses.reset_shell_mode();
 
 	Config.System.TUI_Enabled = False;
+
+Exit(); # Creating the window object somewhat runs a partial Init which screws up everything, so we run an exit.
