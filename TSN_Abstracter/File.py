@@ -211,8 +211,8 @@ def List(Path: str) -> Folder_Contents:
 	Results = next(os.walk(Path));
 
 	return (
-		tuple(Results[1]),
-		tuple(Results[2])
+		tuple(sorted(Results[1])),
+		tuple(sorted(Results[2]))
 	);
 
 
