@@ -93,8 +93,8 @@ class Awaited_Log:
 		if (Text[-4:] == " ..."): self.Text = Text[:-3];
 		else: self.Text = Text[:-3] + " ";
 
-	def __str__(self) -> str:
-		return f"{self.Level}: {self.Caller}() - {self.Text}";
+	def __str__(self) -> str: return f"{self.Level}: {self.Caller}() - {self.Text}";
+	def __repr__(self) -> str: return self.__str__();
 
 	def Status_Update(self, Status: str) -> None:
 		""" Replace the "..." part of the Awaited Log with the status of your choosing.
@@ -132,9 +132,6 @@ class Awaited_Log:
 
 					Awaited_File = None;
 				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
-
-
-		del Awaited_Logs[self.Caller];
 
 	def OK(self, Status: str | None = None) -> None:
 		""" >>> Log.Awaited.OK();
@@ -180,14 +177,18 @@ def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
 		Awaited_Log/Awaited_Dummy: The corresponding Log Object or a Dummy one if it wasn't found.
 
 	"""
+	global Awaited_Logs;
+
 	Caller: str = Get_Caller() if (not Custom_Caller) else Custom_Caller;
 	if (Caller in Awaited_Logs.keys()):
-		return Awaited_Logs[Caller];
+		Awaited: Awaited_Log = Awaited_Logs[Caller].pop();
+		if (len(Awaited_Logs[Caller]) == 0): del Awaited_Logs[Caller];
+		return Awaited;
 	return Awaited_Dummy();
 
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
-Awaited_Logs: dict[str, Awaited_Log] = {};
+Awaited_Logs: dict[str, list[Awaited_Log]] = {};
 Awaited_Console: str | None = None;
 Awaited_File: str | None = None;
 
@@ -353,7 +354,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 
-	if (Awaited_Console or Awaited_File): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
+	if (Awaited_Console or Awaited_File):
+		if (Caller not in Awaited_Logs.keys()): Awaited_Logs[Caller] = [];
+		Awaited_Logs[Caller].append(Awaited_Log(Level, Caller, Logged_Text));
 
 
 
