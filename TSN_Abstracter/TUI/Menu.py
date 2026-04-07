@@ -21,7 +21,7 @@ def __ColorAttribute(Color: int) -> None: Window.attron(curses.color_pair(Color)
 
 
 
-def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0) -> Any:
+def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only: bool = False) -> Any:
 	x: int; y: int = 2;
 
 
@@ -143,6 +143,7 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0) -> Any:
 
 
 
+		if (Visual_Only): return;
 		# Input Logic
 		Key: int = Input.Get();
 		match (Key):
