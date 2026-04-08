@@ -85,7 +85,7 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 			# Text Display
 			Entry_Quirk: str = "";
 			match (Entry.Type):
-				case eType.Toggle: Entry_Quirk += "[X]" if (Entry.Value) else "[ ]";
+				case eType.Toggle: Entry_Quirk += f"[{Config.TUI.Checkbox_Fill}]" if (Entry.Value) else "[ ]";
 				case eType.IOText: Entry_Quirk += f" - '{Entry.Value}'";
 				case eType.Array:
 					Values: str = "[";
