@@ -52,12 +52,18 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 		Draw.Base();
 		Draw.Base_Box();
 		Max_Visible: int = curses.LINES - 6;
+		Remaining: int = 0;
 
 
 		# Failsafe when Entry Type is not selectable
 		while (Entries[Index].Type == eType.Text): Index += 1;
 
-		y = 2 + round(Max_Visible / 2) if ((len(Entries) - 1) >= Max_Visible and Index > round(Max_Visible / 2)) else 2 + Index;
+		if ((len(Entries) - 1) >= Max_Visible and Index > round(Max_Visible / Config.TUI.Scroll_Center)):
+			y = min(
+				(2 + round(Max_Visible / Config.TUI.Scroll_Center)),
+				(2 + Max_Visible - 1)
+			);
+		else: y = 2 + Index;
 
 		fakeIndex = Fake_Indices[str(Index)] if (str(Index) in Fake_Indices) else Index;
 
@@ -73,8 +79,8 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 		Displayed: int = 0;
 		for Number, Entry in enumerate(Entries):
 			if (Max_Visible < len(Entries)):
-				if (Displayed >= Max_Visible): break;
-				if (Number + round(Max_Visible / 2) < Index): continue;
+				if (Displayed >= Max_Visible): Remaining += 1; continue;
+				if (Number + min(round(Max_Visible / Config.TUI.Scroll_Center), Max_Visible - Config.TUI.Scroll_Center) < Index): continue;
 			eX: int = 6 + (2 * Entry.Indentation); eY = 2 + Displayed;
 
 			if (Entry.Type == eType.Finalize and Entry.Required and len(Missing_Entries) > 0):
@@ -126,10 +132,8 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 		Window.addstr(curses.LINES - 2, 2, Description);
 
 		# Low Res. Terms: Give scroll Hint
-		if (Index != (len(Entries) - 1) and Max_Visible < len(Entries)):
-			Remaining: int = len(Entries) - Index - round(Max_Visible / 2) + 1;
-			if (Remaining > 0): # Rounding error correction band-aid fix
-				Window.addstr(curses.LINES - 4, 2, String.Abbreviate(f" ... ({Remaining} more)", curses.COLS - 5));
+		if (Remaining > 0): # Rounding error correction band-aid fix	
+			Window.addstr(curses.LINES - 4, 2, String.Abbreviate(f" ... ({Remaining} more)", curses.COLS - 5));
 
 		# Cursor & Refresh
 		match (Entries[Index].Type):
