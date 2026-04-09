@@ -79,7 +79,9 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 		Displayed: int = 0;
 		for Number, Entry in enumerate(Entries):
 			if (Max_Visible < len(Entries)):
-				if (Displayed >= Max_Visible): Remaining += 1; continue;
+				if (Displayed >= Max_Visible):
+					if (Number != len(Entries) - 1):
+						Remaining += 1; continue;
 				if (Number + min(round(Max_Visible / Config.TUI.Scroll_Center), Max_Visible - Config.TUI.Scroll_Center) < Index): continue;
 			eX: int = 6 + (2 * Entry.Indentation); eY = 2 + Displayed;
 
