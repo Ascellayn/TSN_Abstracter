@@ -7,6 +7,7 @@ However the TSNA Key which is a tuple (saved as an array) containing the minimum
 `TSN_Abstracter.Require_Version()` will be automatically ran using that very key if you use `TSN_Abstracter.App_Init()` (which you should).
 """
 from . import File, Time;
+from typing import Any;
 
 
 
@@ -26,6 +27,8 @@ Version: tuple[int, ...] = (0, 0, 0);
 Version_Prefix: str = "";
 Version_Suffix: str = "";
 TSNA: tuple[int, int, int] = (6,0,0);
+Public: dict[str, Any] = {};
+Private: dict[str, Any] = {};
 
 if (File.Exists(f"{File.Main_Directory}/App.tsna")):
 	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
@@ -44,6 +47,9 @@ if (File.Exists(f"{File.Main_Directory}/App.tsna")):
 	Version_Prefix = AppTSNA.get("Version_Prefix", Version_Prefix);
 	Version_Suffix = AppTSNA.get("Version_Suffix", Version_Suffix);
 
+	Public = AppTSNA.get("Public", Public);
+	Private = AppTSNA.get("Private", Private);
+
 	TSNA = tuple(AppTSNA.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
 	del AppTSNA;
 
@@ -51,7 +57,7 @@ if (File.Exists(f"{File.Main_Directory}/App.tsna")):
 
 
 
-def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...]]:
+def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]]:
 	""" Retrieve the currently active-in-memory TSNA App JSON
 
 	Arguments:
@@ -79,7 +85,7 @@ def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...]]:
 			"Private": []
 		}
 	"""
-	Dict: dict[str, str | list[str] | tuple[int, ...]] = {
+	Dict: dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]] = {
 		"Name": Name,
 		"Description": Description,
 		"Author": Author,
@@ -91,8 +97,9 @@ def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...]]:
 		"Version": Version,
 		"Version_Prefix": Version_Prefix,
 		"Version_Suffix": Version_Suffix,
-		"TSNA": TSNA
+		"TSNA": TSNA,
+		"Public": Public,
+		"Private": {}
 	};
-	if (Private):
-		...;
+	if (Private): Dict["Private"] = Private; # pyright: ignore[reportArgumentType] // Unsure why the typing gets angry here
 	return Dict;
