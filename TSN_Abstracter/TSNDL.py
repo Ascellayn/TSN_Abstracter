@@ -124,7 +124,7 @@ class Color:
 	Optionally, the Hex Code is available by appending `_Hex` to the color.  
 	If you are using TSNA's `TUI.*` functions, the curses colors are available by appending `_TERM`.  
 	*These colors may be referred as The "Sirio Network Colors" (SNC).*
-	##### Sirio Network Design Language © The Sirio Network 2023-2026 // All Rights Reserved
+	##### The Sirio Network Design Language © The Sirio Network 2023-2026 // All Rights Reserved
 
 	### Examples
 	>>> TSNDL.Color.Sun.Pink
