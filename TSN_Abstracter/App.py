@@ -25,7 +25,7 @@ Branch: str = "Main";
 Version: tuple[int, ...] = (0, 0, 0);
 Version_Prefix: str = "";
 Version_Suffix: str = "";
-TSNA: tuple[int, int, int] = (5,0,0);
+TSNA: tuple[int, int, int] = (6,0,0);
 
 if (File.Exists(f"{File.Main_Directory}/App.tsna")):
 	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
