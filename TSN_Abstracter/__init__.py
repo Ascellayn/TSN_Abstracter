@@ -9,7 +9,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 ### Available Modules:
 - App  
 - Config  
-- Cryptography  
+- Cryptography [NOT IMPORTED BY DEFAULT]  
 	- TSNA Dependencies:  
 		- Log
 	- Python Dependencies:  
@@ -45,6 +45,16 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 - TSNDL  
 	- TSNA Dependencies:  
 		- Config
+- TUI [NOT IMPORTED BY DEFAULT]  
+	- Python Dependencies:  
+		- curses
+	- TSNA Dependencies:  
+		- App
+		- Config
+		- Log
+		- String
+		- TSNDL
+		- TSN_Abstracter
 - String
 - Time
 	- TSNA Dependencies:  
