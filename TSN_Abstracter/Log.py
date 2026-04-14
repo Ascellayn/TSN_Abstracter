@@ -7,11 +7,7 @@ This module from TSN Abstracter contains various random functions that currently
 >>> MyFunction();
 [2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
 """
-from . import Config;
-from . import File;
-from . import SNDL;
-from . import String;
-from . import Time;
+from . import Config, File, TSNDL, String, Time;
 import datetime, inspect, logging, shutil, sys;
 
 
@@ -26,7 +22,7 @@ def Log_Path() -> str:
 	"""
 	# Check if the Logs folder doesn't exist, create it if it isn't, only if File Logging is enabled.
 	if (Config.Logger.File): File.Path_Require(Config.Logger.File_Folder);
-	return f"{File.Working_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
+	return f"{File.Main_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 # Configure Loggers
 Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
@@ -97,8 +93,8 @@ class Awaited_Log:
 		if (Text[-4:] == " ..."): self.Text = Text[:-3];
 		else: self.Text = Text[:-3] + " ";
 
-	def __str__(self) -> str:
-		return f"{self.Level}: {self.Caller}() - {self.Text}";
+	def __str__(self) -> str: return f"{self.Level}: {self.Caller}() - {self.Text}";
+	def __repr__(self) -> str: return self.__str__();
 
 	def Status_Update(self, Status: str) -> None:
 		""" Replace the "..." part of the Awaited Log with the status of your choosing.
@@ -137,25 +133,27 @@ class Awaited_Log:
 					Awaited_File = None;
 				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
 
-
-		del Awaited_Logs[self.Caller];
-
 	def OK(self, Status: str | None = None) -> None:
 		""" >>> Log.Awaited.OK();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
-		self.Status_Update(f"{SNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{TSNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
-	def ERROR(self, Error: str) -> None:
-		""" >>> Log.Awaited.ERROR();
-		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR] """
-		self.Status_Update(f"{SNDL.Log_Color("Red")}[ERROR]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Error}{String.ASCII.Text.Reset}");
+	def WARNING(self, Status: str) -> None:
+		""" >>> Log.Awaited.WARNING("2 Modules Skipped");
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped] """
+		self.Status_Update(f"{TSNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+
+	def ERROR(self, Status: str) -> None:
+		""" >>> Log.Awaited.ERROR("1 Outdated Module");
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 1 Outdated Module] """
+		self.Status_Update(f"{TSNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
 	def EXCEPTION(self, Except: Exception, Raise: bool = False) -> None:
 		""" >>> Log.Awaited.EXCEPTION(Except);
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 		Cannot divide by zero.
 		"""
-		self.Status_Update(f"{SNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{String.ASCII.Text.Reset}");
 		if (Raise): raise Except;
 
 
@@ -165,7 +163,8 @@ class Awaited_Dummy(Awaited_Log):
 	def __str__(self): return "";
 	def Status_Update(self, Status: str): return;
 	def OK(self, Status: str | None = None): return;
-	def ERROR(self, Error: str): return;
+	def Warning(self, Status: str): return;
+	def ERROR(self, Status: str): return;
 	def EXCEPTION(self, Except: Exception, Raise: bool = False): return;
 
 def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
@@ -178,14 +177,18 @@ def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
 		Awaited_Log/Awaited_Dummy: The corresponding Log Object or a Dummy one if it wasn't found.
 
 	"""
+	global Awaited_Logs;
+
 	Caller: str = Get_Caller() if (not Custom_Caller) else Custom_Caller;
 	if (Caller in Awaited_Logs.keys()):
-		return Awaited_Logs[Caller];
+		Awaited: Awaited_Log = Awaited_Logs[Caller].pop();
+		if (len(Awaited_Logs[Caller]) == 0): del Awaited_Logs[Caller];
+		return Awaited;
 	return Awaited_Dummy();
 
 
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
-Awaited_Logs: dict[str, Awaited_Log] = {};
+Awaited_Logs: dict[str, list[Awaited_Log]] = {};
 Awaited_Console: str | None = None;
 Awaited_File: str | None = None;
 
@@ -307,14 +310,14 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 	match Level:
-		case 50: Level_Color = SNDL.Log_Color("Purple"); Level_String = String.ASCII.Text.Blink + "Critical" + String.ASCII.Text.Blink_OFF;
-		case 40: Level_Color = SNDL.Log_Color("Red"); Level_String = String.ASCII.Text.Blink + "Error" + String.ASCII.Text.Blink_OFF;
-		case 30: Level_Color = SNDL.Log_Color("Yellow"); Level_String = "Warning";
-		case 25: Level_Color = SNDL.Log_Color("Blue"); Level_String = "Info";
-		case 20: Level_Color = SNDL.Log_Color("White"); Level_String = "Stateless";
-		case 15: Level_Color = SNDL.Log_Color("Cyan"); Level_String = "Debug";
-		case 10: Level_Color = SNDL.Log_Color("Green"); Level_String = "TSN_Debug";
-		case _: Level_Color = SNDL.Log_Color("White"); Level_String = "Unknown";
+		case 50: Level_Color = TSNDL.Log_Color("Purple"); Level_String = String.ASCII.Text.Blink + "Critical" + String.ASCII.Text.Blink_OFF;
+		case 40: Level_Color = TSNDL.Log_Color("Red"); Level_String = String.ASCII.Text.Blink + "Error" + String.ASCII.Text.Blink_OFF;
+		case 30: Level_Color = TSNDL.Log_Color("Yellow"); Level_String = "Warning";
+		case 25: Level_Color = TSNDL.Log_Color("Blue"); Level_String = "Info";
+		case 20: Level_Color = TSNDL.Log_Color("White"); Level_String = "Stateless";
+		case 15: Level_Color = TSNDL.Log_Color("Cyan"); Level_String = "Debug";
+		case 10: Level_Color = TSNDL.Log_Color("Green"); Level_String = "TSN_Debug";
+		case _: Level_Color = TSNDL.Log_Color("White"); Level_String = "Unknown";
 	Logger_Console.setLevel(Level); Logger_File.setLevel(Level);
 
 	# Get function name that called the logger
@@ -332,18 +335,18 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	Date_Str, Time_Str = Time.Get_DateStrings(Time.Get_Unix());
 	Logged_Text: str = ""; # Prefix if previous log was Awaited
 
-	if (Config.Logger.Display_Date): Logged_Text += f"{SNDL.Log_Color("Grey")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
+	if (Config.Logger.Display_Date): Logged_Text += f"{TSNDL.Log_Color("Grey")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
 
 	if (Level != 20): # Check for Stateless before adding Caller
 		Logged_Text += f"{String.ASCII.Text.Bold}{Level_Color}{Level_String}{String.ASCII.Text.Reset}: "; # Log Level
-		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{SNDL.Log_Color("Grey")}{Caller}{String.ASCII.Text.Reset} → ";
+		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{TSNDL.Log_Color("Grey")}{Caller}{String.ASCII.Text.Reset} → ";
 
 	Logged_Text += Text; # Finally add the actual message we want to Log.
 
 
 
-	# Verify for both the Console and File if the Level is high enough before logging.
-	if (Level >= Config.Logger.Print_Level): Logger_Console.log(Level, Logged_Text);
+	# Verify for both the Console and File if the Level is high enough before logging. Also refuses to log if the TUI is currently enabled.
+	if (Level >= Config.Logger.Print_Level and not Config.System.TUI_Enabled): Logger_Console.log(Level, Logged_Text);
 
 	Verify_Config();
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
@@ -351,7 +354,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 
-	if (Awaited_Console or Awaited_File): Awaited_Logs[Caller] = Awaited_Log(Level, Caller, Logged_Text);
+	if (Awaited_Console or Awaited_File):
+		if (Caller not in Awaited_Logs.keys()): Awaited_Logs[Caller] = [];
+		Awaited_Logs[Caller].append(Awaited_Log(Level, Caller, Logged_Text));
 
 
 

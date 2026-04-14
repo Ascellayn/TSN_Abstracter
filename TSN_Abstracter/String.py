@@ -6,6 +6,54 @@
 ['The quick brown ', 'fox jumps over ', 'the lazy dog.']
 """
 import re;
+from typing import Any;
+
+
+
+
+
+def ify_Array(Array: list[Any] | tuple[Any, ...]) -> list[str]:
+	""" Transforms everything inside `Array` into strings.
+
+	Arguments:
+		Array (list[Any] | tuple[Any, ...]*): The array we wish to turn all its items into strings.
+
+	Returns:
+		list[str]: A newly formed list with all of the elements of `Array` as strings.
+
+	Examples:
+		>>> String.ify_Array([1.9.4]);
+		["1", "9", "4"]
+	"""
+	return [str(Item) for Item in Array];
+
+
+
+
+
+def Bulk_Replace(Replacers: list[tuple[str, str] | list[str] | str], String: str, New: str = "") -> str:
+	""" Bulk replaces every string in `String` to `New` or the 2nd element of a pair inside `Replacers`.
+
+	Arguments:
+		Replacers (list[tuple[str, str] | list[str] | str]*): A list of strings or a list of lists/tuples containing the first element being which element to replace within `String` to replace with the second element of the pair.
+		String (str*): The string to replace stuff from.
+		New (str = ""): If `Replacers` isn't in pairs of strings, the replaced string will have the value of `New`.
+
+	Returns:
+		str: The string with all its replacements done.
+
+	Examples:
+		>>> String.Bulk_Replace([
+			("sanity away", "smile shinning bright"),
+			"day"
+		], "Hug a Mika a day keeps your sanity away.", "night");
+		"Hug a Mika a night keeps your smile shinning bright."
+	"""
+	for Item in Replacers:
+		if (isinstance(Item, str)): String = String.replace(Item, New);
+		else: String = String.replace(Item[0], Item[1]);
+	return String;
+
 
 
 
@@ -67,6 +115,12 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 		Raw_Split(); Text = Text[Max_Length:];
 
 	return String_List;
+
+
+def Abbreviate(Text: str, Max_Length: int, Abbreviate: str = "(...)") -> str:
+	if (len(Text) > Max_Length):
+		Text = Text[:Max_Length - len(Abbreviate)] + Abbreviate;
+	return Text;
 
 
 

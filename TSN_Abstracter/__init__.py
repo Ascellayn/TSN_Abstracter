@@ -4,12 +4,14 @@
 It was created during Kosaka's v2.X Versions and as its "Dependencies.py" file kept being ported over to other Python projects, TSNA was created to avoid sloppily copy pasting reused code and simplify the process of writing code.  
 You are entirely on your own for figuring out what TSNA does and what functions would be useful in your use case. TSNA was purposefully built to build programs for TSN, as such no feature requests will be accepted, unless they're contributing to the function of a TSN Service.  
 
-#### NOTICE: TSNA is only expected to be  import fromed TSN_Abstracter from  import *;` theory could work to just from  import exactly need, but this hasn't been tested extensively.
+#### NOTICE: TSNA is only expected to be imported with `from TSN_Abstracter import *;` first.
+You can then import additional modules such as the TUI one with `from TSN_Abstracter import TUI;`.  
+We do not recommend importing TSNA in another way.
 
 ### Available Modules:
 - App  
 - Config  
-- Cryptography  
+- Cryptography [NOT IMPORTED BY DEFAULT]  
 	- TSNA Dependencies:  
 		- Log
 	- Python Dependencies:  
@@ -18,7 +20,7 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 	- TSNA Dependencies:  
 		- Config
 		- File
-		- SNDL
+		- TSNDL
 		- String
 		- Time
 
@@ -42,9 +44,19 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 		- multiprocessing
 		- threading
 - Safe  
-- SNDL  
+- TSNDL  
 	- TSNA Dependencies:  
 		- Config
+- TUI [NOT IMPORTED BY DEFAULT]  
+	- Python Dependencies:  
+		- curses
+	- TSNA Dependencies:  
+		- App
+		- Config
+		- Log
+		- String
+		- TSNDL
+		- TSN_Abstracter
 - String
 - Time
 	- TSNA Dependencies:  
@@ -60,17 +72,20 @@ You are entirely on your own for figuring out what TSNA does and what functions 
 
 
 
-from . import App;
 from . import Config;
+from . import App;
+from . import Deco;
 from . import Log;
 from . import File;
 from . import Misc;
 from . import Safe;
-from . import SNDL;
+from . import TSNDL;
 from . import String;
 from . import Time;
-from typing import Any, TypedDict;
+from typing import Any, TypeAlias, TypedDict, assert_type, cast;
+from collections.abc import Callable;
 
+NULL: TypeAlias = None;
 
 
 
@@ -78,7 +93,7 @@ from typing import Any, TypedDict;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,0,0);
+	Version_Tuple: tuple[int, int, int] = (6,1,0);
 
 
 
@@ -103,7 +118,7 @@ class TSN_Abstracter:
 	def Version(Version: tuple[int, int, int] | None = None) -> str:
 		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
 		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
-		return f"v{".".join(str(INT) for INT in Version)}";
+		return f"v{".".join(String.ify_Array(Version))}";
 
 
 	@staticmethod
@@ -129,7 +144,7 @@ class TSN_Abstracter:
 	@staticmethod
 	def App_Version() -> str:
 		"""Returns a readable string of the TSNA-Based Application Version."""
-		return f"v{App.Version_Prefix}{".".join(str(INT) for INT in App.Version)}{App.Version_Prefix}";
+		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Prefix}";
 
 
 	@staticmethod
@@ -162,14 +177,18 @@ class TSN_Abstracter:
 
 __all__ = [
 	"App",
+	"Deco",
 	"Config",
 	"File",
 	"Log",
 	"Misc",
 	"Safe",
-	"SNDL",
+	"TSNDL",
 	"String",
 	"Time",
 	"TSN_Abstracter",
-	"Any", "TypedDict"
+	"Any", "TypeAlias", "TypedDict",
+	"assert_type", "cast",
+	"Callable",
+	"NULL"
 ];

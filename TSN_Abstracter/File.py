@@ -7,7 +7,12 @@ True
 """
 from . import Log, String;
 import pathlib, os, lzma, json, typing;
-Working_Directory: str = os.getcwd();
+
+try:
+	from __main__ import __file__ as __mainF__; # Useful for TSNA Apps if they need to fetch files from their directories
+	Main_Directory: str = os.path.dirname(os.path.abspath(__mainF__));
+except: Main_Directory: str = os.path.dirname(os.path.abspath(__file__));
+# ↑ Causes crash when importing TSNA from Python Console, so try catch gaming.
 
 
 
@@ -198,16 +203,16 @@ def List(Path: str) -> Folder_Contents:
 	Examples:
 		>>> File.List("TSN_Abstracter");
 		(
-			('__pycache__',), # WARNING: The extra "," when there's *only one* folder, is a visual bug! I'm not sure how to get rid of it...
-			('String.py', 'Cryptography.py', 'Time.py', 'File.py', 'Log.py', 'Misc.py', '__init__.py', 'Config.py', 'Safe.py', 'SNDL.py')
+			('__pycache__',), # Reminder that a `,` inside a tuple of a single element is required or otherwise Python thinks it's a literal which is BAD
+			('String.py', 'Cryptography.py', 'Time.py', 'File.py', 'Log.py', 'Misc.py', '__init__.py', 'Config.py', 'Safe.py', 'TSNDL.py')
 		)
 	"""
 	if (not Exists(Path)): return ((),());
 	Results = next(os.walk(Path));
 
 	return (
-		tuple(Results[1]),
-		tuple(Results[2])
+		tuple(sorted(Results[1])),
+		tuple(sorted(Results[2]))
 	);
 
 
@@ -282,7 +287,7 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 	return json.loads(JSON if (JSON) else "{}");
 
 
-def JSON_Write(Path: str, Dictionary: dict[str, typing.Any], Compressed: bool = False) -> bool:
+def JSON_Write(Path: str, Dictionary: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for writing JSON Files.  
 	Automatically creates the file structure and file if it doesn't exist.
 	
@@ -306,7 +311,7 @@ def JSON_Write(Path: str, Dictionary: dict[str, typing.Any], Compressed: bool = 
 	return False;
 
 
-def JSON_Update(Path: str, Dictionary: dict[str, typing.Any], Compressed: bool = False) -> bool:
+def JSON_Update(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for updating data to JSON Files.  
 	**QUIRK**: Acts as a regular `JSON_Write()` if the file did not exist prior.
 	

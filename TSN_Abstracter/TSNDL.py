@@ -1,11 +1,11 @@
 """
 This module from TSN Abstracter is in charge of providing functions related to manipulating colors.  
-It also contains the entire suite of SNDL Colors.
-##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
+It also contains the entire suite of TSNDL Colors.
+##### The Sirio Network Design Language © The Sirio Network 2023-2026 // All Rights Reserved
 
 ### Examples
->>> from TSN_Abstracter import SNDL;
->>> SNDL.Color.Sun.Pink
+>>> from TSN_Abstracter import TSNDL;
+>>> TSNDL.Color.Sun.Pink
 (255, 150, 255)
 """
 from . import Config;
@@ -25,9 +25,9 @@ def Hex_Tuple(Hex: str) -> tuple[int, int, int, int] | tuple[int, int, int]:
 		tuple (of either 3 or 4 integers): Each element is an integer from a range of 0 to 255, representing in order an RGB(A) Color.
 
 	Examples:
-		>>> SNDL.Hex_Tuple("#50235080");
+		>>> TSNDL.Hex_Tuple("#50235080");
 		(80, 35, 80, 128)
-		>>> SNDL.Hex_Tuple("#502350");
+		>>> TSNDL.Hex_Tuple("#502350");
 		(80, 35, 80)
 	"""
 	# Gets rid of the first character if it's an "#"
@@ -60,7 +60,7 @@ def Hex_To_Decimal(Hex: str) -> int:
 		ValueError: If the provided Hex Character is not one.
 
 	Examples:
-		>>> SNDL.Hex_To_Decimal("F");
+		>>> TSNDL.Hex_To_Decimal("F");
 		15
 	"""
 	match Hex[1:].upper():
@@ -87,15 +87,15 @@ def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
 		str: The ASCII Color escape sequence string.
 
 	Examples:
-		>>> SNDL.ASCII_Color(SNDL.Color.Sun.White);
-		# SNDL.Color.Sun.White = (255, 250, 255)
+		>>> TSNDL.ASCII_Color(TSNDL.Color.Sun.White);
+		# TSNDL.Color.Sun.White = (255, 250, 255)
 		"\x1b[38;2;255;250;255m"
 	"""
 	return f"\x1b[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
 
 
 def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
-	""" Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.SNDL_Group` variable of the TSNA Config.
+	""" Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.TSNDL_Group` variable of the TSNA Config.
 
 	Arguments:
 		Color (str*): The name of the color.
@@ -105,12 +105,12 @@ def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
 		str: The ASCII Color escape sequence string depending on the TSNA Config.
 
 	Examples:
-		>>> SNDL.Log_Color("White");
+		>>> TSNDL.Log_Color("White");
 		"\x1b[38;2;255;250;255m"
 	"""
 	return ASCII_Color(
 		getattr(
-			getattr(Color, Config.Logger.SNDL_Group),
+			getattr(Color, Config.Logger.TSNDL_Group),
 			Color_Name
 		), Foreground
 	);
@@ -120,15 +120,16 @@ def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
 
 
 class Color:
-	""" Classes containing SNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
+	""" Classes containing TSNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
 	Optionally, the Hex Code is available by appending `_Hex` to the color.  
+	If you are using TSNA's `TUI.*` functions, the curses colors are available by appending `_TERM`.  
 	*These colors may be referred as The "Sirio Network Colors" (SNC).*
-	##### Sirio Network Design Language © The Sirio Network 2023-2025 // All Rights Reserved
+	##### The Sirio Network Design Language © The Sirio Network 2023-2026 // All Rights Reserved
 
 	### Examples
-	>>> SNDL.Color.Sun.Pink
+	>>> TSNDL.Color.Sun.Pink
 	(255, 150, 255)
-	>>> SNDL.Color.Sun.White_Hex
+	>>> TSNDL.Color.Sun.White_Hex
 	"#FFFAFF"
 
 	### Color Groups:
@@ -138,14 +139,14 @@ class Color:
 	| **Secondary** | Day        | Night     |
 	| **Tertiary**  | Sky        | Abyss     |
 
-	### Internal SNDL Color Schemes (Migration Reference):
-	| SNDL Version | Black    | White     | Red       | Orange    | Yellow    | Green     | Cyan      | Blue      | Purple    | Pink      |
-	|:-------------|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
-	| **v3.1+**    | Arellayn | Ascellayn | Wakamo    | Maple     | Seia      | Otogi     | Glacier   | Marine    | Nebula    | Mika      |
-	| **v3.0+**    | Bismuth  | Ascellyan | Wakamo    | Holtow    | Serina    | Otogi     | Horizon   | Ocean     | Astro     | Mika      |
+	### Internal TSNDL Color Schemes (Migration Reference):
+	| TSNDL Version | Black    | White     | Red       | Orange    | Yellow    | Green     | Cyan      | Blue      | Purple    | Pink      |
+	|:--------------|:--------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
+	| **v3.1+**     | Arellayn | Ascellayn | Wakamo    | Maple     | Seia      | Otogi     | Glacier   | Marine    | Nebula    | Mika      |
+	| **v3.0+**     | Bismuth  | Ascellyan | Wakamo    | Holtow    | Serina    | Otogi     | Horizon   | Ocean     | Astro     | Mika      |
 
-	### SNDL Color Groups History (Migration Reference):
-	| SNDL v3.1          | Sun           | Day       | Sky       | Moon      | Night     | Abyss     |
+	### TSNDL Color Groups History (Migration Reference):
+	| TSNDL v3.1          | Sun           | Day       | Sky       | Moon      | Night     | Abyss     |
 	|:-------------------|:-------------:|:---------:|:---------:|:---------:|:---------:|:---------:|
 	| **v3.1 DEV**       | Flash         | Bright    | undefined | Night     | Abyss     | Void      |
 	| **v3.0+ (Colors)** | Flash         | Bright    | undefined | Night     | Abyss     | Void      |
@@ -154,8 +155,8 @@ class Color:
 	| **v3.0+ (Black)**  | Sirio Network | Ascellyan | undefined | undefined | Arellyan  | Bismuth   |
 	| **v2.0+***         | Feather       | Light     | [Nothing] | Solid     | undefined | undefined |
 
-	*: SNDL v2.0's Colors behaved SIGNIFICANTLY differently from 3.0 and onwards, while newer versions actually change the colors, SNDL v2.0 only relied on opacity to emulate lighter colors.  
-	The color Grey was added in SNDL v3.2 and does not have any old colors that can be migrated from.  
+	*: TSNDL v2.0's Colors behaved SIGNIFICANTLY differently from 3.0 and onwards, while newer versions actually change the colors, TSNDL v2.0 only relied on opacity to emulate lighter colors.  
+	The color Grey was added in TSNDL v3.2 and does not have any old colors that can be migrated from.  
 	"""
 
 
@@ -186,6 +187,18 @@ class Color:
 		Purple_Hex: str = "#32004B";
 		Pink_Hex: str = "#690069";
 
+		Black_TERM: int = 0;
+		Grey_TERM: int = 1;
+		White_TERM: int = 2;
+		Red_TERM: int = 3;
+		Orange_TERM: int = 4;
+		Yellow_TERM: int = 5;
+		Green_TERM: int = 6;
+		Cyan_TERM: int = 7;
+		Blue_TERM: int = 8;
+		Purple_TERM: int = 9;
+		Pink_TERM: int = 10;
+
 
 	class Night:
 		"""Dark-Mode: Secondary Color"""
@@ -213,6 +226,18 @@ class Color:
 		Purple_Hex: str = "#4B0569";
 		Pink_Hex: str = "#821982";
 
+		Black_TERM: int = 20;
+		Grey_TERM: int = 21;
+		White_TERM: int = 22;
+		Red_TERM: int = 23;
+		Orange_TERM: int = 24;
+		Yellow_TERM: int = 25;
+		Green_TERM: int = 26;
+		Cyan_TERM: int = 27;
+		Blue_TERM: int = 28;
+		Purple_TERM: int = 29;
+		Pink_TERM: int = 30;
+	
 
 	class Moon:
 		"""Dark-Mode: Primary Color"""
@@ -239,6 +264,18 @@ class Color:
 		Blue_Hex: str = "#140087";
 		Purple_Hex: str = "#5F0A87";
 		Pink_Hex: str = "#9B329B";
+
+		Black_TERM: int = 40;
+		Grey_TERM: int = 41;
+		White_TERM: int = 42;
+		Red_TERM: int = 43;
+		Orange_TERM: int = 44;
+		Yellow_TERM: int = 45;
+		Green_TERM: int = 46;
+		Cyan_TERM: int = 47;
+		Blue_TERM: int = 48;
+		Purple_TERM: int = 49;
+		Pink_TERM: int = 50;
 
 
 	class Sky:
@@ -267,6 +304,18 @@ class Color:
 		Purple_Hex: str = "#8714C3";
 		Pink_Hex: str = "#CD64CD";
 
+		Black_TERM: int = 60;
+		Grey_TERM: int = 61;
+		White_TERM: int = 62;
+		Red_TERM: int = 63;
+		Orange_TERM: int = 64;
+		Yellow_TERM: int = 65;
+		Green_TERM: int = 66;
+		Cyan_TERM: int = 67;
+		Blue_TERM: int = 68;
+		Purple_TERM: int = 69;
+		Pink_TERM: int = 70;
+
 
 	class Day:
 		"""Light-Mode: Secondary Color"""
@@ -294,6 +343,18 @@ class Color:
 		Purple_Hex: str = "#9B19E1";
 		Pink_Hex: str = "#E67DE6";
 
+		Black_TERM: int = 80;
+		Grey_TERM: int = 81;
+		White_TERM: int = 82;
+		Red_TERM: int = 83;
+		Orange_TERM: int = 84;
+		Yellow_TERM: int = 85;
+		Green_TERM: int = 86;
+		Cyan_TERM: int = 87;
+		Blue_TERM: int = 88;
+		Purple_TERM: int = 89;
+		Pink_TERM: int = 90;
+
 
 	class Sun:
 		"""Light-Mode: Primary Color"""
@@ -320,3 +381,15 @@ class Color:
 		Blue_Hex: str = "#2800FF";
 		Purple_Hex: str = "#AF1EFF";
 		Pink_Hex: str = "#FF96FF";
+
+		Black_TERM: int = 100;
+		Grey_TERM: int = 101;
+		White_TERM: int = 102;
+		Red_TERM: int = 103;
+		Orange_TERM: int = 104;
+		Yellow_TERM: int = 105;
+		Green_TERM: int = 106;
+		Cyan_TERM: int = 107;
+		Blue_TERM: int = 108;
+		Purple_TERM: int = 109;
+		Pink_TERM: int = 110;

@@ -1,12 +1,38 @@
-# TSN Abstracter (TSNA)
-Python Module used across all newer "built-for-TSN" Python Projects containing a bunch of commonly used functions.  
+<p align="center">
+	<img src="https://sirio-network.com/Root/Banner/TSNA.png" alt="TSN Abstracter Banner">
+	<h2 align="center">The pillar of The Sirio Network</h2>
+</p>
 
-TSNA aims to facilitate development of numerous TSN Python projects such as the [Kosaka Eco-System](https://github.com/stars/Ascellayn/lists/kosaka-related-repositories), [TSN "Trinity"](https://github.com/Ascellayn/TSN_Trinity), [Caerbannog](https://github.com/Ascellayn/Caerbannog) and MANY other projects aimed to serve The Sirio Network.  
+<br>
+
+**__TSN Abstracter__** *(also called* ***TSNA)*** is a monolithic Python Module containing commonly used functions to avoid rewriting them for every project.  
+TSNA can be used to make fully featured [Terminal Applications](./TSN_Abstracter/TUI.py) or CLI Based tools with some ease. **It is however crucial to mention that TSNA lacks any formal documentation**, only **DocStrings** within the Python Files are the unique type of documentation available for TSNA.
+
+<br>
+
+TSN Abstracter is currently used to power numerous tools and applications built by The Sirio Network such as:
+- [Tachibana](https://github.com/Ascellayn/TSN_Tachibana)
+- [Adellian](https://github.com/Ascellayn/Adellian)
+- [Kozeki](https://github.com/Ascellayn/TSN_Kozeki)
+- [The Kosaka Discord Bot's Eco-System](https://github.com/stars/Ascellayn/lists/kosaka-eco-system)
+- [Caerbannog](https://github.com/Ascellayn/Caerbannog)
+- [TSN "Yae"](https://sirio-network.com/Projects/Yae/Browser)
+- [TSN "Himeki"](https://himeki.sirio-network.com/)
+
+<br>
 
 ## Installation / Usage
-TSNA does not come with a proper pip Python Package, you must MANUALLY install TSNA on your computer by downloading the whole repository and unzipping it somewhere.  
-In the case of Linux, with an installation at `/System/Library/TSN_Abstracter`, you must add to your `.bashrc` the following line: `export PYTHONPATH=/System/Library/TSN_Abstracter:$`.  
-All that's left to do is simply include at the very top of your Python script `from TSN_Abstracter import *;` and then get to roll with it.  
+TSNA has been historically been without a proper Python Package, this **however finally changes now**.  
+You should simply be able to run `pip install TSN-Abstracter` nowadays.  
+
+TSNA however on [Adellian](https://github.com/Ascellayn/Adellian) still installs TSNA the old way by **cloning the repository then adding the folder path to your `PYTHONPATH`.**  
+All projects from The Sirio Network thus installs TSNA this way and thus are only tested as such.
+In the case of Adellian, with an installation at `/System/Library/TSN_Abstracter`, the `.bashrc` contains the following line: `export PYTHONPATH=/System/Library/TSN_Abstracter:$`.  
+You can do something similar if you wish to install TSN Abstracter the old way.  
+
+<br>
+
+All that's left to do after installation is to simply include at the very top of your Python script `from TSN_Abstracter import *;` and then get to roll with it.  
 We recommend the following template file Python File to start your TSNA fueled programs:
 ```python
 # [Program] (c) [Author] (Date) - [License]
@@ -37,13 +63,28 @@ TSNA automatically attempts to read data from `App.tsna`, this file contains bas
 	"Version": [1,0,0],
 	"Version_Prefix": "",
 	"Version_Suffix": "_dev",
-	"TSNA": [6,0,0] # Minimum required TSNA Version for the Application to run
+	"TSNA": [6,0,0] # Minimum required TSNA Version for the Application to run,
+	"Public": {}, # You can put anything in there, used for application-specific options.
+	"Private": {} # Application's private data to be only used internally. This is not meant to be present in the App.tsna file.
 }
 ```
 TSN Abstracter is obviously __developer oriented__, it is **your job to look at TSNA and find functions that are deemed useful** to you.
 
 ## Dependencies
-- python3-cryptography
 - The "LZMA" Python Module (should be shipped with your OS's Libraries)
+- **If you import the "Cryptography" TSNA Module"**:
+	- python3-cryptography
+- **If you import the "TUI" TSNA Module"**:
+	- python3-curses
+
+<br>
+
+### Random facts about TSNA
+TSN Abstracter was created in early 2025 after things started getting hectic when it came to creating stuff such as (at the time) Kosaka and [TSN Trinity](https://github.com/Ascellayn/TSN_Trinity). I would constantly have this `TSNDB_Dependencies.py` or `SN_PyDepends` file that I'd have to manually synchronize across all those projects. At some point I decided enough was enough and thus TSN Abstracter was born.  
+If we have to take in *when* TSNA was truly created then it was created during Kosaka's Pre-Ceres Lifecycle, which was in the middle of 2024.  
+TSNA was created so early it does not follow TSN's naming conventions, thus, a Blue Archive character or thing was never attributed as its codename / name.  
+New coding style conventions or things such as the [TSN Commit Guideline](https://sirio-network.com/guideline/commit) had their start in TSNA.  
+
+<br>
 
 ###### [TSN Abstracter (TSNA) © Ascellayn / The Sirio Network (2025-2026) - TSN License 2.1 - Base](https://github.com/Ascellayn/TSN_Abstracter/LICENSE.md)

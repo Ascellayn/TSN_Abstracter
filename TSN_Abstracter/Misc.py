@@ -12,17 +12,6 @@ import multiprocessing, threading;
 
 
 
-def Void() -> None:
-	""" Does absolutely nothing. Frequently used when you want to ignore Exceptions.
-
-	## Examples
-	>>> try: print(80082/0);
-	>>> except: Misc.Void();
-	"""
-	return None;
-
-
-
 # Multi-Tasking
 def Thread_Start(Function: callable, Arguments: list[object] = [], Daemon: bool = True) -> None: # type: ignore | "callable" isn't taken seriously
 	""" Abstraction to launch a new thread
@@ -79,3 +68,30 @@ def is_Even(Number: int) -> bool:
 		True
 	"""
 	return ((Number % 2) == 0);
+
+
+
+
+
+
+def Under_At(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] | list[int | float]) -> int:
+	""" Specify at which index a value of A is under B. Returns `-1` if no value is.
+
+	Arguments:
+		A (tuple[int | float, ...] | list[int | float]*): The iterable of numbers we wanna know the index of the value under B.
+		B (tuple[int | float, ...] | list[int | float]*): The iterable of numbers to compare A to.
+
+	Returns:
+		int: The index of A[x] that is under B[x]. Returns `-1` if it never happens.
+
+	Examples:
+		>>> Misc.Under_At([1,5], [1,6]);
+		1
+		>>> Misc.Under_At([1,8], [1,6]);
+		-1
+	"""
+	A_Length: int = len(B);
+	for Index, Number in enumerate(B):
+		if (Index == A_Length): break;
+		if (Number > A[Index]): return Index;
+	return -1;

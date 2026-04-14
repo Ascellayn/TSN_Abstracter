@@ -8,12 +8,13 @@
 >>> Safe.Index(Array, 1);
 None
 """
+from typing import Any;
 
 
 
 
 
-def Index(Array: list[object], Index: int) -> object: # Isn't there a Python function to already do this?
+def Index(Array: list[object], Index: int) -> Any: # Isn't there a Python function to already do this?
 	""" Attempts to safely try to read an array's specified index.
 
 	Arguments:
@@ -35,7 +36,7 @@ def Index(Array: list[object], Index: int) -> object: # Isn't there a Python fun
 
 
 
-def NotNull(Number: int, Default: int = 1) -> int:
+def NotNull(Number: int | float, Default: int = 1) -> int | float:
 	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
 
 	Arguments:
@@ -53,3 +54,35 @@ def NotNull(Number: int, Default: int = 1) -> int:
 	"""
 	if (Number == 0): return Default;
 	return Number;
+
+
+
+def Nested_Dict(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> Any:
+	""" Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
+
+	Arguments:
+		Dict (dict[str, Any]*): The dictionary we wish to retrieve data from its sub-dictionaries.
+		Keys (list[str]*): A list of key strings we wish to go through in the Dictionary.
+		Default (Any = None): The value to return when no data from Dict[*Keys] can be retrieved.
+
+	Returns:
+		Any: The data from `Dict[Keys[0]][Keys[1]][...]`
+
+	Examples:
+		>>> Safe.Nested_Dict({
+			"Hello": {
+				"ItAppearsThat": "I am very silly"
+			}
+		}, ["Hello", "ItAppearsThat"]);
+		"I am very silly"
+		>>> Safe.Nested_Dict({
+			"Hello": {
+				"ItAppearsThat": "I am very silly"
+			}
+		}, ["Hello", "WeHaveBeenTryingToReachYouAboutYourCarsExtendedWarranty"], "NO");
+		"NO"
+	"""
+	for Key in Keys:
+		if (type(Dict) != dict): return Default;
+		Dict = Dict.get(Key, Default);
+	return Dict;
