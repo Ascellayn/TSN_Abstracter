@@ -1,0 +1,20 @@
+[project]
+name = "TSN_Abstracter"
+version = "6.1.0"
+authors = [
+  { name="Ascellayn", email="contact+pypi@sirio-network.com" },
+  { name="The Sirio Network", email="contact+pypi@sirio-network.com" },
+]
+description = "The Abstraction Library for The Sirio Network's numerous projects."
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+	"Natural Language :: English",
+]
+license = { file = "LICENSE.md" }
+
+[project.urls]
+Homepage = "https://github.com/Ascellayn/TSN_Abstracter"
+Issues = "https://github.com/Ascellayn/TSN_Abstracter/issues"
