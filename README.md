@@ -23,7 +23,7 @@ TSN Abstracter is currently used to power numerous tools and applications built 
 
 ## Installation / Usage
 TSNA has been historically been without a proper Python Package, this **however finally changes now**.  
-You should simply be able to run `pip install TSN_Abstracter` nowadays.  
+You should simply be able to run `pip install TSN-Abstracter` nowadays.  
 
 TSNA however on [Adellian](https://github.com/Ascellayn/Adellian) still installs TSNA the old way by **cloning the repository then adding the folder path to your `PYTHONPATH`.**  
 All projects from The Sirio Network thus installs TSNA this way and thus are only tested as such.
