@@ -46,3 +46,53 @@ if (File.Exists(f"{File.Main_Directory}/App.tsna")):
 
 	TSNA = tuple(AppTSNA.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
 	del AppTSNA;
+
+
+
+
+
+def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...]]:
+	""" Retrieve the currently active-in-memory TSNA App JSON
+
+	Arguments:
+		Private (bool*): Whenever to also include the "Private" key of the TSNA App JSON.
+
+	Returns:
+		dict[str, str | list[str] | tuple[int, ...]]: The TSNA App JSON
+	
+	Examples:
+		>>> App.Dump(True);
+		{
+			"Name": "Serina",
+			"Description": "Serina Host-Machine Server for retrieving the current state of all TSNA based applications with the Sena Client enabled.",
+			"Author": ["Ascellayn", "The Sirio Network"],
+			"Contributors": [],
+			"License": "TSN License 2.1 - Base",
+			"License_Year": "2026",
+			"Codename": "TSN_Serina",
+			"Branch": "Azure",
+			"Version": [1,0,0],
+			"Version_Prefix": "",
+			"Version_Suffix": "",
+			"TSNA": [6,2,0],
+			"Public": [],
+			"Private": []
+		}
+	"""
+	Dict: dict[str, str | list[str] | tuple[int, ...]] = {
+		"Name": Name,
+		"Description": Description,
+		"Author": Author,
+		"Contributors": Contributors,
+		"License": License,
+		"License_Year": License_Year,
+		"Codename": Codename,
+		"Branch": Branch,
+		"Version": Version,
+		"Version_Prefix": Version_Prefix,
+		"Version_Suffix": Version_Suffix,
+		"TSNA": TSNA
+	};
+	if (Private):
+		...;
+	return Dict;
