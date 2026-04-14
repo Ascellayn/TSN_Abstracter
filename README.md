@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://sirio-network.com/Root/Banner/TSNA.png" alt="Adellian Banner">
+	<img src="https://sirio-network.com/Root/Banner/TSNA.png" alt="TSN Abstracter Banner">
 	<h2 align="center">The pillar of The Sirio Network</h2>
 </p>
 
