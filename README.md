@@ -55,7 +55,9 @@ TSNA automatically attempts to read data from `App.tsna`, this file contains bas
 	"Version": [1,0,0],
 	"Version_Prefix": "",
 	"Version_Suffix": "_dev",
-	"TSNA": [6,0,0] # Minimum required TSNA Version for the Application to run
+	"TSNA": [6,0,0] # Minimum required TSNA Version for the Application to run,
+	"Public": {}, # You can put anything in there, used for application-specific options.
+	"Private": {} # Application's private data to be only used internally. This is not meant to be present in the App.tsna file.
 }
 ```
 TSN Abstracter is obviously __developer oriented__, it is **your job to look at TSNA and find functions that are deemed useful** to you.

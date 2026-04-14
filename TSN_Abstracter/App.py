@@ -140,5 +140,6 @@ def JSON(JSON: dict[str, Any]) -> None:
 
 if (File.Exists(f"{File.Main_Directory}/App.tsna")):
 	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
+	if ("Private" in AppTSNA): del AppTSNA["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
 	JSON(AppTSNA);
 	del AppTSNA;
