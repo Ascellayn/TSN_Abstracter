@@ -1,3 +1,14 @@
+""" User Input functions for the TUI Framework 
+
+### Examples
+>>> from TSN_Abstracter import *;
+>>> from TSN_Abstracter import TUI;
+>>> TUI.Init();
+>>> TUI.Get();
+[*User presses a Key*]
+129 # The integer representation of which key was pressed.
+"""
+
 from .Globals import *;
 from . import Draw;
 

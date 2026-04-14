@@ -1,18 +1,21 @@
+""" Module in charge of being able to display Popups and get data from the user. """
 from .Globals import *;
 from . import Draw, Input;
 from .Entry import Entry as __Entry, eType;
 
 
-__all__: list[str] = [
-	"Prompt"
-];
 
 
 
+def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=["OK"]), Align: str = "Center") -> Any: # pyright: ignore[reportRedeclaration]
+	""" Displays a floating popup at the center of the screen, asking the user to make a choice.
 
-
-def Prompt(Title: str, Description: str, Entry: __Entry, Align: str = "Center") -> Any: # pyright: ignore[reportRedeclaration]
-	""" Entry type must be Array or IOText """
+	Arguments:
+		Title (str*): The text to show at the top of the Prompt Frame.
+		Description (str*): The text to show inside the Prompt Frame before the Entry.
+		Entry (Entry): **[!] MUST BE EITHER AN `IOText (11)` OR `Array (12)` ENTRY [!]** - The Entry with the options available to choose from or to type in.
+		Align (str = "Center"): The text alignment. Can be either "Center", "Left" or "Right".
+	"""
 	def _GetTextX(Text: str, Align: str) -> int:
 		match Align:
 			case "Center": return ULX - round((len(Text) - (LRX - ULX)) / 2);
@@ -97,3 +100,11 @@ def Prompt(Title: str, Description: str, Entry: __Entry, Align: str = "Center") 
 			case _: pass;
 
 		Entry.Value = Entry.Arguments[Index]; # pyright: ignore[reportPossiblyUnboundVariable] // Literally impossible to be unbound at this point
+
+
+
+
+
+__all__: list[str] = [
+	"Prompt"
+];
