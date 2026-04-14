@@ -58,7 +58,30 @@ def NotNull(Number: int | float, Default: int = 1) -> int | float:
 
 
 def Nested_Dict(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> Any:
-	""" safely get data from nested dicts with an argument for a default value """
+	""" Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
+
+	Arguments:
+		Dict (dict[str, Any]*): The dictionary we wish to retrieve data from its sub-dictionaries.
+		Keys (list[str]*): A list of key strings we wish to go through in the Dictionary.
+		Default (Any = None): The value to return when no data from Dict[*Keys] can be retrieved.
+
+	Returns:
+		Any: The data from `Dict[Keys[0]][Keys[1]][...]`
+
+	Examples:
+		>>> Safe.Nested_Dict({
+			"Hello": {
+				"ItAppearsThat": "I am very silly"
+			}
+		}, ["Hello", "ItAppearsThat"]);
+		"I am very silly"
+		>>> Safe.Nested_Dict({
+			"Hello": {
+				"ItAppearsThat": "I am very silly"
+			}
+		}, ["Hello", "WeHaveBeenTryingToReachYouAboutYourCarsExtendedWarranty"], "NO");
+		"NO"
+	"""
 	for Key in Keys:
 		if (type(Dict) != dict): return Default;
 		Dict = Dict.get(Key, Default);
