@@ -11,6 +11,8 @@ from typing import Any;
 
 
 
+
+
 Name: str = "Unnamed TSNA-Based Program";
 Description: str = "This is a program which uses TSN Abstracter.";
 
@@ -30,29 +32,6 @@ TSNA: tuple[int, int, int] = (6,0,0);
 Public: dict[str, Any] = {};
 Private: dict[str, Any] = {};
 
-if (File.Exists(f"{File.Main_Directory}/App.tsna")):
-	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
-	Name = AppTSNA.get("Name", Name);
-	Description = AppTSNA.get("Description", Description);
-
-	Author = AppTSNA.get("Author", Author);
-	Contributors = AppTSNA.get("Contributors", Contributors);
-
-	License = AppTSNA.get("License", License);
-	License_Year = AppTSNA.get("License_Year", License_Year);
-
-	Codename = AppTSNA.get("Codename", Codename);
-	Branch = AppTSNA.get("Branch", Branch);
-	Version = tuple(AppTSNA.get("Version", Version));
-	Version_Prefix = AppTSNA.get("Version_Prefix", Version_Prefix);
-	Version_Suffix = AppTSNA.get("Version_Suffix", Version_Suffix);
-
-	Public = AppTSNA.get("Public", Public);
-	Private = AppTSNA.get("Private", Private);
-
-	TSNA = tuple(AppTSNA.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
-	del AppTSNA;
-
 
 
 
@@ -64,7 +43,7 @@ def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...] |
 		Private (bool*): Whenever to also include the "Private" key of the TSNA App JSON.
 
 	Returns:
-		dict[str, str | list[str] | tuple[int, ...]]: The TSNA App JSON
+		dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]]: The TSNA App JSON
 	
 	Examples:
 		>>> App.Dump(True);
@@ -103,3 +82,63 @@ def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...] |
 	};
 	if (Private): Dict["Private"] = Private; # pyright: ignore[reportArgumentType] // Unsure why the typing gets angry here
 	return Dict;
+
+
+def JSON(JSON: dict[str, Any]) -> None:
+	""" Replaces the currently active TSNA App Data with whatever data is present in the argument.
+
+	Arguments:
+		JSON (dict[str, Any]*): A TSNA App Dictionary.
+
+	Examples:
+		>>> App.Name;
+		"Unnamed TSNA-Based Program"
+
+		>>> App.JSON({
+			"Name": "Serina",
+			"Description": "Serina Host-Machine Server for retrieving the current state of all TSNA based applications with the Sena Client enabled.",
+			"Author": ["Ascellayn", "The Sirio Network"],
+			"Contributors": [],
+			"License": "TSN License 2.1 - Base",
+			"License_Year": "2026",
+			"Codename": "TSN_Serina",
+			"Branch": "Azure",
+			"Version": [1,0,0],
+			"Version_Prefix": "",
+			"Version_Suffix": "",
+			"TSNA": [6,2,0],
+			"Public": [],
+			"Private": []
+		});
+
+		>>> App.Name;
+		"Serina"
+	"""
+	global Name, Description, Author, Contributors, License, License_Year, Codename, Branch, Version, Version_Prefix, Version_Suffix, TSNA, Public, Private;
+	Name = JSON.get("Name", Name);
+	Description = JSON.get("Description", Description);
+
+	Author = JSON.get("Author", Author);
+	Contributors = JSON.get("Contributors", Contributors);
+
+	License = JSON.get("License", License);
+	License_Year = JSON.get("License_Year", License_Year);
+
+	Codename = JSON.get("Codename", Codename);
+	Branch = JSON.get("Branch", Branch);
+	Version = tuple(JSON.get("Version", Version));
+	Version_Prefix = JSON.get("Version_Prefix", Version_Prefix);
+	Version_Suffix = JSON.get("Version_Suffix", Version_Suffix);
+
+	TSNA = tuple(JSON.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
+	Public = JSON.get("Public", Public);
+	Private = JSON.get("Private", Private);
+
+
+
+
+
+if (File.Exists(f"{File.Main_Directory}/App.tsna")):
+	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
+	JSON(AppTSNA);
+	del AppTSNA;
