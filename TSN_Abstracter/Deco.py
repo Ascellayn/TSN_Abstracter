@@ -16,7 +16,23 @@ from . import Safe;
 
 
 class Progresser():
-	""" Automatic carriage-based progression display"""
+	""" Automatic carriage-based progression display, if you have a task that has a set amount of operations to do this will be useful to show the progression of it.
+
+	Arguments:
+		Size (int*): The amount of total tasks to complete.
+		Template (str = "Progression: {Done}/{Size} - ({Operations} OP/s) | ETA: {ETA}"): The format of the progression text.
+		Delay: (int | float): The __*minimum*__ delay before the progresser has a chance to display its text.
+
+	## Methods:
+		Count() → Increment the Progresser, automatically displays the text whenever applicable.
+
+	### PLACEHOLDERS:
+		`Progresser()` supports placeholders in the `Template` variable to slightly customize the look of the progression text.
+		- `{Done}` → How many tasks have been completed.
+		- `{Size}` → How many tasks there is to complete in total.
+		- `{Operations}` → The amount of completed tasks done every second.
+		- `{ETA}` → An estimation of when all tasks will be finished.
+	"""
 	def __init__(self, Size: int, Template: str = "Progression: {Done}/{Size} - ({Operations} OP/s) | ETA: {ETA}", Delay: int | float = 1) -> None:
 		self.Size: int = Size;
 		self.Delay: int | float = Delay;
@@ -57,7 +73,11 @@ class Progresser():
 
 
 	def Count(self, Increment: int = 1) -> None:
-		""" Increment the progression counter. Automatically displays progress when the update rate for it is reached. """
+		""" Increment the progression counter. Automatically displays progress whenever applicable.
+
+		Arguments:
+			Increment (int = 1): The amount of tasks to add as complete.
+		"""
 		self.Done += Increment; self.Done_Cycle += Increment;
 		if ((self._Unix_Last + self.Delay) > Time.Get_Unix(self.__Precise)): return;
 
