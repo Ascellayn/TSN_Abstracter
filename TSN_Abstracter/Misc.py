@@ -6,7 +6,7 @@ This module from TSN Abstracter contains various random functions that currently
 >>> Misc.is_Even(32768);
 True
 """
-import multiprocessing, threading, typing;
+import multiprocessing, threading;
 
 
 
@@ -70,11 +70,9 @@ def is_Even(Number: int) -> bool:
 	return ((Number % 2) == 0);
 
 
-def All_Includes(A: typing.Iterable[typing.Any], B: typing.Iterable[typing.Any]) -> bool:
-	""" verify every item in B is present in A"""
-	for Item in B:
-		if (Item not in A): return False;
-	return True;
+
+
+
 
 def Under_At(A: tuple[int, ...] | list[int], B: tuple[int, ...] | list[int]) -> int:
 	""" use to compare version tuples"""
