@@ -8,13 +8,13 @@
 >>> Safe.Index(Array, 1);
 None
 """
-import typing;
+from typing import Any;
 
 
 
 
 
-def Index(Array: list[object], Index: int) -> object: # Isn't there a Python function to already do this?
+def Index(Array: list[object], Index: int) -> Any: # Isn't there a Python function to already do this?
 	""" Attempts to safely try to read an array's specified index.
 
 	Arguments:
@@ -57,7 +57,7 @@ def NotNull(Number: int | float, Default: int = 1) -> int | float:
 
 
 
-def Nested_Dict(Dict: dict[str, typing.Any], Keys: list[str], Default: typing.Any = None) -> typing.Any:
+def Nested_Dict(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> Any:
 	""" safely get data from nested dicts with an argument for a default value """
 	for Key in Keys:
 		if (type(Dict) != dict): return Default;
