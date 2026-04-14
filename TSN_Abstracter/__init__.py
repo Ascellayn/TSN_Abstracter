@@ -4,7 +4,9 @@
 It was created during Kosaka's v2.X Versions and as its "Dependencies.py" file kept being ported over to other Python projects, TSNA was created to avoid sloppily copy pasting reused code and simplify the process of writing code.  
 You are entirely on your own for figuring out what TSNA does and what functions would be useful in your use case. TSNA was purposefully built to build programs for TSN, as such no feature requests will be accepted, unless they're contributing to the function of a TSN Service.  
 
-#### NOTICE: TSNA is only expected to be  import fromed TSN_Abstracter from  import *;` theory could work to just from  import exactly need, but this hasn't been tested extensively.
+#### NOTICE: TSNA is only expected to be imported with `from TSN_Abstracter import *;` first.
+You can then import additional modules such as the TUI one with `from TSN_Abstracter import TUI;`.  
+We do not recommend importing TSNA in another way.
 
 ### Available Modules:
 - App  
