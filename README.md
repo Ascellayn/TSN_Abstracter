@@ -22,9 +22,17 @@ TSN Abstracter is currently used to power numerous tools and applications built 
 <br>
 
 ## Installation / Usage
-TSNA does not come with a proper pip Python Package, you must MANUALLY install TSNA on your computer by downloading the whole repository and unzipping it somewhere.  
-In the case of Linux, with an installation at `/System/Library/TSN_Abstracter`, you must add to your `.bashrc` the following line: `export PYTHONPATH=/System/Library/TSN_Abstracter:$`.  
-All that's left to do is simply include at the very top of your Python script `from TSN_Abstracter import *;` and then get to roll with it.  
+TSNA has been historically been without a proper Python Package, this **however finally changes now**.  
+You should simply be able to run `pip install TSN_Abstracter` nowadays.  
+
+TSNA however on [Adellian](https://github.com/Ascellayn/Adellian) still installs TSNA the old way by **cloning the repository then adding the folder path to your `PYTHONPATH`.**  
+All projects from The Sirio Network thus installs TSNA this way and thus are only tested as such.
+In the case of Adellian, with an installation at `/System/Library/TSN_Abstracter`, the `.bashrc` contains the following line: `export PYTHONPATH=/System/Library/TSN_Abstracter:$`.  
+You can do something similar if you wish to install TSN Abstracter the old way.  
+
+<br>
+
+All that's left to do after installation is to simply include at the very top of your Python script `from TSN_Abstracter import *;` and then get to roll with it.  
 We recommend the following template file Python File to start your TSNA fueled programs:
 ```python
 # [Program] (c) [Author] (Date) - [License]
