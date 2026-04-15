@@ -1,13 +1,13 @@
 [project]
 name = "TSN_Abstracter"
-version = "6.1.0"
+version = "6.1.1"
 authors = [
   { name="Ascellayn", email="contact+pypi@sirio-network.com" },
   { name="The Sirio Network", email="contact+pypi@sirio-network.com" },
 ]
 description = "The Abstraction Library for The Sirio Network's numerous projects."
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
