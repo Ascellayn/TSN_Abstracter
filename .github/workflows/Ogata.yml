@@ -24,7 +24,7 @@ jobs:
           depth: 1
           branch: 'main'
           owner: 'Ascellayn'
-          repository: 'TSN_Otaga'
+          repository: 'TSN_Ogata'
 
       - name: Install TSN Abstracter
         run: pip install tsn-abstracter
