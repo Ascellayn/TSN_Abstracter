@@ -25,8 +25,8 @@ def Log_Path() -> str:
 	return f"{File.Main_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 # Configure Loggers
-Logger_Console = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
-Logger_File = logging.getLogger("TSN-File");
+Logger_Console: logging.Logger = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
+Logger_File: logging.Logger = logging.getLogger("TSN-File");
 
 
 
@@ -36,7 +36,7 @@ def Verify_Config() -> None:
 	if (Config.Logger.File and not Config.Logger.Disable):
 		Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
 		File.Path_Require(Config.Logger.File_Folder);
-	else: Logger_File.handlers = []
+	else: Logger_File.handlers = [];
 
 
 
@@ -79,7 +79,15 @@ def Get_Caller(Depth: int = 2) -> str:
 
 
 
+
+
+
+
+
 # Awaited Logging System
+
+
+
 class Awaited_Log:
 	""" The Awaited Log System permits TSNA Programs to update the status of Log Entries dynamically.  
 	They're used primarily for confirming the end of loading something.  
@@ -87,14 +95,15 @@ class Awaited_Log:
 	Awaited Logs are automatically created when Log Entries end with "...", changing the status of the log will replace said ellipsis with the new status.
 	"""
 	def __init__(self, Level: int, Caller: str, Text: str) -> None:
-		self.Level = Level;
-		self.Caller = Caller;
+		self.Level: int = Level;
+		self.Caller: str = Caller;
 
 		if (Text[-4:] == " ..."): self.Text = Text[:-3];
-		else: self.Text = Text[:-3] + " ";
-
+		else: self.Text: str = Text[:-3] + " ";
 	def __str__(self) -> str: return f"{self.Level}: {self.Caller}() - {self.Text}";
 	def __repr__(self) -> str: return self.__str__();
+
+
 
 	def Status_Update(self, Status: str) -> None:
 		""" Replace the "..." part of the Awaited Log with the status of your choosing.
@@ -133,20 +142,28 @@ class Awaited_Log:
 					Awaited_File = None;
 				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
 
+
+
 	def OK(self, Status: str | None = None) -> None:
 		""" >>> Log.Awaited.OK();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
 		self.Status_Update(f"{TSNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+
+
 
 	def WARNING(self, Status: str) -> None:
 		""" >>> Log.Awaited.WARNING("2 Modules Skipped");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped] """
 		self.Status_Update(f"{TSNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
 
+
+
 	def ERROR(self, Status: str) -> None:
 		""" >>> Log.Awaited.ERROR("1 Outdated Module");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 1 Outdated Module] """
 		self.Status_Update(f"{TSNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+
+
 
 	def EXCEPTION(self, Except: Exception, Raise: bool = False) -> None:
 		""" >>> Log.Awaited.EXCEPTION(Except);
@@ -155,6 +172,9 @@ class Awaited_Log:
 		"""
 		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{String.ASCII.Text.Reset}");
 		if (Raise): raise Except;
+
+
+
 
 
 class Awaited_Dummy(Awaited_Log):
@@ -166,6 +186,10 @@ class Awaited_Dummy(Awaited_Log):
 	def Warning(self, Status: str): return;
 	def ERROR(self, Status: str): return;
 	def EXCEPTION(self, Except: Exception, Raise: bool = False): return;
+
+
+
+
 
 def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
 	""" Get the latest Awaited Log, you may specify a Custom Caller if you wish to handle the Log of another function.
@@ -187,10 +211,18 @@ def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
 	return Awaited_Dummy();
 
 
+
 # My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
 Awaited_Logs: dict[str, list[Awaited_Log]] = {};
 Awaited_Console: str | None = None;
 Awaited_File: str | None = None;
+
+
+
+
+
+
+
 
 
 
@@ -207,7 +239,6 @@ def TSN_Debug(Text: str) -> None:
 		[2007/04/23 - 17:00:00] - TSN_Debug: MyFunction → Hello World!
 	"""
 	Log(Text, 10);
-
 def Debug(Text: str) -> None:
 	""" Log a debug message for **TSNA Programs** *(Level: 15)*.
 
@@ -220,7 +251,6 @@ def Debug(Text: str) -> None:
 		[2007/04/23 - 17:00:00] - Debug: MyFunction → Hello World!
 	"""
 	Log(Text, 15);
-
 def Stateless(Text: str) -> None:
 	""" Log a message with only the time if it's enabled *(Level: 20)*.
 
@@ -233,7 +263,6 @@ def Stateless(Text: str) -> None:
 		[2007/04/23 - 17:00:00] - Hello World!
 	"""
 	Log(Text, 20);
-
 def Info(Text: str) -> None:
 	""" Log a standard informal message *(Level: 25)*.
 
@@ -246,7 +275,6 @@ def Info(Text: str) -> None:
 		[2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
 	"""
 	Log(Text, 25);
-
 def Warning(Text: str) -> None:
 	""" Log a standard warning message *(Level: 30)*.
 
@@ -259,7 +287,6 @@ def Warning(Text: str) -> None:
 		[2007/04/23 - 17:00:00] - Warning: MyFunction → Hello World!
 	"""
 	Log(Text, 30);
-
 def Error(Text: str) -> None:
 	""" Log a standard error message *(Level: 40)*.
 
@@ -272,7 +299,6 @@ def Error(Text: str) -> None:
 		[2007/04/23 - 17:00:00] - Error: MyFunction → Hello World!
 	"""
 	Log(Text, 40);
-
 def Critical(Text: str) -> None:
 	""" Log a standard critical message *(Level: 50)*.
 
@@ -304,11 +330,12 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 		>>> Log.Log("Hug a Mika a day, keeps your sanity away~", 30, "Ascellayn");
 		[2007/04/23 - 17:00:00] - Warning: Ascellayn → Hug a Mika a day, keeps your sanity away~
 	"""
-	global Awaited_Logs, Awaited_Console, Awaited_File, Logger_File # Awaiting Log System Bullshit & Janky bug fix for date issues
+	global Awaited_Logs, Awaited_Console, Awaited_File, Logger_File; # Awaiting Log System Bullshit & Janky bug fix for date issues
 	if (not Can_Log(Level)): return;
 
 
 
+	Level_Color: str;
 	match Level:
 		case 50: Level_Color = TSNDL.Log_Color("Purple"); Level_String = String.ASCII.Text.Blink + "Critical" + String.ASCII.Text.Blink_OFF;
 		case 40: Level_Color = TSNDL.Log_Color("Red"); Level_String = String.ASCII.Text.Blink + "Error" + String.ASCII.Text.Blink_OFF;
@@ -378,6 +405,8 @@ def Carriage(Text: str) -> None:
 	print(" "*shutil.get_terminal_size()[0], end="\r");
 	print(Text, end="\r");
 
+
+
 def Clear() -> None:
 	""" Clear the console's text without needing to call OS specific commands.
 
@@ -386,6 +415,8 @@ def Clear() -> None:
 	# The console would then be effectively cleared.
 	"""
 	print(String.ASCII.Clear_Screen);
+
+
 
 def Delete() -> None:
 	""" COMPLETELY empties the latest Log File. To be used only during the development & debugging process!

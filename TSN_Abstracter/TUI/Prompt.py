@@ -21,7 +21,7 @@ def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=
 			case "Center": return ULX - round((len(Text) - (LRX - ULX)) / 2);
 			case "Left": return ULX + 2;
 			case "Right": return LRX - len(Text);
-			case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.")
+			case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.");
 
 	if (Entry.Type not in [eType.Array, eType.IOText]):
 		Log.Critical(f"Entry Type of ID {Entry.Type} is unsupported by TUI.Prompt");
@@ -44,18 +44,18 @@ def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=
 	while True:
 		# Get Selection, only really applicable for Array Types but still helps for IOText
 		Values: str = "[";
-		for Count, Possibility in enumerate(Entry.Arguments):
-			if (Possibility == Entry.Value): Values += f"{'|' if (Count != 0) else ''} → {Possibility} ← ";
-			else: Values += f"{'|' if (Count != 0) else ''} {Possibility} ";
+		for i, possibility in enumerate(Entry.Arguments):
+			if (possibility == Entry.Value): Values += f"{'|' if (i != 0) else ''} → {possibility} ← ";
+			else: Values += f"{'|' if (i != 0) else ''} {possibility} ";
 		Values += "]";
 
 		# Failsafe if Description is too long, creates automatic spacing
 		Description: list[str] = [];
-		for Line in iDescription:
-			if (len(Line) > curses.COLS - 8):
-				for Splitted in String.Split_Length(Line, curses.COLS - 8):
-					Description.append(Splitted);
-			else: Description.append(Line);
+		for line in iDescription:
+			if (len(line) > curses.COLS - 8):
+				for splitted in String.Split_Length(line, curses.COLS - 8):
+					Description.append(splitted);
+			else: Description.append(line);
 
 
 		# Drawing Textbox
@@ -69,15 +69,14 @@ def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=
 
 
 		Draw.Base(False if (iLINES == curses.LINES and iCOLS == curses.COLS) else True);
-		for Y in range(ULY + 1, LRY):
-			Window.addstr(Y, ULX + 1, " " * (LRX - ULX - 1));
+		for y in range(ULY + 1, LRY): Window.addstr(y, ULX + 1, " " * (LRX - ULX - 1));
 		curses.textpad.rectangle(Window, ULY, ULX, LRY, LRX);
 
 		Window.addstr(ULY, _GetTextX(Title, "Center"), Title, curses.A_BOLD); # Title
 
 		dY: int = ULY + 2; # Description
-		for Line in Description:
-			Window.addstr(dY, _GetTextX(Line, Align), Line);
+		for line in Description:
+			Window.addstr(dY, _GetTextX(line, Align), line);
 			dY += 1;
 
 

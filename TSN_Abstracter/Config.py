@@ -56,7 +56,7 @@ class Logger:
 	Display_Date: bool = True;
 	Display_Caller: bool = True;
 
-	TSNDL_Group: str = "Sun"
+	TSNDL_Group: str = "Sun";
 
 	File: bool = False;
 	File_Level: int = 20;

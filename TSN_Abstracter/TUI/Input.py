@@ -27,7 +27,6 @@ Key_Held: int = -1;
 
 
 
-
 def Get() -> int:
 	""" Blocking Input Catcher"""
 	global Key_Held;

@@ -30,6 +30,7 @@ def Convert_Datetime(Object: datetime.datetime, Precise: bool = False) -> int | 
 	return Object.timestamp() if (Precise) else int(round(Object.timestamp()));
 
 
+
 def Convert_Unix(Unix: int | float) -> datetime.datetime:
 	""" Converts an Unix Timestamp to a datetime object.
 
@@ -71,7 +72,6 @@ def Convert_ISO8601(ISO_8601: str) -> datetime.datetime:
 def Get_Unix(Precise: bool = False) -> int: ...;
 @typing.overload
 def Get_Unix(Precise: bool = True) -> float: ...; # pyright: ignore[reportOverlappingOverload]
-
 def Get_Unix(Precise: bool = False) -> int | float:
 	""" Get an Integer/Float representing Unix Time.
 
@@ -106,6 +106,7 @@ def Get_Dawn(Unix: int | float) -> int | float:
 		Convert_Unix(Unix).replace(hour=0, minute=0, second=0),
 		True if (type(Unix) == float) else False
 	);
+
 
 
 def Get_DateStrings(Timestamp: int | float | datetime.datetime) -> tuple[str, str]:
@@ -170,7 +171,6 @@ class Unit_Unix:
 
 
 
-
 def Unit_Edges(Time_Dict: dict[str, int]) -> tuple[int, int]:
 	""" Get the maximum and minimum power units of a given Time Dict.
 
@@ -188,12 +188,12 @@ def Unit_Edges(Time_Dict: dict[str, int]) -> tuple[int, int]:
 	"""
 	Biggest_Unit: int = -3; Smallest_Unit: int = -3;
 
-	for Key in Time_Dict.keys():
-		if (Key not in Unit_Power.keys()): raise ValueError(f"Invalid Key in Time Dict: \"{Key}\".");
+	for k in Time_Dict.keys():
+		if (k not in Unit_Power.keys()): raise ValueError(f"Invalid Key in Time Dict: \"{k}\".");
 
-		if (Time_Dict[Key] != 0):
-			if (Unit_Power[Key] > Biggest_Unit): Biggest_Unit = Unit_Power[Key];
-			Smallest_Unit = Unit_Power[Key];
+		if (Time_Dict[k] != 0):
+			if (Unit_Power[k] > Biggest_Unit): Biggest_Unit = Unit_Power[k];
+			Smallest_Unit = Unit_Power[k];
 
 	return Biggest_Unit, Smallest_Unit;
 
@@ -254,6 +254,7 @@ def Elapsed_Time(Unix: int | float) -> dict[str, int]:
 	};
 
 
+
 def Elapsed_String(
 		Time: int | float,
 		Delimiter: str = ", ",
@@ -285,43 +286,43 @@ def Elapsed_String(
 		"19:17:00"
 	"""
 	Time_Dict = Elapsed_Time(Time);
-	Dynamic_String = "";
+	Dynamic_String: str = "";
 
 	Biggest_Unit, Smallest_Unit = Unit_Edges(Time_Dict);
 	if (Show_Smaller): Smallest_Unit = Show_Until;
 
-	for Key in Time_Dict.keys():
-		Power = Unit_Power[Key]; Display: bool = False;
+	for k in Time_Dict.keys():
+		Power = Unit_Power[k]; Display: bool = False;
 
-		if (Time_Dict[Key] != 0): Display = True;
+		if (Time_Dict[k] != 0): Display = True;
 		if (Show_Bigger and (Show_Bigger_Starting >= Power)): Display = True;
 		if (Show_Smaller and (Biggest_Unit >= Power)): Display = True
 		if (Show_Starting < Power): Display = False;
 		if (Show_Until > Power): Display = False;
 		#print(f"{Key}: {Display} | Trailing: {String.Trailing_Zero(Time_Dict[Key])}");
 		if (Display):
-			Suffix = Delimiter if ((Power) != Smallest_Unit) else "";
+			Suffix: str = Delimiter if ((Power) != Smallest_Unit) else "";
 
 			# Tried my best to make this slightly readable, pretty sure I failed.
 			Dynamic_String += \
 f"{
 	(
-		String.Trailing_Zero(Time_Dict[Key])
-		if (Key not in ["Milliseconds", "Microseconds", "Nanoseconds"])
-		else String.Trailing_Zero(Time_Dict[Key], 4)
+		String.Trailing_Zero(Time_Dict[k])
+		if (k not in ["Milliseconds", "Microseconds", "Nanoseconds"])
+		else String.Trailing_Zero(Time_Dict[k], 4)
 	)
 	if (Trailing_Starting >= Power)
-	else Time_Dict[Key]
+	else Time_Dict[k]
 }\
 {
 	(
 		' ' + (
-			Key.lower()
-			if (Time_Dict[Key] > 1)
-			else Key.lower()[:-1]
+			k.lower()
+			if (Time_Dict[k] > 1)
+			else k.lower()[:-1]
 		)
 		if (Display_Units_Long)
-		else Unit_Short[Key]
+		else Unit_Short[k]
 	)
 	if (Display_Units)
 	else ""
@@ -355,11 +356,11 @@ def String_Time(Text: str) -> float:
 
 	Numbers: list[str] = Text.split(" ");
 
-	for Number in Numbers:
-		for Index, Character in enumerate(Number):
-			if (Character not in Digits):
-				T_Unit: str = Number[Index:];
-				T_Number: float = float(Number[:Index]);
+	for n in Numbers:
+		for i, char in enumerate(n):
+			if (char not in Digits):
+				T_Unit: str = n[i:];
+				T_Number: float = float(n[:i]);
 				match T_Unit:
 					case "Y": Timestamp += T_Number*31557600;
 					case "M": Timestamp += T_Number*2629800;

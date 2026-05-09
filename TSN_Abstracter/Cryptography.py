@@ -12,11 +12,13 @@ from cryptography.hazmat.primitives import serialization, hashes;
 
 
 
+
 def Generate_Key(Key_Size: int = 4096) -> tuple[rsa.RSAPrivateKey, rsa.RSAPublicKey]:
 	""" Generates a pair of RSA Private/Public Keys with a size of 4096 bits by default. """
 	
 	Private_Key = Generate_Private(Key_Size);
 	return Private_Key, Generate_Public(Private_Key);
+
 
 
 def Generate_Private(Key_Size: int = 4096) -> rsa.RSAPrivateKey:
@@ -26,6 +28,7 @@ def Generate_Private(Key_Size: int = 4096) -> rsa.RSAPrivateKey:
 		public_exponent = 65537,
 		key_size = Key_Size
 	);
+
 
 
 def Generate_Public(Private_Key: rsa.RSAPrivateKey) -> rsa.RSAPublicKey:
@@ -45,6 +48,7 @@ def Get_Bytes_Public(Key: rsa.RSAPublicKey) -> bytes:
 	);
 
 
+
 def Get_Bytes_Private(Key: rsa.RSAPrivateKey) -> bytes:
 	""" Takes in an RSA private key and returns its bytes in PEM Encoding (UNPROTECTED). """
 	return Key.private_bytes(
@@ -62,6 +66,7 @@ def Load_Public(Key: bytes) -> types.PublicKeyTypes:
 	return serialization.load_pem_public_key(Key);
 
 
+
 def Load_Private(Key: bytes) -> types.PrivateKeyTypes:
 	""" Takes in PEM Bytes and attempts to return it as a Public Key RSA Object. """
 	return serialization.load_pem_private_key(Key, None);
@@ -70,9 +75,9 @@ def Load_Private(Key: bytes) -> types.PrivateKeyTypes:
 
 
 
-def Encrypt(Public_Key: rsa.RSAPublicKey, Data: str) -> bytes:
+def Encrypt(Public_RSA: rsa.RSAPublicKey, Data: str) -> bytes:
 	""" Encrypts Data using RSA-4096 and returns the encrypted Bytes. """
-	return Public_Key.encrypt(
+	return Public_RSA.encrypt(
 		Data.encode("utf-8"),
 		padding.OAEP(
 			padding.MGF1(hashes.SHA512()),
@@ -80,6 +85,7 @@ def Encrypt(Public_Key: rsa.RSAPublicKey, Data: str) -> bytes:
 			None
 		)
 	);
+
 
 
 def Decrypt(Private_Key: rsa.RSAPrivateKey, Data: bytes) -> str:
@@ -94,9 +100,15 @@ def Decrypt(Private_Key: rsa.RSAPrivateKey, Data: bytes) -> str:
 	).decode("utf-8");
 
 
+
 def Hash(Data: str) -> str:
 	""" Returns the SHA3_512 Hex Hash of Data """
 	return (hashlib.sha3_512(Data.encode("utf-8"))).hexdigest();
+
+
+
+
+
 
 
 
@@ -109,10 +121,12 @@ def Generate_Signature() -> tuple[ed25519.Ed25519PrivateKey, ed25519.Ed25519Publ
 	Public_Key = Private_Key.public_key();
 	return Private_Key, Public_Key;
 
-def Verify_Signature(Public_Key: ed25519.Ed25519PublicKey, Signature: bytes, Data: str) -> bool:
+
+
+def Verify_Signature(Public_EdSCA: ed25519.Ed25519PublicKey, Signature: bytes, Data: str) -> bool:
 	""" Untested, do not use; Verifies ed25519 Signature."""
 	try:
-		Public_Key.verify(Signature, Data.encode("utf-8"));
+		Public_EdSCA.verify(Signature, Data.encode("utf-8"));
 		return True;
 	except:
 		return False;

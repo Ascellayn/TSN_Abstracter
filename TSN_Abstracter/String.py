@@ -25,7 +25,7 @@ def ify_Array(Array: list[Any] | tuple[Any, ...]) -> list[str]:
 		>>> String.ify_Array([1.9.4]);
 		["1", "9", "4"]
 	"""
-	return [str(Item) for Item in Array];
+	return [str(item) for item in Array];
 
 
 
@@ -49,9 +49,9 @@ def Bulk_Replace(Replacers: list[tuple[str, str] | list[str] | str], String: str
 		], "Hug a Mika a day keeps your sanity away.", "night");
 		"Hug a Mika a night keeps your smile shinning bright."
 	"""
-	for Item in Replacers:
-		if (isinstance(Item, str)): String = String.replace(Item, New);
-		else: String = String.replace(Item[0], Item[1]);
+	for item in Replacers:
+		if (isinstance(item, str)): String = String.replace(item, New);
+		else: String = String.replace(item[0], item[1]);
 	return String;
 
 
@@ -94,13 +94,17 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 	"""
 	def Raw_Split() -> None: String_List.append(Text[:Max_Length]);
 
+
+
 	def Line_Split(PString: str) -> int:
-		End: int = len(PString) - PString.index("\n")
+		End: int = len(PString) - PString.index("\n");
 		String_List.append(Text[:End]);
 		return End;
 
+
+
 	def Space_Split(PString: str) -> int:
-		End: int = len(PString) - PString.index(" ")
+		End: int = len(PString) - PString.index(" ");
 		String_List.append(Text[:End]);
 		return End;
 
@@ -108,7 +112,7 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 
 	String_List: list[str] = [];
 	while (Text != ""):
-		String_Current = Text[:Max_Length][::-1];
+		String_Current: str = Text[:Max_Length][::-1];
 		if (len(String_Current) != len(Text)):
 			if ("\n" in String_Current): Text = Text[Line_Split(String_Current):]; continue;
 			if (" " in String_Current): Text = Text[Space_Split(String_Current):]; continue;
@@ -117,10 +121,16 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 	return String_List;
 
 
+
 def Abbreviate(Text: str, Max_Length: int, Abbreviate: str = "(...)") -> str:
 	if (len(Text) > Max_Length):
 		Text = Text[:Max_Length - len(Abbreviate)] + Abbreviate;
 	return Text;
+
+
+
+
+
 
 
 
@@ -136,6 +146,7 @@ def Clear_ASCII_Formatting(Text: str) -> str:
 		str: A "clean" Log String devoid of special ASCII Formatting text.
 	"""
 	return re.sub(r"\[[\d;]*m", "", Text);
+
 
 
 
@@ -179,6 +190,7 @@ class ASCII:
 		Hide_OFF: str = "\x1b[28m";
 
 
+
 	class Cursor:
 		""" A class containing numerous ASCII Escape Sequences to aid with cursor movement. """
 		@staticmethod
@@ -195,6 +207,7 @@ class ASCII:
 			return f"\x1b[{X};{Y}H";
 
 
+
 		@staticmethod
 		def Up(Lines: int) -> str:
 			""" Move the cursor up `Lines` lines.
@@ -206,7 +219,6 @@ class ASCII:
 				str: An ASCII escape sequence that makes the cursor go up `Lines` lines.
 			"""
 			return f"\x1b[{Lines}A";
-
 		@staticmethod
 		def Down(Lines: int) -> str:
 			""" Move the cursor down `Lines` lines.
@@ -218,7 +230,6 @@ class ASCII:
 				str: An ASCII escape sequence that makes the cursor go down `Lines` lines.
 			"""
 			return f"\x1b[{Lines}B";
-
 		@staticmethod
 		def Right(Columns: int) -> str:
 			""" Move the cursor right `Columns` columns.
@@ -230,7 +241,6 @@ class ASCII:
 				str: An ASCII escape sequence that makes the cursor go right `Columns` characters.
 			"""
 			return f"\x1b[{Columns}C";
-
 		@staticmethod
 		def Left(Columns: int) -> str:
 			""" Move the cursor left `Columns` columns.
@@ -244,6 +254,7 @@ class ASCII:
 			return f"\x1b[{Columns}D";
 
 
+
 		@staticmethod
 		def Save() -> str:
 			""" Save the current cursor position.
@@ -252,7 +263,6 @@ class ASCII:
 				str: An ASCII escape sequence that saves the current cursor position.
 			"""
 			return f"\x1b[s";
-
 		@staticmethod
 		def Load() -> str:
 			""" Load the saved cursor position.

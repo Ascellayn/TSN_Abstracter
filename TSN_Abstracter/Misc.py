@@ -31,6 +31,8 @@ def Thread_Start(Function: callable, Arguments: list[object] = [], Daemon: bool 
 		daemon=Daemon
 	).start();
 
+
+
 def Process_Start(Function: callable, Arguments: list[object] = [], Daemon: bool = True) -> None: # type: ignore | NAH WE SENDING THIS TO BRAZIL
 	""" Abstraction to launch a new Process
 
@@ -48,6 +50,8 @@ def Process_Start(Function: callable, Arguments: list[object] = [], Daemon: bool
 		args=Arguments,
 		daemon=Daemon
 	).start();
+
+
 
 
 
@@ -73,7 +77,6 @@ def is_Even(Number: int) -> bool:
 
 
 
-
 def Under_At(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] | list[int | float]) -> int:
 	""" Specify at which index a value of A is under B. Returns `-1` if no value is.
 
@@ -91,7 +94,7 @@ def Under_At(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] 
 		-1
 	"""
 	A_Length: int = len(B);
-	for Index, Number in enumerate(B):
-		if (Index == A_Length): break;
-		if (Number > A[Index]): return Index;
+	for i, n in enumerate(B):
+		if (i == A_Length): break;
+		if (n > A[i]): return i;
 	return -1;

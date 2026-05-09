@@ -31,26 +31,26 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 
 
 	# Init default value for supported types where a dev potentially forgot to set a default value.
-	for Entry in Entries:
-		if (Entry.Type == eType.Toggle):
-			if (not Entry.Value): Entry.Value = False;
-		if (Entry.Type == eType.Array):
-			if (not Entry.Value): Entry.Value = Entry.Arguments[0];
+	for e in Entries:
+		if (e.Type == eType.Toggle):
+			if (not e.Value): e.Value = False;
+		if (e.Type == eType.Array):
+			if (not e.Value): e.Value = e.Arguments[0];
 
 
 	Fake_Indices: dict[str, int] = {};
 	fakeIndex: int = 1;
-	for tIndex, Entry in enumerate(Entries):
-		Entry.Index = tIndex; # Ability to retrieve Index from Object to go back to previous option in previous menu if possible.
+	for tindex, e in enumerate(Entries):
+		e.Index = tindex; # Ability to retrieve Index from Object to go back to previous option in previous menu if possible.
 
 		# Get Fake Index for more accurate selection
-		if (Entry.Type != eType.Text):
-			Fake_Indices[str(tIndex)] = fakeIndex;
+		if (e.Type != eType.Text):
+			Fake_Indices[str(tindex)] = fakeIndex;
 			fakeIndex += 1;
 
 		# Set default values for Reset function
-		if (Entry.Type in [eType.Toggle, eType.IOText, eType.Array]): # Toggle
-			Entry.__ValueInitial = Entry.Value; # pyright: ignore[reportPrivateUsage]
+		if (e.Type in [eType.Toggle, eType.IOText, eType.Array]): # Toggle
+			e.__ValueInitial = e.Value; # pyright: ignore[reportPrivateUsage]
 
 
 	while True:
@@ -75,50 +75,50 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 
 		# Used to automatically unavailable Finalizers if every other entry isn't filled.
 		Missing_Entries: list[str | None] = [];
-		for Entry in Entries:
-			if (Entry.Type == eType.IOText and Entry.Value == "" and Entry.Required): Missing_Entries.append(Entry.ID);
+		for e in Entries:
+			if (e.Type == eType.IOText and e.Value == "" and e.Required): Missing_Entries.append(e.ID);
 
 
 		x = 3 + (2 * Entries[Index].Indentation);
 		# Display entries
 		Displayed: int = 0;
-		for Number, Entry in enumerate(Entries):
+		for i, e in enumerate(Entries):
 			if (Max_Visible < len(Entries)):
 				if (Displayed >= Max_Visible):
-					if (Number != len(Entries) - 1):
+					if (i != len(Entries) - 1):
 						Remaining += 1; continue;
-				if (Number + min(round(Max_Visible / Config.TUI.Scroll_Center), Max_Visible - Config.TUI.Scroll_Center) < Index): continue;
-			eX: int = 6 + (2 * Entry.Indentation); eY = 2 + Displayed;
+				if (i + min(round(Max_Visible / Config.TUI.Scroll_Center), Max_Visible - Config.TUI.Scroll_Center) < Index): continue;
+			eX: int = 6 + (2 * e.Indentation); eY = 2 + Displayed;
 
-			if (Entry.Type == eType.Finalize and Entry.Required and len(Missing_Entries) > 0):
-				Entry.Unavailable = True;
-			elif (Entry.Type == eType.Finalize and Entry.Required):
-				Entry.Unavailable = False;
+			if (e.Type == eType.Finalize and e.Required and len(Missing_Entries) > 0):
+				e.Unavailable = True;
+			elif (e.Type == eType.Finalize and e.Required):
+				e.Unavailable = False;
 
 			# Text Display
 			Entry_Quirk: str = "";
-			match (Entry.Type):
-				case eType.Toggle: Entry_Quirk += f"[{Config.TUI.Checkbox_Fill}]" if (Entry.Value) else "[ ]";
-				case eType.IOText: Entry_Quirk += f" - '{Entry.Value}'";
+			match (e.Type):
+				case eType.Toggle: Entry_Quirk += f"[{Config.TUI.Checkbox_Fill}]" if (e.Value) else "[ ]";
+				case eType.IOText: Entry_Quirk += f" - '{e.Value}'";
 				case eType.Array:
 					Values: str = "[";
-					for Count, Possibility in enumerate(Entry.Arguments):
-						if (Possibility == Entry.Value): Values += f"{'|' if (Count != 0) else ''} → {Possibility} ← ";
-						else: Values += f"{'|' if (Count != 0) else ''} {Possibility} ";
+					for i, possibility in enumerate(e.Arguments):
+						if (possibility == e.Value): Values += f"{'|' if (i != 0) else ''} → {possibility} ← ";
+						else: Values += f"{'|' if (i != 0) else ''} {possibility} ";
 					Values += "]";
 
 					Entry_Quirk += f" - {Values}";
 
 				case _: pass;
 
-			Entry_Text: str = Entry.Name + " " + Entry_Quirk;
+			Entry_Text: str = e.Name + " " + Entry_Quirk;
 			if (Entry_Text != String.Abbreviate(Entry_Text, curses.COLS - eX - 1)):
-				match (Entry.Type):
+				match (e.Type):
 					case eType.Toggle: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2 - len(Entry_Quirk)) + f" {Entry_Quirk}";
 					case _: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2);
 
-			if (Entry.Unavailable): __ColorAttribute(TSNDL.Color.Moon.Grey_TERM);
-			if (Entry.Bold): Window.attron(curses.A_BOLD);
+			if (e.Unavailable): __ColorAttribute(TSNDL.Color.Moon.Grey_TERM);
+			if (e.Bold): Window.attron(curses.A_BOLD);
 			Window.addstr(eY, eX, Entry_Text);
 			Window.attrset(0);
 
@@ -227,8 +227,7 @@ TSN Abstracter Default Keybinds:\n
 {App.Name} Keybinds (for this Menu):\n
 """;
 
-				for Keybind in Keybinds:
-					Description += f"[{chr(Keybind.Key)}] {Keybind.Name}\n";
+				for k in Keybinds: Description += f"[{chr(k.Key)}] {k.Name}\n";
 				Description += "\n";
 
 				Prompt("Keybinds Help", Description[:-1], __Entry(eType.Array, Arguments=["Ok"]), "Left");
@@ -259,9 +258,9 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 					"Reset All Entries to their Initial Value", "Are you sure you want to reset every entries to their default values?",
 					__Entry(eType.Array, Arguments=["Yes", "No"], Value="No")
 				)):
-					for Entry in Entries:
-						if (not Entry.Type in [eType.Toggle, eType.IOText, eType.Array]): continue;
-						Entry.Value = Entry.__ValueInitial; # pyright: ignore[reportPrivateUsage]
+					for e in Entries:
+						if (not e.Type in [eType.Toggle, eType.IOText, eType.Array]): continue;
+						e.Value = e.__ValueInitial; # pyright: ignore[reportPrivateUsage]
 
 
 
@@ -280,15 +279,14 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 					case eType.Finalize:
 						if (Entries[Index].Unavailable):
 							Description: str = f"You have not filled the following remaining {f'{len(Missing_Entries)} required entries' if (len(Missing_Entries) > 1) else 'required entry'}:\n";
-							for Missed in Missing_Entries:
-								Description += f"- {Missed if (Missed) else '<NO ENTRY ID>'}\n";
+							for missed in Missing_Entries: Description += f"- {missed if (missed) else '<NO ENTRY ID>'}\n";
 							Prompt("Missing Information", Description[:-1], __Entry(eType.Array, Value="Ok", Arguments=["Ok"]), "Left");
 							del Description;
 							continue;
 
 						Data: str = "";
-						for Key, Value in Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
-							Data += f"{Key}: {Value}\n";
+						for key, val in Entries_To_Dict(Entries).items(): # pyright: ignore[reportAssignmentType]
+							Data += f"{key}: {val}\n";
 
 						if ("Yes" == Prompt("Confirm Input", f"You will be saving the following settings:\n\n{Data[:-1]}", __Entry(eType.Array, Value="No", Arguments=["Yes", "No"]), "Left")):
 							return Entries_To_Dict(Entries); # pyright: ignore[reportCallIssue]
@@ -315,8 +313,8 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 							__Entry(eType.Text, "")
 						];
 
-						for Value in Entries[Index].Arguments: # pyright: ignore[reportAssignmentType]
-							Sub_Entries.append(__Entry(eType.Return, Value, Value=Value));
+						for val in Entries[Index].Arguments: # pyright: ignore[reportAssignmentType]
+							Sub_Entries.append(__Entry(eType.Return, val, Value=val));
 
 						Entries[Index].Value = Menu(Sub_Entries, Index=Entries[Index].Arguments.index(Entries[Index].Value) + 3);
 						del Sub_Entries; continue;
@@ -330,9 +328,9 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 					case _: pass;
 			# Keybinds Logic
 			case _:
-				for Keybind in Keybinds:
-					if (Key == Keybind.Key):
-						return Keybind.Function(Entries[Index], *Keybind.Arguments); # pyright: ignore[reportCallIssue]
+				for k in Keybinds:
+					if (Key == k.Key):
+						return k.Function(Entries[Index], *k.Arguments); # pyright: ignore[reportCallIssue]
 
 
 
