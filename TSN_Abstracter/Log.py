@@ -8,7 +8,7 @@ This module from TSN Abstracter contains various random functions that currently
 [2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
 """
 from . import Config, File, TSNDL, String, Time;
-import datetime, inspect, logging, shutil, sys;
+import datetime, inspect, logging, shutil, sys, traceback;
 
 
 
@@ -165,12 +165,12 @@ class Awaited_Log:
 
 
 
-	def EXCEPTION(self, Except: Exception, Raise: bool = False) -> None:
+	def EXCEPTION(self, Except: Exception, Raise: bool = False, Traceback: bool = True) -> None:
 		""" >>> Log.Awaited.EXCEPTION(Except);
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 		Cannot divide by zero.
 		"""
-		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{'\n'.join(traceback.format_exception(Except)) if (Traceback) else ""}{String.ASCII.Text.Reset}");
 		if (Raise): raise Except;
 
 
@@ -185,7 +185,7 @@ class Awaited_Dummy(Awaited_Log):
 	def OK(self, Status: str | None = None): return;
 	def Warning(self, Status: str): return;
 	def ERROR(self, Status: str): return;
-	def EXCEPTION(self, Except: Exception, Raise: bool = False): return;
+	def EXCEPTION(self, Except: Exception, Raise: bool = False, Traceback: bool = True): return;
 
 
 
