@@ -6,7 +6,7 @@
 ['The quick brown ', 'fox jumps over ', 'the lazy dog.']
 """
 import re;
-from typing import Any;
+from typing import Any, Iterable;
 
 
 
@@ -31,7 +31,7 @@ def ify_Array(Array: list[Any] | tuple[Any, ...]) -> list[str]:
 
 
 
-def Bulk_Replace(Replacers: list[tuple[str, str] | list[str] | str], String: str, New: str = "") -> str:
+def Bulk_Replace(Replacers: Iterable[tuple[str, str] | list[str] | str], String: str, New: str = "") -> str:
 	""" Bulk replaces every string in `String` to `New` or the 2nd element of a pair inside `Replacers`.
 
 	Arguments:
@@ -72,10 +72,10 @@ def Trailing_Zero(Number: int, Zeros: int = 2) -> str:
 		>>> Time.Trailing_Zero(69, 3);
 		"069"
 	"""
-	Digits: int = len(str(Number));
-	Extra_Zeros: int = Zeros - Digits;
+	maxDigits: int = len(str(Number));
+	Extra_Zeros: int = Zeros - maxDigits;
 
-	if (Digits >= Zeros): return str(Number);
+	if (maxDigits >= Zeros): return str(Number);
 	return f"{'0'*Extra_Zeros}{str(Number)}";
 
 
