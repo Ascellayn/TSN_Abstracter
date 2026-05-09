@@ -90,10 +90,11 @@ NULL: TypeAlias = None;
 
 
 
+
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,1,1);
+	Version_Tuple: tuple[int, int, int] = (6,1,2);
 
 
 
@@ -106,11 +107,11 @@ class TSN_Abstracter:
 
 	class Outdated_Version(Bad_Version):
 		def __init__(self, Asked: tuple[int, int, int], Quit_Program: bool):
-			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Asked)} but TSNA {TSN_Abstracter.Version()} is outdated!", Quit_Program)
+			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Asked)} but TSNA {TSN_Abstracter.Version()} is outdated!", Quit_Program);
 
 	class Breaking_Version(Bad_Version):
 		def __init__(self, Asked: tuple[int, int, int], Quit_Program: bool):
-			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Asked)} but TSNA {TSN_Abstracter.Version()} is too new!", Quit_Program)
+			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Asked)} but TSNA {TSN_Abstracter.Version()} is too new!", Quit_Program);
 
 
 
@@ -119,6 +120,7 @@ class TSN_Abstracter:
 		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
 		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
 		return f"v{".".join(String.ify_Array(Version))}";
+
 
 
 	@staticmethod
@@ -147,6 +149,7 @@ class TSN_Abstracter:
 		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Prefix}";
 
 
+
 	@staticmethod
 	def App_Init(Clear_Console: bool = False) -> None:
 		"""When your TSNA-Based Application runs, use this command to print basic information about your Application. (When `(__name__ == "__main__")`)  
@@ -154,6 +157,7 @@ class TSN_Abstracter:
 		TSN_Abstracter.Require_Version(App.TSNA);
 		if (Clear_Console): Log.Clear();
 		Log.Stateless(f"{App.Name} {App.Branch} {TSN_Abstracter.App_Version()} © ({App.License_Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
+
 
 
 	@staticmethod

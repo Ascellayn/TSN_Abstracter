@@ -15,6 +15,8 @@ from . import Safe;
 
 
 
+
+
 class Progresser():
 	""" Automatic carriage-based progression display, if you have a task that has a set amount of operations to do this will be useful to show the progression of it.
 
@@ -46,6 +48,7 @@ class Progresser():
 		self._Unix_Last = Time.Get_Unix(self.__Precise);
 
 
+
 	def __Text(self) -> str:
 		""" Retrieve the text to print out """
 		OPs: float = round(
@@ -63,13 +66,16 @@ class Progresser():
 			round(
 				self.Size / OPs
 			),
-		)
+		);
 
 		return self.Template\
 .replace("{Done}", str(self.Done))\
 .replace("{Size}", str(self.Size))\
 .replace("{Operations}", str(OPs))\
-.replace("{ETA}", str(ETA))
+.replace("{ETA}", str(ETA));
+
+
+
 
 
 	def Count(self, Increment: int = 1) -> None:

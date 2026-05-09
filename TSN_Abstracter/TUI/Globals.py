@@ -30,10 +30,10 @@ def Init() -> None:
 	# A quick and dirty way to initialize every single SNC Color for curses
 	_Colors: list[str] = ["Black", "Grey", "White", "Red", "Orange", "Yellow", "Green", "Cyan", "Blue", "Purple", "Pink"];
 	_Schemes: list[str] = ["Abyss", "Night", "Moon", "Sky", "Day", "Sun"];
-	for sIndex, Scheme in enumerate(_Schemes):
-		for cIndex, Color in enumerate(_Colors):
-			Number: int = (sIndex * 20) + cIndex;
-			curses.init_color(Number, *[round(x*(1000/255)) for x in eval(f"TSNDL.Color.{Scheme}.{Color}")]);
+	for si, scheme in enumerate(_Schemes):
+		for ci, color in enumerate(_Colors):
+			Number: int = (si * 20) + ci;
+			curses.init_color(Number, *[round(x*(1000/255)) for x in eval(f"TSNDL.Color.{scheme}.{color}")]);
 			curses.init_pair(Number, Number, -1);
 
 	Config.System.TUI_Enabled = True;

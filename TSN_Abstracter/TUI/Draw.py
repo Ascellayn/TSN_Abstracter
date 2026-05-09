@@ -28,6 +28,7 @@ def Base(Clear: bool = True) -> None:
 	Window.addstr(0, 2, Title, curses.A_BOLD);
 
 
+
 def Base_Box(Offset: int = 0) -> None:
 	""" Draw a straight line to be used primarily for the description box when hovering elements in `TUI.Menu`.  
 	Draws from the bottom, by default with only a size of 1 line.  

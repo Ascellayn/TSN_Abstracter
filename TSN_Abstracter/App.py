@@ -84,6 +84,7 @@ def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...] |
 	return Dict;
 
 
+
 def JSON(JSON: dict[str, Any]) -> None:
 	""" Replaces the currently active TSNA App Data with whatever data is present in the argument.
 
@@ -139,7 +140,7 @@ def JSON(JSON: dict[str, Any]) -> None:
 
 
 if (File.Exists(f"{File.Main_Directory}/App.tsna")):
-	AppTSNA = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
-	if ("Private" in AppTSNA): del AppTSNA["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
-	JSON(AppTSNA);
-	del AppTSNA;
+	apptsna = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
+	if ("Private" in apptsna): del apptsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
+	JSON(apptsna);
+	del apptsna;

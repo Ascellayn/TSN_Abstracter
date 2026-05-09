@@ -145,8 +145,8 @@ def Entries_To_Dict(Entries: Entries) -> dict[str, Any]:
 		}
 	"""
 	Data: dict[str, Any] = {};
-	for Entry in Entries:
-		if (Entry.ID): Data[Entry.ID] = Entry.Value;
+	for e in Entries:
+		if (e.ID): Data[e.ID] = e.Value;
 
 	return Data;
 

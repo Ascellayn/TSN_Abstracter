@@ -82,7 +82,7 @@ def Nested_Dict(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> A
 		}, ["Hello", "WeHaveBeenTryingToReachYouAboutYourCarsExtendedWarranty"], "NO");
 		"NO"
 	"""
-	for Key in Keys:
+	for k in Keys:
 		if (type(Dict) != dict): return Default;
-		Dict = Dict.get(Key, Default);
+		Dict = Dict.get(k, Default);
 	return Dict;

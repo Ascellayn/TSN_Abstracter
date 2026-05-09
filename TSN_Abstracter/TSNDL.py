@@ -46,6 +46,7 @@ def Hex_Tuple(Hex: str) -> tuple[int, int, int, int] | tuple[int, int, int]:
 	return tuple(Hex_List); # type: ignore | SHUSH. Otherwise this function would look retarded. I could just return a list but eh.
 
 
+
 def Hex_To_Decimal(Hex: str) -> int:
 	""" Transform a SINGULAR Hex Character into Base 10 alias Decimal.  
 	*All further characters are IGNORED!*
@@ -65,7 +66,7 @@ def Hex_To_Decimal(Hex: str) -> int:
 	"""
 	match Hex[1:].upper():
 		case "F": return 15;
-		case "E": return 14
+		case "E": return 14;
 		case "D": return 13;
 		case "C": return 12;
 		case "B": return 11;
@@ -91,7 +92,8 @@ def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
 		# TSNDL.Color.Sun.White = (255, 250, 255)
 		"\x1b[38;2;255;250;255m"
 	"""
-	return f"\x1b[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m"
+	return f"\x1b[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m";
+
 
 
 def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
