@@ -1,0 +1,28 @@
+{
+	"Type": "Adellian",
+	"Name": "TSN Abstracter",
+	"Description": "The Python Framework for nearly all of The Sirio Network's Projects.",
+	"Version": [6,1,2],
+	"Required": ["Eleison", "Kyrie", "Server"],
+	"Dependencies": [],
+	"Options": [
+		{
+			"Scripts": {
+				"Install": "Stable/Install.py",
+				"Uninstall": "Stable/Uninstall.py",
+				"Update": null
+			},
+			"Name": "Stable",
+			"Description": "Install the Stable version of TSN Abstracter."
+		},
+		{
+			"Scripts": {
+				"Install": "Unstable/Install.py",
+				"Uninstall": "Unstable/Uninstall.py",
+				"Update": null
+			},
+			"Name": "Unstable",
+			"Description": "Install the SID (Unstable) version of TSN Abstracter."
+		}
+	]
+}
