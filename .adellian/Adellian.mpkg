@@ -4,6 +4,7 @@
 	"Description": "The Python Framework for nearly all of The Sirio Network's Projects.",
 	"Version": [6,1,2],
 	"Required": ["Eleison", "Kyrie", "Server"],
+	"Default": ["Eleison", "Kyrie", "Server"],
 	"Dependencies": [],
 	"Options": [
 		{
