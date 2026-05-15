@@ -7,7 +7,7 @@
 	"Required": ["Eleison", "Kyrie", "Server"],
 	"Default": ["Eleison", "Kyrie", "Server"],
 	"Dependencies": [],
-	"Conflicts": ["TSN_Abstracter@SID", "TSN_Abstracter"],
+	"Conflicts": ["TSN_Abstracter"],
 	"Options": [
 		{
 			"Scripts": {
@@ -16,7 +16,7 @@
 				"Uninstall": "Uninstall.py",
 				"Update": "Update.py"
 			},
-			"Name": "GIT",
+			"Name": "Stable",
 			"Description": "Install the Stable version of TSN Abstracter using Git."
 		}
 	],
