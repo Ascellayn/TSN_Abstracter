@@ -262,6 +262,7 @@ def Path_Folder(Path: str) -> str:
 		"trade_secrets"
 	"""
 	Absolute: bool = True if (Path[:1] == "/") else False;
+	if (Path[-1] == "/"): return Path;
 
 	if ("." in Path):
 		Folder_Path: list[str] = Path.split("/"); Folder_Path.pop(-1);
