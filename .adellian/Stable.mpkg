@@ -1,5 +1,5 @@
 {
-	"ID": "com.sirio-network.tsna+stable",
+	"ID": "TSN_Abstracter",
 	"Type": "Adellian",
 	"Name": "TSN Abstracter",
 	"Description": "The Python Framework for nearly all of The Sirio Network's Projects.",
@@ -11,8 +11,9 @@
 	"Options": [
 		{
 			"Scripts": {
-				"Install": "Scripts/Install.py",
-				"Uninstall": "Scripts/Uninstall.py",
+				"Data": "Scripts",
+				"Install": "Install.py",
+				"Uninstall": "Uninstall.py",
 				"Update": null
 			},
 			"Name": "Stable",
@@ -21,6 +22,6 @@
 	],
 	"Data": [
 		["TSN_Abstracter"],
-		[]
+		["README.md", "LICENSE.md"]
 	]
 }
