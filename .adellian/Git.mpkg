@@ -11,13 +11,23 @@
 	"Options": [
 		{
 			"Scripts": {
-				"Data": "Git",
+				"Data": "GitSTB",
 				"Install": "Install.py",
 				"Uninstall": "Uninstall.py",
 				"Update": "Update.py"
 			},
 			"Name": "Stable",
 			"Description": "Install the Stable version of TSN Abstracter using Git."
+		},
+		{
+			"Scripts": {
+				"Data": "GitSID",
+				"Install": "Install.py",
+				"Uninstall": "Uninstall.py",
+				"Update": "Update.py"
+			},
+			"Name": "Unstable",
+			"Description": "Install the Unstable version of TSN Abstracter using Git."
 		}
 	],
 	"Data": [
