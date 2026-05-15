@@ -7,7 +7,7 @@
 	"Required": ["Eleison", "Kyrie", "Server"],
 	"Default": ["Eleison", "Kyrie", "Server"],
 	"Dependencies": [],
-	"Conflicts": ["TSN_Abstracter@Unstable", "TSN_Abstracter@Git"],
+	"Conflicts": ["TSN_Abstracter@SID", "TSN_Abstracter@GIT"],
 	"Options": [
 		{
 			"Scripts": {

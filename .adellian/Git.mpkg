@@ -1,5 +1,5 @@
 {
-	"ID": "TSN_Abstracter@Git",
+	"ID": "TSN_Abstracter@GIT",
 	"Type": "Adellian",
 	"Name": "TSN Abstracter (Git)",
 	"Description": "The Python Framework for nearly all of The Sirio Network's Projects.",
@@ -7,7 +7,7 @@
 	"Required": ["Eleison", "Kyrie", "Server"],
 	"Default": ["Eleison", "Kyrie", "Server"],
 	"Dependencies": [],
-	"Conflicts": ["TSN_Abstracter@Unstable", "TSN_Abstracter"],
+	"Conflicts": ["TSN_Abstracter@SID", "TSN_Abstracter"],
 	"Options": [
 		{
 			"Scripts": {
@@ -16,12 +16,12 @@
 				"Uninstall": "Uninstall.py",
 				"Update": "Update.py"
 			},
-			"Name": "Git",
+			"Name": "GIT",
 			"Description": "Install the Stable version of TSN Abstracter using Git."
 		}
 	],
 	"Data": [
-		["TSN_Abstracter"],
-		["README.md", "LICENSE.md"]
+		[],
+		[]
 	]
 }
