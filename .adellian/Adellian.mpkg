@@ -18,5 +18,9 @@
 			"Name": "Stable",
 			"Description": "Install the Stable version of TSN Abstracter."
 		}
+	],
+	"Data": [
+		["TSN_Abstracter"],
+		[]
 	]
 }
