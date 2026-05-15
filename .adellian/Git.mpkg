@@ -16,8 +16,8 @@
 				"Uninstall": "Uninstall.py",
 				"Update": "Update.py"
 			},
-			"Name": "Stable",
-			"Description": "Install the Stable version of TSN Abstracter using Git."
+			"Name": "Unstable",
+			"Description": "Install the Unstable version of TSN Abstracter using Git."
 		}
 	],
 	"Data": [
