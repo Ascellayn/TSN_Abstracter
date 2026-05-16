@@ -199,7 +199,7 @@ def JSON_Write(Path: str, Dictionary: typing.Mapping[str, typing.Any] | list[typ
 	"""
 	try:
 		Path_Require(Path);
-		return Write(Path, json.dumps(Dictionary, indent=2), Compressed);
+		return Write(Path, json.dumps(Dictionary, indent=2 if (not Compressed) else 0), Compressed);
 	except Exception as Error:
 		Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}");
 	return False;
