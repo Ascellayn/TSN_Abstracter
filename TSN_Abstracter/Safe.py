@@ -52,8 +52,7 @@ def NotNull(Number: int | float, Default: int = 1) -> int | float:
 		>>> 420/Safe.NotNull(0, 2);
 		210 # 420/2 since a zero is a zero, shocking I know.
 	"""
-	if (Number == 0): return Default;
-	return Number;
+	return Default if (Number == 0) else Number;
 
 
 
