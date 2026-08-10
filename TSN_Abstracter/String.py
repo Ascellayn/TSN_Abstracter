@@ -123,6 +123,16 @@ def Split_Length(Text: str, Max_Length: int) -> list[str]:
 
 
 def Abbreviate(Text: str, Max_Length: int, Abbreviate: str = "(...)") -> str:
+	""" Shortens end of text with `Abbreviate` if `Text` is longer than `Max_Length`
+
+	Arguments:
+		Text (str*): The string we want to potentially abbreviate.
+		Max_Length (int*): The maximum size of the string.
+		Abbreviate (str = "(...)"): The string to replace the end of the text with.
+
+	Returns:
+		str: The string with its end potentially replaced with `Abbreviate`
+	"""
 	if (len(Text) > Max_Length):
 		Text = Text[:Max_Length - len(Abbreviate)] + Abbreviate;
 	return Text;
@@ -235,7 +245,7 @@ class ASCII:
 			""" Move the cursor right `Columns` columns.
 
 			Arguments:
-				Lines (int*): The amount of columns we want to go right.
+				Columns (int*): The amount of columns we want to go right.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go right `Columns` characters.
@@ -246,7 +256,7 @@ class ASCII:
 			""" Move the cursor left `Columns` columns.
 
 			Arguments:
-				Lines (int*): The amount of columns we want to go left.
+				Columns (int*): The amount of columns we want to go left.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go left `Columns` characters.
