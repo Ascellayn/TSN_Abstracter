@@ -84,7 +84,7 @@ from . import String;
 from . import Time;
 from typing import Any, Literal, Optional, TypeAlias, TypedDict, assert_type, cast;
 from collections.abc import Callable;
-from Time import unix_t;
+unix_t = Time.unix_t;
 
 NULL: TypeAlias = None;
 
