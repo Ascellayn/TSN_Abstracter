@@ -18,6 +18,11 @@ except: Main_Directory: str = os.path.dirname(os.path.abspath(__file__));
 
 
 
+
+
+
+
+
 # General File Processing
 def Exists(Path: str) -> bool:
 	""" Verifies whenever a file or folder exists at the provided path.
@@ -156,6 +161,9 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
 
 
 
+
+
+
 # JSON Specific Abstraction
 def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 	""" `Read()` Wrapper for reading JSON Files.  
@@ -181,13 +189,13 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 
 
 
-def JSON_Write(Path: str, Dictionary: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
+def JSON_Write(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for writing JSON Files.  
 	Automatically creates the file structure and file if it doesn't exist.
 	
 	Arguments:
 		Path (str*): String representing the Path to a json file.
-		Dictionary (dict*): A serializable dictionary that we want to write to a JSON File.
+		Data (dict / list*): Serializable data that we want to write to a JSON File.
 		Compressed (bool = False): Specify the use of LZMA Compression.
 
 	Returns:
@@ -199,9 +207,9 @@ def JSON_Write(Path: str, Dictionary: typing.Mapping[str, typing.Any] | list[typ
 	"""
 	try:
 		Path_Require(Path);
-		return Write(Path, json.dumps(Dictionary, indent=2 if (not Compressed) else 0), Compressed);
+		return Write(Path, json.dumps(Data, indent=2 if (not Compressed) else 0), Compressed);
 	except Exception as Error:
-		Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Dictionary}\n\tEXCEPTION:{Error}");
+		Log.Error(f"Error Writing JSON {Path}.\n\tDATA: {Data}\n\tEXCEPTION:{Error}");
 	return False;
 
 
@@ -233,6 +241,40 @@ def JSON_Update(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compress
 
 		JSON: dict[str, typing.Any] = JSON_Read(Path, Compressed);
 		JSON.update(Dictionary);
+		return JSON_Write(Path, JSON, Compressed);
+
+	except Exception as Except: Log.Error(f"Updating {Path} - Compression: {Compressed}\n{String.ASCII.Shortcut.BSOD}{Except}");
+	return False;
+
+
+
+
+
+def Array_Read(Path: str, Compressed: bool = False) -> list[typing.Any]:
+	""" `JSON_Read()` alias, but instead of Dictionaries, it's Arrays.  
+	This function has a very slight difference with `JSON_Read()`: it returns an empty list instead of an empty dictionary. """
+	if (not Path_Require(Path)):
+		Log.TSN_Debug(f"404 Warning - {Path}"); return [];
+	JSON: str | None = Read(Path, Compressed);
+	return json.loads(JSON if (JSON) else "[]");
+
+
+
+def Array_Write(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
+	""" `JSON_Write()` alias, but instead of Dictionaries it's Arrays.  
+	This function directly calls `JSON_Write()` and should only be used to make code easier to read and comprehend."""
+	return JSON_Write(Path, Array, Compressed)
+
+
+
+def Array_Update(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
+	""" `JSON_Update()` alias, but instead of Dictionaries it's Arrays.  
+	This function behaves identically to `JSON_Update()`. """
+	try:
+		if (not Exists(Path)): return JSON_Write(Path, Array, Compressed);
+
+		JSON: list[typing.Any] = Array_Read(Path, Compressed);
+		JSON.extend(Array);
 		return JSON_Write(Path, JSON, Compressed);
 
 	except Exception as Except: Log.Error(f"Updating {Path} - Compression: {Compressed}\n{String.ASCII.Shortcut.BSOD}{Except}");
