@@ -1,5 +1,5 @@
 """
-This module from TSN Abstracter contains various random functions that currently do not deserve their own dedicated TSNA Module.
+This module from TSN Abstracter contains TSNA's logger and its associated derivative functions related to printing stuff on the screen.
 
 ## Examples
 >>> from TSN_Abstracter import Log;
@@ -105,25 +105,33 @@ class Awaited_Log:
 
 
 
-	def Status_Update(self, Status: str) -> None:
+	def Status_Update(self, Status: str, Level: int) -> None:
 		""" Replace the "..." part of the Awaited Log with the status of your choosing.
 
 		Arguments:
 			Status (str*): The custom status to replace the ellipsis with.
+			Level (int*): The logging level of the Status Update itself.
 
 		Examples:
 			>>> Log.Info("Cooking Ascellayn...");
 			[2016/05/20 - 17:00:00] - Info: Arellayn → Cooking Ascellayn...
-			>>> Log.Awaited.Status_Update("[COOKED]");
+			>>> Log.Awaited.Status_Update("[COOKED]", 25);
 			[2016/05/20 - 17:00:00] - Info: Arellayn → Cooking Ascellayn [COOKED]
 		"""
 		global Awaited_Logs, Awaited_Console, Awaited_File;
-	
-		if (Can_Log(self.Level)):
+		doReturn: bool = True;
+
+		if (Config.Logger.Awaited_Status):
+			if (Level > self.Level and not Can_Log(self.Level)):
+				self.Level = Level;
+				doReturn = False;
+		# Displays Awaited Status Changes when they're higher than the initial log
+
+		if (Can_Log(Level)):
 			# Update Console Log Entry
 			if (self.Level >= Config.Logger.Print_Level):
 				if (Awaited_Console == self.Caller):
-					Logger_Console.log(self.Level, String.ASCII.Line.Return + self.Text + Status);
+					Logger_Console.log(self.Level, String.ASCII.Line.Return if (doReturn) else "" + self.Text + Status);
 
 					Awaited_Console = None;
 				else: Logger_Console.log(self.Level, self.Text + Status);
@@ -133,7 +141,7 @@ class Awaited_Log:
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
 
 				# Check if we can easily overwrite the last line
-				if (Awaited_File == self.Caller):
+				if (Awaited_File == self.Caller and doReturn):
 					# WARNING: This is slow, should come up with a better solution in the future
 					Lines: list[str] = open(Log_Path(), "r").readlines();
 					Lines[-1] = String.Clear_ASCII_Formatting(self.Text + Status + "\n");
@@ -147,21 +155,21 @@ class Awaited_Log:
 	def OK(self, Status: str | None = None) -> None:
 		""" >>> Log.Awaited.OK();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
-		self.Status_Update(f"{TSNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{TSNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", self.Level);
 
 
 
 	def WARNING(self, Status: str) -> None:
 		""" >>> Log.Awaited.WARNING("2 Modules Skipped");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped] """
-		self.Status_Update(f"{TSNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{TSNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 30);
 
 
 
 	def ERROR(self, Status: str) -> None:
 		""" >>> Log.Awaited.ERROR("1 Outdated Module");
-		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 1 Outdated Module] """
-		self.Status_Update(f"{TSNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}");
+		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR: 1 Outdated Module] """
+		self.Status_Update(f"{TSNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 40);
 
 
 
@@ -170,7 +178,7 @@ class Awaited_Log:
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 		Cannot divide by zero.
 		"""
-		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{'\n'.join(traceback.format_exception(Except)) if (Traceback) else ""}{String.ASCII.Text.Reset}");
+		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{'\n'.join(traceback.format_exception(Except)) if (Traceback) else ""}{String.ASCII.Text.Reset}", 50);
 		if (Raise): raise Except;
 
 
@@ -181,7 +189,7 @@ class Awaited_Dummy(Awaited_Log):
 	""" An Awaited Log that doesn't do anything, to be used when the Caller doesn't correspond to the awaited one. """
 	def __init__(self): return;
 	def __str__(self): return "";
-	def Status_Update(self, Status: str): return;
+	def Status_Update(self, Status: str, Level: int): return;
 	def OK(self, Status: str | None = None): return;
 	def Warning(self, Status: str): return;
 	def ERROR(self, Status: str): return;
@@ -331,7 +339,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 		[2007/04/23 - 17:00:00] - Warning: Ascellayn → Hug a Mika a day, keeps your sanity away~
 	"""
 	global Awaited_Logs, Awaited_Console, Awaited_File, Logger_File; # Awaiting Log System Bullshit & Janky bug fix for date issues
-	if (not Can_Log(Level)): return;
+	if (not Can_Log(Level) and not Config.Logger.Awaited_Status): return;
 
 
 
@@ -381,9 +389,8 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 
-	if (Awaited_Console or Awaited_File):
-		if (Caller not in Awaited_Logs.keys()): Awaited_Logs[Caller] = [];
-		Awaited_Logs[Caller].append(Awaited_Log(Level, Caller, Logged_Text));
+	if (Caller not in Awaited_Logs.keys()): Awaited_Logs[Caller] = [];
+	Awaited_Logs[Caller].append(Awaited_Log(Level, Caller, Logged_Text));
 
 
 

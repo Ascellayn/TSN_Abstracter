@@ -111,7 +111,7 @@ def Read(Path: str, Compressed: bool = False) -> str | None:
 			else:
 				with open(Path, "r", encoding="UTF8") as File: Data = File.read();
 
-			Log.Awaited().Status_Update(f"[OK] - {len(Data)} characters\n{String.ASCII.Text.Dim}{Data}"); return Data;
+			Log.Awaited().Status_Update(f"[OK] - {len(Data)} characters\n{String.ASCII.Text.Dim}{Data}", 10); return Data;
 
 		except Exception as Except:
 			if (not Log.Can_Log(10)): Log.Error(f"Reading {Path} - Compression {Compressed}\n{String.ASCII.Shortcut.BSOD}{Except}");

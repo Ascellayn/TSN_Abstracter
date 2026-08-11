@@ -51,6 +51,10 @@ class Logger:
 
 	**Print_Level** : *int = 20*  
 	The minimum Log level that we should log to the console.  
+
+	**Awaited_Status** : *bool = True*  
+	Whenever to use the Awaited Log's Level instead of the initial one when the Awaited one is higher.  
+	Does not affect `.OK()` Awaited Logs.  
 	"""
 	Disable: bool = False;
 	Display_Date: bool = True;
@@ -63,6 +67,8 @@ class Logger:
 	File_Folder: str = "Logs";
 
 	Print_Level: int = 20;
+
+	Awaited_Status: bool = True;
 
 
 
