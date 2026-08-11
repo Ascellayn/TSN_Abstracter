@@ -139,8 +139,14 @@ def JSON(JSON: dict[str, Any]) -> None:
 
 
 
-if (File.Exists(f"{File.Main_Directory}/App.tsna")):
-	apptsna = File.JSON_Read(f"{File.Main_Directory}/App.tsna");
-	if ("Private" in apptsna): del apptsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
-	JSON(apptsna);
-	del apptsna;
+def Reload(Path: str | None = None) -> None:
+	if (not Path):
+		if (File.Exists(f"{File.Main_Directory}/App.tsna")): Reload(f"{File.Main_Directory}/App.tsna");
+		if (File.Exists("App.tsna")): Reload("App.tsna");
+	else:
+		apptsna = File.JSON_Read(Path);
+		if ("Private" in apptsna): del apptsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
+		JSON(apptsna);
+		del apptsna;
+
+Reload();
