@@ -82,7 +82,7 @@ from . import Safe;
 from . import TSNDL;
 from . import String;
 from . import Time;
-from typing import Any, TypeAlias, TypedDict, assert_type, cast;
+from typing import Any, Literal, Optional, TypeAlias, TypedDict, assert_type, cast;
 from collections.abc import Callable;
 
 NULL: TypeAlias = None;
@@ -94,7 +94,7 @@ NULL: TypeAlias = None;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,1,4);
+	Version_Tuple: tuple[int, int, int] = (6,1,5);
 
 
 
@@ -191,7 +191,7 @@ __all__ = [
 	"String",
 	"Time",
 	"TSN_Abstracter",
-	"Any", "TypeAlias", "TypedDict",
+	"Any", "Literal", "Optional", "TypeAlias", "TypedDict",
 	"assert_type", "cast",
 	"Callable",
 	"NULL"
