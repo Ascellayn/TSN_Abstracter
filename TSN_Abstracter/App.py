@@ -5,6 +5,22 @@ It simply loads `App.tsna` if it finds it.
 Most keys are self-explainable and serve practically only cosmetic purposes.  
 However the TSNA Key which is a tuple (saved as an array) containing the minimum TSNA Version required to run the Application.  
 `TSN_Abstracter.Require_Version()` will be automatically ran using that very key if you use `TSN_Abstracter.App_Init()` (which you should).
+
+### `App.tsna` Example:
+```
+{
+	"Name": "Serina Heartbeat",
+	"Description": "Host Server for verifying whenever TSNA-Based Programs are healthy.",
+	"Author": ["Ascellayn", "The Sirio Network"],
+	"Contributors": [],
+	"License": "TSN License 2.3 - Universal",
+	"License_Year": "2026",
+	"Codename": "TSN_Sumi",
+	"Branch": "Main",
+	"Version": [1,0,0],
+	"TSNA": [6,1,5]
+}
+```
 """
 from . import File, Time;
 from typing import Any;
@@ -20,7 +36,7 @@ Author: list[str] = ["John Doe"];
 Contributors: list[str] = [];
 
 License: str = "Public Domain";
-License_Year: str = str(Time.Elapsed_Time(Time.Get_Unix())["Years"] + 1970); # Calculates the current year.
+License_Year: str = str(Time.Elapsed_Time(Time.Get_Unix())["Years"] + 1970); # pyright: ignore[reportTypedDictNotRequiredAccess] # Calculates the current year.
 
 
 Codename: str = "NoCodename";

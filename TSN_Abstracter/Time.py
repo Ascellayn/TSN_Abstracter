@@ -7,12 +7,28 @@
 """
 from . import String;
 import datetime, time, math, typing;
+type unix_t = int | float;
 
 
 
 
 
-def Convert_Datetime(Object: datetime.datetime, Precise: bool = False) -> int | float:
+class Time_Dict(typing.TypedDict):
+	Years: typing.NotRequired[int];
+	Months: typing.NotRequired[int];
+	Days: typing.NotRequired[int];
+	Hours: typing.NotRequired[int];
+	Minutes: typing.NotRequired[int];
+	Seconds: typing.NotRequired[int];
+	Milliseconds: typing.NotRequired[int];
+	Microseconds: typing.NotRequired[int];
+	Nanoseconds: typing.NotRequired[int];
+
+
+
+
+
+def Convert_Datetime(Object: datetime.datetime, Precise: bool = False) -> unix_t:
 	""" Converts a Datetime Object to a Unix Timestamp.
 
 	Arguments:
@@ -20,7 +36,7 @@ def Convert_Datetime(Object: datetime.datetime, Precise: bool = False) -> int | 
 		Precise (bool = False): Boolean defining if we want a Precise Unix Time. Defaults to False.
 
 	Returns:
-		int/float/None: The Unix Timestamp provided by the datetime object, or nothing if the object is invalid.
+		unix_t/None: The Unix Timestamp provided by the datetime object, or nothing if the object is invalid.
 	
 	Examples:
 		>>> Time.Convert_Datetime(Timestamp);
@@ -31,11 +47,11 @@ def Convert_Datetime(Object: datetime.datetime, Precise: bool = False) -> int | 
 
 
 
-def Convert_Unix(Unix: int | float) -> datetime.datetime:
+def Convert_Unix(Unix: unix_t) -> datetime.datetime:
 	""" Converts an Unix Timestamp to a datetime object.
 
 	Arguments:
-		Unix (int|float*): The Unix Timestamp.
+		Unix (unix_t*): The Unix Timestamp.
 
 	Returns:
 		datetime: The datetime object that we converted the Unix Timestamp from.
@@ -68,18 +84,14 @@ def Convert_ISO8601(ISO_8601: str) -> datetime.datetime:
 
 
 # Time.Get_*
-@typing.overload
-def Get_Unix(Precise: bool = False) -> int: ...;
-@typing.overload
-def Get_Unix(Precise: bool = True) -> float: ...; # pyright: ignore[reportOverlappingOverload]
-def Get_Unix(Precise: bool = False) -> int | float:
+def Get_Unix(Precise: bool = False) -> unix_t:
 	""" Get an Integer/Float representing Unix Time.
 
 	Arguments:
 		Precise (bool = False): Specify if we want a precise Unix Time.
 
 	Returns:
-		int/float: The current Unix Time.
+		unix_t: The current Unix Time.
 
 	Examples:
 		>>> Time.Get_Unix();
@@ -89,11 +101,11 @@ def Get_Unix(Precise: bool = False) -> int | float:
 
 
 
-def Get_Dawn(Unix: int | float) -> int | float:
+def Get_Dawn(Unix: unix_t) -> unix_t:
 	""" Get the first second of the day specified in the Unix Timestamp.
 
 	Arguments:
-		Unix (int|float*): The Unix Timestamp.
+		Unix (unix_t*): The Unix Timestamp.
 
 	Returns:
 		int/float: The Unix Timestamp of the first second of the specified day.
@@ -109,11 +121,11 @@ def Get_Dawn(Unix: int | float) -> int | float:
 
 
 
-def Get_DateStrings(Timestamp: int | float | datetime.datetime) -> tuple[str, str]:
+def Get_DateStrings(Timestamp: unix_t | datetime.datetime) -> tuple[str, str]:
 	""" Get the specified Timestamp's date and time string in the preferred format.
 
 	Arguments:
-		Timestamp (int/float/datetime*): The timestamp we wish to get readable strings from.
+		Timestamp (unix_t | datetime*): The timestamp we wish to get readable strings from.
 
 	Returns:
 		tuple (str, str): Two strings containing the date in YYYY/MM/DD and HH:MM:SS format respectively.
@@ -171,20 +183,17 @@ class Unit_Unix:
 
 
 
-def Unit_Edges(Time_Dict: dict[str, int]) -> tuple[int, int]:
+def Unit_Edges(Time_Dict: Time_Dict) -> tuple[int, int]:
 	""" Get the maximum and minimum power units of a given Time Dict.
 
 	Arguments:
-		Time_Dict (dict[str, int]):
+		Time_Dict (Time_Dict*): The dictionary containing time, where we'll look for the biggest unit in it.
 	
 	Returns:
 		tuple (int, int): The biggest then smallest units' powers present in the Time Dict.
 
 	Raises:
 		ValueError: A key in the Time_Dict is invalid or unknown to TSNA.
-
-	Examples:
-
 	"""
 	Biggest_Unit: int = -3; Smallest_Unit: int = -3;
 
@@ -202,12 +211,12 @@ def Unit_Edges(Time_Dict: dict[str, int]) -> tuple[int, int]:
 
 
 # Time Functions with Calculations
-def Elapsed_Time(Unix: int | float) -> dict[str, int]:
+def Elapsed_Time(Unix: unix_t) -> Time_Dict:
 	""" Calculate how much time since the Epoch has passed.  
 	**NOTE**: Everything is calculated according to a year being **365.25 days** long. This function will breakdown the moment you reach into the days.
 
 	Arguments:
-		Unix: Integer/Float representing the time since the Epoch.
+		Unix (unix_t*): Integer/Float representing the time since the Epoch.
 	Returns:
 		Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 	"""
@@ -249,14 +258,13 @@ def Elapsed_Time(Unix: int | float) -> dict[str, int]:
 					)*1000
 				)
 			)*100
-
 		)
 	};
 
 
 
 def Elapsed_String(
-		Time: int | float,
+		Time: unix_t,
 		Delimiter: str = ", ",
 		Show_Bigger: bool = False, Show_Bigger_Starting: int = 2,
 		Show_Starting: int = 6, Show_Smaller: bool = True,
@@ -267,7 +275,7 @@ def Elapsed_String(
 	""" Gives a dynamically sized string of the amount of time passed.
 
 	Arguments:
-		Time (int/float*): How much time has passed passed.
+		Time (unix_t*): How much time has passed passed.
 		Delimiter (str = ", "): What should separate each unit.
 		Show_Bigger (bool = False): Should we still display units that are bigger than the smallest unit available?
 		Show_Bigger_Starting (int = 6): At what "Unit Power" we should start displaying the time passed, even if the specified `Time` is too small to naturally display the unit.
@@ -296,7 +304,7 @@ def Elapsed_String(
 
 		if (Time_Dict[k] != 0): Display = True;
 		if (Show_Bigger and (Show_Bigger_Starting >= Power)): Display = True;
-		if (Show_Smaller and (Biggest_Unit >= Power)): Display = True
+		if (Show_Smaller and (Biggest_Unit >= Power)): Display = True;
 		if (Show_Starting < Power): Display = False;
 		if (Show_Until > Power): Display = False;
 		#print(f"{Key}: {Display} | Trailing: {String.Trailing_Zero(Time_Dict[Key])}");
@@ -307,9 +315,9 @@ def Elapsed_String(
 			Dynamic_String += \
 f"{
 	(
-		String.Trailing_Zero(Time_Dict[k])
+		String.Trailing_Zero(Time_Dict[k]) # pyright: ignore[reportUnknownArgumentType]
 		if (k not in ["Milliseconds", "Microseconds", "Nanoseconds"])
-		else String.Trailing_Zero(Time_Dict[k], 4)
+		else String.Trailing_Zero(Time_Dict[k], 4) # pyright: ignore[reportUnknownArgumentType]
 	)
 	if (Trailing_Starting >= Power)
 	else Time_Dict[k]
@@ -351,14 +359,14 @@ def String_Time(Text: str) -> float:
 		>>> Time.String_Time("1D 1h");
 		90000
 	"""
-	Digits: list[str] = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", ".", ","];
+	DIGITS: list[str] = ["9", "8", "7", "6", "5", "4", "3", "2", "1", "0", ".", ","];
 	Timestamp: float = 0;
 
 	Numbers: list[str] = Text.split(" ");
 
 	for n in Numbers:
 		for i, char in enumerate(n):
-			if (char not in Digits):
+			if (char not in DIGITS):
 				T_Unit: str = n[i:];
 				T_Number: float = float(n[:i]);
 				match T_Unit:
