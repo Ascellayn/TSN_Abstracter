@@ -131,7 +131,8 @@ class Awaited_Log:
 			# Update Console Log Entry
 			if (self.Level >= Config.Logger.Print_Level):
 				if (Awaited_Console == self.Caller):
-					Logger_Console.log(self.Level, String.ASCII.Line.Return if (doReturn) else "" + self.Text + Status);
+					if (doReturn): Logger_Console.log(self.Level, String.ASCII.Line.Return + self.Text + Status);
+					else: Logger_Console.log(self.Level, self.Text + Status);
 
 					Awaited_Console = None;
 				else: Logger_Console.log(self.Level, self.Text + Status);
