@@ -263,7 +263,7 @@ def Array_Read(Path: str, Compressed: bool = False) -> list[typing.Any]:
 def Array_Write(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
 	""" `JSON_Write()` alias, but instead of Dictionaries it's Arrays.  
 	This function directly calls `JSON_Write()` and should only be used to make code easier to read and comprehend."""
-	return JSON_Write(Path, Array, Compressed)
+	return JSON_Write(Path, Array, Compressed);
 
 
 
