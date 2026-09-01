@@ -95,7 +95,7 @@ NULL: TypeAlias = None;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,2,0);
+	Version_Tuple: tuple[int, int, int] = (6,2,1);
 
 
 
@@ -147,7 +147,7 @@ class TSN_Abstracter:
 	@staticmethod
 	def App_Version() -> str:
 		"""Returns a readable string of the TSNA-Based Application Version."""
-		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Prefix}";
+		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Suffix}";
 
 
 
