@@ -3,10 +3,11 @@
 	"Type": "Adellian",
 	"Name": "TSN Abstracter",
 	"Description": "The Python Framework for nearly all of The Sirio Network's Projects.",
-	"Version": [6,2,0],
+	"Version": [6,2,1],
 	"Required": ["Eleison", "Kyrie", "Server"],
 	"Default": ["Eleison", "Kyrie", "Server"],
 	"Dependencies": [],
+	"Recommended": [],
 	"Conflicts": ["TSN_Abstracter@GIT"],
 	"Options": [
 		{
