@@ -11,6 +11,7 @@
 
 from .Globals import *;
 from . import Draw;
+import time;
 
 
 
@@ -27,13 +28,14 @@ Key_Held: int = -1;
 
 
 
-def Get() -> int:
-	""" Blocking Input Catcher"""
+def Get(HZ: int = 1000) -> int:
+	""" Blocking Input Catcher """
 	global Key_Held;
 	while True:
 		CHAR = Window.getch();
 		if (CHAR != -1 and Key_Held != CHAR): Key_Held = CHAR; return CHAR;
 		Key_Held = -1;
+		time.sleep((1000 / HZ) / 1000);
 
 
 
