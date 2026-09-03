@@ -165,7 +165,7 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
 
 
 # JSON Specific Abstraction
-def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
+def Read_JSON(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 	""" `Read()` Wrapper for reading JSON Files.  
 	**QUIRK**: Automatically creates the file path if it doesn't exist, returns an empty dictionary if the file didn't exist prior.
 	
@@ -177,7 +177,7 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 		dict: If the file or a folder exists according to "Path", returns its data, otherwise an empty dictionary is provided.
 
 	Examples:
-		>>> File.JSON_Read("BigData.cjson", True);
+		>>> File.Read_JSON("BigData.cjson", True);
 		{
 			"Data": "big cheese redacted this :("
 		}
@@ -189,7 +189,7 @@ def JSON_Read(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 
 
 
-def JSON_Write(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
+def Write_JSON(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for writing JSON Files.  
 	Automatically creates the file structure and file if it doesn't exist.
 	
@@ -202,7 +202,7 @@ def JSON_Write(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.An
 		bool: Represents whenever the write was successful.
 
 	Examples:
-		>>> File.JSON_Write("BigData.cjson", {"Cheese Stocks": 9001});
+		>>> File.Write_JSON("BigData.cjson", {"Cheese Stocks": 9001});
 		True
 	"""
 	try:
@@ -214,9 +214,9 @@ def JSON_Write(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.An
 
 
 
-def JSON_Update(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compressed: bool = False) -> bool:
+def Update_JSON(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compressed: bool = False) -> bool:
 	""" `Write()` Wrapper for updating data to JSON Files.  
-	**QUIRK**: Acts as a regular `JSON_Write()` if the file did not exist prior.
+	**QUIRK**: Acts as a regular `Write_JSON()` if the file did not exist prior.
 	
 	Arguments:
 		Path (str*): String representing the Path to a json file.
@@ -227,21 +227,21 @@ def JSON_Update(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compress
 		bool: Represents whenever the write was successful.
 
 	Examples:
-		>>> File.JSON_Write("BigData.json", {"Debt": 999999999});
+		>>> File.Write_JSON("BigData.json", {"Debt": 999999999});
 		True
 		# If you want to know how the file looks like after that operation...
-		>>> File.JSON_Read("BigData.json");
+		>>> File.Read_JSON("BigData.json");
 		{
 			"Cheese Stocks": 9001,
 			"Debt": 999999999
 		}
 	"""
 	try:
-		if (not Exists(Path)): return JSON_Write(Path, Dictionary, Compressed);
+		if (not Exists(Path)): return Write_JSON(Path, Dictionary, Compressed);
 
-		JSON: dict[str, typing.Any] = JSON_Read(Path, Compressed);
+		JSON: dict[str, typing.Any] = Read_JSON(Path, Compressed);
 		JSON.update(Dictionary);
-		return JSON_Write(Path, JSON, Compressed);
+		return Write_JSON(Path, JSON, Compressed);
 
 	except Exception as Except: Log.Error(f"Updating {Path} - Compression: {Compressed}\n{String.ASCII.Shortcut.BSOD}{Except}");
 	return False;
@@ -250,9 +250,9 @@ def JSON_Update(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compress
 
 
 
-def Array_Read(Path: str, Compressed: bool = False) -> list[typing.Any]:
-	""" `JSON_Read()` alias, but instead of Dictionaries, it's Arrays.  
-	This function has a very slight difference with `JSON_Read()`: it returns an empty list instead of an empty dictionary. """
+def Read_Array(Path: str, Compressed: bool = False) -> list[typing.Any]:
+	""" `Read_JSON()` alias, but instead of Dictionaries, it's Arrays.  
+	This function has a very slight difference with `Read_JSON()`: it returns an empty list instead of an empty dictionary. """
 	if (not Path_Require(Path)):
 		Log.TSN_Debug(f"404 Warning - {Path}"); return [];
 	JSON: str | None = Read(Path, Compressed);
@@ -260,22 +260,22 @@ def Array_Read(Path: str, Compressed: bool = False) -> list[typing.Any]:
 
 
 
-def Array_Write(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
-	""" `JSON_Write()` alias, but instead of Dictionaries it's Arrays.  
-	This function directly calls `JSON_Write()` and should only be used to make code easier to read and comprehend."""
-	return JSON_Write(Path, Array, Compressed);
+def Write_Array(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
+	""" `Write_JSON()` alias, but instead of Dictionaries it's Arrays.  
+	This function directly calls `Write_JSON()` and should only be used to make code easier to read and comprehend."""
+	return Write_JSON(Path, Array, Compressed);
 
 
 
-def Array_Update(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
-	""" `JSON_Update()` alias, but instead of Dictionaries it's Arrays.  
-	This function behaves identically to `JSON_Update()`. """
+def Update_Array(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
+	""" `Update_JSON()` alias, but instead of Dictionaries it's Arrays.  
+	This function behaves identically to `Update_JSON()`. """
 	try:
-		if (not Exists(Path)): return JSON_Write(Path, Array, Compressed);
+		if (not Exists(Path)): return Write_JSON(Path, Array, Compressed);
 
-		JSON: list[typing.Any] = Array_Read(Path, Compressed);
+		JSON: list[typing.Any] = Read_Array(Path, Compressed);
 		JSON.extend(Array);
-		return JSON_Write(Path, JSON, Compressed);
+		return Write_JSON(Path, JSON, Compressed);
 
 	except Exception as Except: Log.Error(f"Updating {Path} - Compression: {Compressed}\n{String.ASCII.Shortcut.BSOD}{Except}");
 	return False;
