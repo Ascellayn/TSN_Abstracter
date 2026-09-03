@@ -95,7 +95,7 @@ NULL: TypeAlias = None;
 class TSN_Abstracter:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (6,3,0);
+	Version_Tuple: tuple[int, int, int] = (7,0,0);
 
 
 
@@ -127,12 +127,16 @@ class TSN_Abstracter:
 	@staticmethod
 	def Require_Version(Minimum_Version: tuple[int, int, int], Quit_Program: bool = True) -> bool:
 		"""Returns a boolean confirming if the TSN_Abstracter version provided by the Minimum_Version tuple is equal or above, if Quit_Program is True the program will quit after the exception."""
-		if ((TSN_Abstracter.Version_Tuple[0] == Minimum_Version[0] and TSN_Abstracter.Version_Tuple[1] >= Minimum_Version[1])):
-			if (TSN_Abstracter.Version_Tuple[1] == Minimum_Version[1]):
-				if (TSN_Abstracter.Version_Tuple[2] >= Minimum_Version[2]): return True;
-		elif (TSN_Abstracter.Version_Tuple[0] >= Minimum_Version[0]): raise TSN_Abstracter.Breaking_Version(Minimum_Version, Quit_Program);
-		elif (Quit_Program): raise TSN_Abstracter.Outdated_Version(Minimum_Version, Quit_Program);
-		else: Log.Warning(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Minimum_Version)} however we're using {TSN_Abstracter.Version()}!");
+		try:
+			if ((TSN_Abstracter.Version_Tuple[0] == Minimum_Version[0] and TSN_Abstracter.Version_Tuple[1] >= Minimum_Version[1])):
+				if (TSN_Abstracter.Version_Tuple[1] == Minimum_Version[1]):
+					if (TSN_Abstracter.Version_Tuple[2] >= Minimum_Version[2]): return True;
+			elif (TSN_Abstracter.Version_Tuple[0] >= Minimum_Version[0]): raise TSN_Abstracter.Breaking_Version(Minimum_Version, Quit_Program);
+			elif (Quit_Program): raise TSN_Abstracter.Outdated_Version(Minimum_Version, Quit_Program);
+			else: Log.Warning(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Minimum_Version)} however we're using {TSN_Abstracter.Version()}!");
+		except TSN_Abstracter.Breaking_Version, TSN_Abstracter.Outdated_Version:
+			Log.Stateless(f"You may ignore this error, however we do not guarantee that the program will function correctly.\nPress any key to continue.");
+			input();
 		return False;
 
 
@@ -155,7 +159,7 @@ class TSN_Abstracter:
 	def App_Init(Clear_Console: bool = False) -> None:
 		"""When your TSNA-Based Application runs, use this command to print basic information about your Application. (When `(__name__ == "__main__")`)  
 		Provides a single argument to specify if we should clear the console on the App's successful launch."""
-		TSN_Abstracter.Require_Version(App.TSNA);
+		TSN_Abstracter.Require_Version(App.TSNA, False);
 		if (Clear_Console): Log.Clear();
 		Log.Stateless(f"{App.Name} {App.Branch} {TSN_Abstracter.App_Version()} © ({App.License_Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
 
