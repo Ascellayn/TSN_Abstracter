@@ -38,7 +38,7 @@ However the TSNA Key which is a tuple (saved as an array) containing the minimum
 ```
 """
 from . import File, String, Time;
-from typing import Any, TypedDict, Sequence;
+from typing import Any, TypedDict, Sequence, cast;
 
 
 
@@ -145,7 +145,7 @@ def version() -> str:
 
 
 
-def load(JSON: dict[str, Any]) -> None:
+def load(JSON: Type.Dictionary) -> None:
 	""" Replaces the currently active TSNA App Data with whatever data is present in the argument.
 
 	Arguments:
@@ -203,7 +203,7 @@ def reload(Path: str | None = None) -> None:
 		if (File.Exists(f"{File.Main_Directory}/App.tsna")): reload(f"{File.Main_Directory}/App.tsna");
 		if (File.Exists("App.tsna")): reload("App.tsna");
 	else:
-		app_tsna: dict[str, Any] = File.Read_JSON(Path);
+		app_tsna: Type.Dictionary = cast(Type.Dictionary, File.Read_JSON(Path));
 		if ("Private" in app_tsna): del app_tsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
 		load(app_tsna);
 		del app_tsna;
