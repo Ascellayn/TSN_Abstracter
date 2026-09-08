@@ -64,10 +64,10 @@ class Progresser():
 			(
 				sum(self.Cycles)
 				/
-				Safe.NotNull(len(self.Cycles))
+				Safe.nonZero(len(self.Cycles))
 			)
 			/
-			Safe.NotNull(self.Delay)
+			Safe.nonZero(self.Delay)
 			, 2
 		);
 
