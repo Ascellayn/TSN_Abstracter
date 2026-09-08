@@ -17,7 +17,7 @@ from typing import Any;
 
 
 
-def array(Array: list[object], Index: int) -> Any: # Isn't there a Python function to already do this?
+def array(ARRAY: list[object], INDEX: int) -> Any: # Isn't there a Python function to already do this?
 	""" Attempts to safely try to read an array's specified index.
 
 	Arguments:
@@ -34,12 +34,12 @@ def array(Array: list[object], Index: int) -> Any: # Isn't there a Python functi
 		>>> Safe.Index(Array, 1);
 		None
 	"""
-	if (Index > len(Array)): return None;
-	return Array[Index];
+	if (INDEX > len(ARRAY)): return None;
+	return ARRAY[INDEX];
 
 
 
-def dictionary(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> Any:
+def dictionary(Dict: dict[str, Any], KEYS: list[str], DEFAULT: Any = None) -> Any:
 	""" Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
 
 	Arguments:
@@ -64,16 +64,16 @@ def dictionary(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> An
 		}, ["Hello", "WeHaveBeenTryingToReachYouAboutYourCarsExtendedWarranty"], "NO");
 		"NO"
 	"""
-	for k in Keys:
-		if (type(Dict) != dict): return Default;
-		Dict = Dict.get(k, Default);
+	for K in KEYS:
+		if (type(Dict) != dict): return DEFAULT;
+		Dict = Dict.get(K, DEFAULT);
 	return Dict;
 
 
 
 
 
-def nonZero(Number: int | float, Default: int = 1) -> int | float:
+def nonZero(NUMBER: int | float, DEFAULT: int = 1) -> int | float:
 	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
 
 	Arguments:
@@ -89,4 +89,4 @@ def nonZero(Number: int | float, Default: int = 1) -> int | float:
 		>>> 420/Safe.NotNull(0, 2);
 		210 # 420/2 since a zero is a zero, shocking I know.
 	"""
-	return Default if (Number == 0) else Number;
+	return DEFAULT if (NUMBER == 0) else NUMBER;
