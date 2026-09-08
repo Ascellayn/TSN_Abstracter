@@ -6,18 +6,24 @@ This module from TSN Abstracter contains various random functions that currently
 >>> Misc.is_Even(32768);
 True
 """
+from typing import Any;
+from collections.abc import Callable;
+
 import multiprocessing, threading;
 
 
 
 
 
+
+
+
 # Multi-Tasking
-def Thread_Start(Function: callable, Arguments: list[object] = [], Daemon: bool = True) -> None: # type: ignore | "callable" isn't taken seriously
+def newThread(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool = True) -> None: # type: ignore | "callable" isn't taken seriously
 	""" Abstraction to launch a new thread
 
 	Arguments:
-		Function (callable*): The function you wish to execute in the new thread.
+		Function (Callable*): The function you wish to execute in the new thread.
 		Arguments (list[object] = []): A list of arguments to pass to the function.
 		Daemon (bool = True): Whenever the thread should be treated as a daemon.
 	
@@ -26,18 +32,18 @@ def Thread_Start(Function: callable, Arguments: list[object] = [], Daemon: bool 
 		>>> Misc.Thread_Start(Send_To_Brazil, ["Ascellayn", False], False);
 	"""
 	threading.Thread(
-		target=Function, # type: ignore | FUCK OFF
-		args=Arguments,
-		daemon=Daemon
+		target=FUNC,
+		args=ARGS,
+		daemon=DAEMON
 	).start();
 
 
 
-def Process_Start(Function: callable, Arguments: list[object] = [], Daemon: bool = True) -> None: # type: ignore | NAH WE SENDING THIS TO BRAZIL
+def newProcess(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool = True) -> None: # type: ignore | NAH WE SENDING THIS TO BRAZIL
 	""" Abstraction to launch a new Process
 
 	Arguments:
-		Function (callable*): The function you wish to execute in the new process.
+		Function (Callable*): The function you wish to execute in the new process.
 		Arguments (list[object] = []): A list of arguments to pass to the function.
 		Daemon (bool = True): Whenever the process should be treated as a daemon.
 	
@@ -46,38 +52,20 @@ def Process_Start(Function: callable, Arguments: list[object] = [], Daemon: bool
 		>>> Misc.Process_Start(Send_To_Brazil, ["Arellayn", True]);
 	"""
 	multiprocessing.Process(
-		target=Function, # type: ignore | @©ÞZAÆ<ØªıđÞ<¢243
-		args=Arguments,
-		daemon=Daemon
+		target=FUNC,
+		args=ARGS,
+		daemon=DAEMON
 	).start();
 
 
 
 
 
+
+
+
 # Integer related stuff
-def is_Even(Number: int) -> bool:
-	""" Checks if `Number` is even.
-
-	Arguments:
-		Number (int*): Which number we want to check if it's even.
-
-	Returns:
-		bool: True if it is, False otherwise.
-
-	Examples:
-		>>> Misc.is_Even(1);
-		False
-		>>> Misc.is_Even(1);
-		True
-	"""
-	return ((Number % 2) == 0);
-
-
-
-
-
-def Under_At(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] | list[int | float]) -> int:
+def underAt(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] | list[int | float]) -> int:
 	""" Specify at which index a value of A is under B. Returns `-1` if no value is.
 
 	Arguments:

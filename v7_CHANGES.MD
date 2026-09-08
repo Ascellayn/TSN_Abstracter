@@ -60,6 +60,14 @@
 
 
 
+- ### `Misc` Changes
+	- Resolved typing issues for `newThread` and `newProcess`
+	- Removed `Misc.is_Even()` to promote more performant practice (due to not calling a function for `X % 2`)
+	- Renamed function `Misc.Thread_Start()` → `Misc.newThread()`
+	- Renamed function `Misc.Process_Start()` → `Misc.newProcess()`
+	- Renamed function `Misc.Under_At()` → `Misc.underAt()`
+
+
 
 - ### `File` Changes
 	- `CSV` support. (TBD)
