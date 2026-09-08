@@ -203,10 +203,10 @@ def reload(Path: str | None = None) -> None:
 		if (File.Exists(f"{File.Main_Directory}/App.tsna")): reload(f"{File.Main_Directory}/App.tsna");
 		if (File.Exists("App.tsna")): reload("App.tsna");
 	else:
-		apptsna: dict[str, Any] = File.Read_JSON(Path);
-		if ("Private" in apptsna): del apptsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
-		load(apptsna);
-		del apptsna;
+		app_tsna: dict[str, Any] = File.Read_JSON(Path);
+		if ("Private" in app_tsna): del app_tsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
+		load(app_tsna);
+		del app_tsna;
 
 
 
