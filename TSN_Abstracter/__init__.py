@@ -72,7 +72,8 @@ from . import App;
 from . import Deco;
 from . import Log;
 from . import File;
-from . import Misc;
+from . import Multi;
+from . import Number;
 from . import Safe;
 from . import TSNDL;
 from . import String;
@@ -174,7 +175,7 @@ class TSNA:
 
 
 __all__ = [
-	"App", "Deco", "Config", "File", "Log", "Misc", "Safe", "TSNDL", "String", "Time",
+	"App", "Deco", "Config", "File", "Log", "Multi", "Number", "Safe", "TSNDL", "String", "Time",
 	"TSNA",
 	"Any", "Literal", "Optional", "NotRequired", "TypedDict", "Callable",
 	"unix_t",

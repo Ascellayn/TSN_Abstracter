@@ -60,12 +60,18 @@
 
 
 
-- ### `Misc` Changes
+- ### `Multi` Changes
+	- `newThread` and `newProcess` now return their appropriate objects.
 	- Resolved typing issues for `newThread` and `newProcess`
+	- Renamed function `Misc.Thread_Start()` → `Multi.newThread()`
+	- Renamed function `Misc.Process_Start()` → `Multi.newProcess()`
+
+
+
+- ### `Misc` Changes
+	- The `Misc` module has entirely been "removed", its functions have been moved to other modules such as `Multi` and `Number`.
 	- Removed `Misc.is_Even()` to promote more performant practice (due to not calling a function for `X % 2`)
-	- Renamed function `Misc.Thread_Start()` → `Misc.newThread()`
-	- Renamed function `Misc.Process_Start()` → `Misc.newProcess()`
-	- Renamed function `Misc.Under_At()` → `Misc.underAt()`
+	- Renamed function `Misc.Under_At()` → `Number.underAt()`
 
 
 
