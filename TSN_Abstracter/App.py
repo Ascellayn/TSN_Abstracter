@@ -193,7 +193,7 @@ def load(JSON: Type.Dictionary) -> None:
 	Version_Prefix = JSON.get("Version_Prefix", Version_Prefix);
 	Version_Suffix = JSON.get("Version_Suffix", Version_Suffix);
 
-	TSNA = tuple(JSON.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
+	TSNA = tuple(JSON.get("TSNA", TSNA)); # pyright: ignore[reportAssignmentType, reportConstantRedefinition]
 	Serina = JSON.get("Serina", Serina);
 
 
