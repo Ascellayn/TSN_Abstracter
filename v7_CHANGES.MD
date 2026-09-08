@@ -75,6 +75,13 @@
 
 
 
+- ### `Safe` Changes
+	- Renamed function `Safe.Index()` → `Safe.array()`
+	- Renamed function `Safe.Nested_Dict()` → `Safe.dictionary()`
+	- Renamed function `Safe.NotNull()` → `Safe.nonZero()`
+
+
+
 - ### `File` Changes
 	- `CSV` support. (TBD)
 

@@ -14,7 +14,10 @@ from typing import Any;
 
 
 
-def Index(Array: list[object], Index: int) -> Any: # Isn't there a Python function to already do this?
+
+
+
+def array(Array: list[object], Index: int) -> Any: # Isn't there a Python function to already do this?
 	""" Attempts to safely try to read an array's specified index.
 
 	Arguments:
@@ -22,7 +25,7 @@ def Index(Array: list[object], Index: int) -> Any: # Isn't there a Python functi
 		Index (int*): The Index element we want to read.
 
 	Returns:
-		object/None: The returned item can be anything. In the case of a failed read, the return value will always be None.
+		Any/None: The returned item can be anything. In the case of a failed read, the return value will always be None.
 
 	Examples:
 		>>> Array: list[str] = ["Arellayn was here"];
@@ -36,27 +39,7 @@ def Index(Array: list[object], Index: int) -> Any: # Isn't there a Python functi
 
 
 
-def NotNull(Number: int | float, Default: int = 1) -> int | float:
-	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
-
-	Arguments:
-		Number (int*): Which number we want to check if it's potentially null.
-		Default (int = 1): What integer we replace `Number` with.
-
-	Returns:
-		int: Either `Number` or `Default` depending on if `Number` is equal to zero.
-
-	Examples:
-		>>> 69/Safe.NotNull(0);
-		69 # The 0 was replaced with a 1, resulting in no Exceptions!
-		>>> 420/Safe.NotNull(0, 2);
-		210 # 420/2 since a zero is a zero, shocking I know.
-	"""
-	return Default if (Number == 0) else Number;
-
-
-
-def Nested_Dict(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> Any:
+def dictionary(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> Any:
 	""" Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
 
 	Arguments:
@@ -85,3 +68,25 @@ def Nested_Dict(Dict: dict[str, Any], Keys: list[str], Default: Any = None) -> A
 		if (type(Dict) != dict): return Default;
 		Dict = Dict.get(k, Default);
 	return Dict;
+
+
+
+
+
+def nonZero(Number: int | float, Default: int = 1) -> int | float:
+	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
+
+	Arguments:
+		Number (int*): Which number we want to check if it's potentially null.
+		Default (int = 1): What integer we replace `Number` with.
+
+	Returns:
+		int: Either `Number` or `Default` depending on if `Number` is equal to zero.
+
+	Examples:
+		>>> 69/Safe.NotNull(0);
+		69 # The 0 was replaced with a 1, resulting in no Exceptions!
+		>>> 420/Safe.NotNull(0, 2);
+		210 # 420/2 since a zero is a zero, shocking I know.
+	"""
+	return Default if (Number == 0) else Number;
