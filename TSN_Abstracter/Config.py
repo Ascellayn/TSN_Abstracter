@@ -10,6 +10,9 @@ import platform;
 
 
 
+
+
+
 # Read Only Attributes, not meant to be modified by the Developer, only by TSNA itself.
 class System:
 	OS: str = platform.system();
@@ -69,8 +72,6 @@ class Logger:
 	Print_Level: int = 20;
 
 	Awaited_Status: bool = True;
-
-
 
 
 
