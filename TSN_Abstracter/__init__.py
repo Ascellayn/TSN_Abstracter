@@ -67,11 +67,6 @@ We do not recommend importing TSNA in another way.
 
 ###### TSN Abstracter (TSNA) © 2025-2026 by Ascellayn / The Sirio Network is licensed under TSN License 2.1 - Base
 """
-
-
-
-
-
 from . import Config;
 from . import App;
 from . import Deco;
@@ -82,99 +77,93 @@ from . import Safe;
 from . import TSNDL;
 from . import String;
 from . import Time;
-from typing import Any, Literal, Optional, TypeAlias, TypedDict, assert_type, cast;
+
+
+from typing import Any, Literal, Optional, NotRequired, TypedDict, assert_type, cast;
 from collections.abc import Callable;
+
+
+
+
+
 unix_t = Time.unix_t;
 
-NULL: TypeAlias = None;
 
 
 
 
 
-class TSN_Abstracter:
+
+
+class TSNA:
 	"""Class containing some information about TSN_Abstracter & Version Checking
 	Yes this looks like a mess."""
-	Version_Tuple: tuple[int, int, int] = (7,0,0);
+	VERSION: tuple[int, int, int] = (7,0,0);
 
 
 
-	class Bad_Version(Exception):
-		def __init__(self, Message: str, Quit_Program: bool):
+
+
+	class __VersionBad(Exception):
+		def __init__(self, Message: str, QUIT: bool):
 			self.Message: str = Message;
 			Log.Critical(self.Message);
-			if (Quit_Program): exit();
+			if (QUIT): exit();
 		def __str__(self) -> str: return self.Message;
 
-	class Outdated_Version(Bad_Version):
-		def __init__(self, Asked: tuple[int, int, int], Quit_Program: bool):
-			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Asked)} but TSNA {TSN_Abstracter.Version()} is outdated!", Quit_Program);
+	class __Outdated(__VersionBad):
+		def __init__(self, Asked: tuple[int, int, int], QUIT: bool):
+			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSNA.version(Asked)} but TSNA {TSNA.version()} is outdated!", QUIT);
 
-	class Breaking_Version(Bad_Version):
-		def __init__(self, Asked: tuple[int, int, int], Quit_Program: bool):
-			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Asked)} but TSNA {TSN_Abstracter.Version()} is too new!", Quit_Program);
+	class __Breaking(__VersionBad):
+		def __init__(self, Asked: tuple[int, int, int], QUIT: bool):
+			super().__init__(f"{App.Codename} is asking for TSN Abstracter {TSNA.version(Asked)} but TSNA {TSNA.version()} is too new!", QUIT);
 
 
-
-	@staticmethod
-	def Version(Version: tuple[int, int, int] | None = None) -> str:
-		"""Returns a v.X.Y.Z string of the current TSN_Abstracter Version (or of a provided Version Tuple)"""
-		if (Version == None): Version = TSN_Abstracter.Version_Tuple;
-		return f"v{".".join(String.ify_Array(Version))}";
 
 
 
 	@staticmethod
-	def Require_Version(Minimum_Version: tuple[int, int, int], Quit_Program: bool = True) -> bool:
-		"""Returns a boolean confirming if the TSN_Abstracter version provided by the Minimum_Version tuple is equal or above, if Quit_Program is True the program will quit after the exception."""
+	def version(VERSION: tuple[int, int, int] | None = None) -> str:
+		""" Returns a v.X.Y.Z string of the current TSN Abstracter Version (or of a provided Version Tuple) """
+		return f"v{".".join(String.ify_Array(TSNA.VERSION if (not VERSION) else VERSION))}";
+
+
+
+	@staticmethod
+	def require(MINIMUM: tuple[int, int, int], QUIT: bool = True) -> bool:
+		"""Returns a boolean confirming if the TSN_Abstracter version provided by the MINIMUM tuple is equal or above, if QUIT is True the program will quit after the exception."""
 		try:
-			if ((TSN_Abstracter.Version_Tuple[0] == Minimum_Version[0] and TSN_Abstracter.Version_Tuple[1] >= Minimum_Version[1])):
-				if (TSN_Abstracter.Version_Tuple[1] == Minimum_Version[1]):
-					if (TSN_Abstracter.Version_Tuple[2] >= Minimum_Version[2]): return True;
-			elif (TSN_Abstracter.Version_Tuple[0] >= Minimum_Version[0]): raise TSN_Abstracter.Breaking_Version(Minimum_Version, Quit_Program);
-			elif (Quit_Program): raise TSN_Abstracter.Outdated_Version(Minimum_Version, Quit_Program);
-			else: Log.Warning(f"{App.Codename} is asking for TSN Abstracter {TSN_Abstracter.Version(Minimum_Version)} however we're using {TSN_Abstracter.Version()}!");
-		except TSN_Abstracter.Breaking_Version, TSN_Abstracter.Outdated_Version:
+			if ((TSNA.VERSION[0] == MINIMUM[0] and TSNA.VERSION[1] >= MINIMUM[1])):
+				if (TSNA.VERSION[1] == MINIMUM[1]):
+					if (TSNA.VERSION[2] >= MINIMUM[2]): return True;
+			elif (TSNA.VERSION[0] >= MINIMUM[0]): raise TSNA.__Breaking(MINIMUM, QUIT);
+			elif (QUIT): raise TSNA.__Outdated(MINIMUM, QUIT);
+			else: Log.Warning(f"{App.Codename} is asking for TSN Abstracter {TSNA.version(MINIMUM)} however we're using {TSNA.version()}!");
+		except TSNA.__Breaking, TSNA.__Outdated:
 			Log.Stateless(f"You may ignore this error, however we do not guarantee that the program will function correctly.\nPress any key to continue.");
 			input();
 		return False;
 
 
 
+
+
 	@staticmethod
-	def Import_Unsupported() -> None:
+	def denyImport() -> None:
 		"""If your TSNA-Based Application does not support being imported as a Python Module run this when `(__name__ != "__main__")`, this will quit the application with exit code 126."""
 		Log.Critical(f"{App.Name} does not support being imported as a Python Module. Exiting!"); exit(126);
 
 
 
 	@staticmethod
-	def App_Version() -> str:
-		"""Returns a readable string of the TSNA-Based Application Version."""
-		return f"v{App.Version_Prefix}{".".join(String.ify_Array(App.Version))}{App.Version_Suffix}";
-
-
-
-	@staticmethod
-	def App_Init(Clear_Console: bool = False) -> None:
+	def init(Clear_Console: bool = False) -> None:
 		"""When your TSNA-Based Application runs, use this command to print basic information about your Application. (When `(__name__ == "__main__")`)  
 		Provides a single argument to specify if we should clear the console on the App's successful launch."""
-		TSN_Abstracter.Require_Version(App.TSNA, False);
+		TSNA.require(App.TSNA, False);
 		if (Clear_Console): Log.Clear();
-		Log.Stateless(f"{App.Name} {App.Branch} {TSN_Abstracter.App_Version()} © ({App.License_Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
+		Log.Stateless(f"{App.Name} {App.Branch} {App.version()} © ({App.Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
 
-
-
-	@staticmethod
-	def App_Info() -> dict[str, Any]:
-		"""Retrieve the Application's full information inside a Dictionary. Intended to be used when your TSNA-Based Application is imported as a Python Module."""
-		return {
-			"Name": App.Name, "Description": App.Description,
-			"Author": App.Author, "Contributors": App.Contributors,
-			"License": App.License, "License_Year": App.License_Year,
-			"Codename": App.Codename, "Branch": App.Branch, "Version": App.Version,
-			"TSNA": App.TSNA
-		};
 
 
 
@@ -185,20 +174,9 @@ class TSN_Abstracter:
 
 
 __all__ = [
-	"App",
-	"Deco",
-	"Config",
-	"File",
-	"Log",
-	"Misc",
-	"Safe",
-	"TSNDL",
-	"String",
-	"Time",
-	"TSN_Abstracter",
-	"Any", "Literal", "Optional", "TypeAlias", "TypedDict",
-	"assert_type", "cast",
-	"Callable",
-	"NULL",
-	"unix_t"
+	"App", "Deco", "Config", "File", "Log", "Misc", "Safe", "TSNDL", "String", "Time",
+	"TSNA",
+	"Any", "Literal", "Optional", "NotRequired", "TypedDict", "Callable",
+	"unix_t",
+	"assert_type", "cast"
 ];

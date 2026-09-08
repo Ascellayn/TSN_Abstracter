@@ -1,7 +1,7 @@
 """ Global Variables and imports for the TUI Framework.  
 Contains also the `Window` variable along with `TUI.Init()` / `TUI.Exit()` and the `curses` module import. """
 
-from .. import App, Config, Log, String, TSNDL, TSN_Abstracter; # pyright: ignore[reportUnusedImport]
+from .. import App, Config, Log, String, TSNDL; # pyright: ignore[reportUnusedImport]
 
 import curses, curses.textpad, enum, re; # pyright: ignore[reportUnusedImport]
 

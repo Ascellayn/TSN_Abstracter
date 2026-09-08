@@ -9,21 +9,36 @@ However the TSNA Key which is a tuple (saved as an array) containing the minimum
 ### `App.tsna` Example:
 ```
 {
-	"Name": "Serina Heartbeat",
+	"Name": "Kiyosumi",
 	"Description": "Host Server for verifying whenever TSNA-Based Programs are healthy.",
 	"Author": ["Ascellayn", "The Sirio Network"],
 	"Contributors": [],
 	"License": "TSN License 2.3 - Universal",
-	"License_Year": "2026",
-	"Codename": "TSN_Sumi",
-	"Branch": "Main",
+	"Year": "2025-2026",
+	"Codename": "TSN_Kiyosumi",
+	"Branch": "Release",
 	"Version": [1,0,0],
-	"TSNA": [6,1,5]
+	"TSNA": [7,0,5],
+	"Serina": {
+		"Icon": "https://sirio-network.com/Media/Serina/Kiyosumi.png",
+		"Data": [
+			{
+				"Key": "Pixiv API Latency",
+				"Description": "The latency between The Sirio Network and Pixiv.",
+				"Type": "Integer",
+				"Warning": 250,
+				"Error": 500,
+				"Critical": 1000,
+				"isHidden": false,
+				"doGraph": true
+			}
+		]
+	}
 }
 ```
 """
-from . import File, Time;
-from typing import Any;
+from . import File, String, Time;
+from typing import Any, TypedDict, Sequence;
 
 
 
@@ -31,12 +46,10 @@ from typing import Any;
 
 Name: str = "Unnamed TSNA-Based Program";
 Description: str = "This is a program which uses TSN Abstracter.";
-
-Author: list[str] = ["John Doe"];
-Contributors: list[str] = [];
+Author: list[str] = ["John Doe"]; Contributors: list[str] = [];
 
 License: str = "Public Domain";
-License_Year: str = str(Time.Elapsed_Time(Time.Get_Unix())["Years"] + 1970); # pyright: ignore[reportTypedDictNotRequiredAccess] # Calculates the current year.
+Year: str = str(Time.Elapsed_Time(Time.Get_Unix())["Years"] + 1970); # pyright: ignore[reportTypedDictNotRequiredAccess] | Calculates the current year.
 
 
 Codename: str = "NoCodename";
@@ -44,19 +57,45 @@ Branch: str = "Main";
 Version: tuple[int, ...] = (0, 0, 0);
 Version_Prefix: str = "";
 Version_Suffix: str = "";
-TSNA: tuple[int, int, int] = (6,0,0);
-Public: dict[str, Any] = {};
-Private: dict[str, Any] = {};
+
+
+TSNA: tuple[int, int, int] = (7,0,0);
+Serina: dict[str, Any] = {};
+Data: dict[str, Any] = {};
 
 
 
 
 
-def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]]:
+
+
+
+class Type():
+	class Dictionary(TypedDict):
+		Name: str;
+		Description: str;
+		Author: list[str];
+		Contributors: list[str];
+		License: str;
+		Year: str;
+		Codename: str;
+		Branch: str;
+		Version: Sequence[int];
+		Version_Prefix: str;
+		Version_Suffix: str;
+		TSNA: Sequence[int];
+		Serina: dict[str, Any]; # TEMPORARY! MUST HAVE TYPEDDICT
+		Data: dict[str, Any];
+
+
+
+
+
+
+
+
+def info() -> Type.Dictionary:
 	""" Retrieve the currently active-in-memory TSNA App JSON
-
-	Arguments:
-		Private (bool*): Whenever to also include the "Private" key of the TSNA App JSON.
 
 	Returns:
 		dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]]: The TSNA App JSON
@@ -69,39 +108,44 @@ def Dump(Private: bool = False) -> dict[str, str | list[str] | tuple[int, ...] |
 			"Author": ["Ascellayn", "The Sirio Network"],
 			"Contributors": [],
 			"License": "TSN License 2.1 - Base",
-			"License_Year": "2026",
+			"Year": "2026",
 			"Codename": "TSN_Serina",
 			"Branch": "Azure",
 			"Version": [1,0,0],
 			"Version_Prefix": "",
 			"Version_Suffix": "",
 			"TSNA": [6,2,0],
-			"Public": [],
-			"Private": []
+			"Data": {}
 		}
 	"""
-	Dict: dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]] = {
+	return {
 		"Name": Name,
 		"Description": Description,
 		"Author": Author,
 		"Contributors": Contributors,
 		"License": License,
-		"License_Year": License_Year,
+		"Year": Year,
 		"Codename": Codename,
 		"Branch": Branch,
 		"Version": Version,
 		"Version_Prefix": Version_Prefix,
 		"Version_Suffix": Version_Suffix,
 		"TSNA": TSNA,
-		"Public": Public,
-		"Private": {}
+		"Serina": Serina,
+		"Data": Data
 	};
-	if (Private): Dict["Private"] = Private; # pyright: ignore[reportArgumentType] // Unsure why the typing gets angry here
-	return Dict;
 
 
 
-def JSON(JSON: dict[str, Any]) -> None:
+def version() -> str:
+	"""Returns a readable string of the TSNA-Based Application Version."""
+	return f"v{Version_Prefix}{".".join(String.ify_Array(Version))}{Version_Suffix}";
+
+
+
+
+
+def load(JSON: dict[str, Any]) -> None:
 	""" Replaces the currently active TSNA App Data with whatever data is present in the argument.
 
 	Arguments:
@@ -117,21 +161,22 @@ def JSON(JSON: dict[str, Any]) -> None:
 			"Author": ["Ascellayn", "The Sirio Network"],
 			"Contributors": [],
 			"License": "TSN License 2.1 - Base",
-			"License_Year": "2026",
+			"Year": "2026",
 			"Codename": "TSN_Serina",
 			"Branch": "Azure",
 			"Version": [1,0,0],
 			"Version_Prefix": "",
 			"Version_Suffix": "",
 			"TSNA": [6,2,0],
-			"Public": [],
-			"Private": []
+			"Serina": {}
 		});
 
 		>>> App.Name;
 		"Serina"
 	"""
-	global Name, Description, Author, Contributors, License, License_Year, Codename, Branch, Version, Version_Prefix, Version_Suffix, TSNA, Public, Private;
+	global Name, Description, Author, Contributors, License, Year, Codename, Branch, Version, Version_Prefix, Version_Suffix, TSNA, Serina;
+
+
 	Name = JSON.get("Name", Name);
 	Description = JSON.get("Description", Description);
 
@@ -139,7 +184,8 @@ def JSON(JSON: dict[str, Any]) -> None:
 	Contributors = JSON.get("Contributors", Contributors);
 
 	License = JSON.get("License", License);
-	License_Year = JSON.get("License_Year", License_Year);
+	Year = JSON.get("Year", Year);
+
 
 	Codename = JSON.get("Codename", Codename);
 	Branch = JSON.get("Branch", Branch);
@@ -148,21 +194,27 @@ def JSON(JSON: dict[str, Any]) -> None:
 	Version_Suffix = JSON.get("Version_Suffix", Version_Suffix);
 
 	TSNA = tuple(JSON.get("TSNA", TSNA)); # pyright: ignore[reportConstantRedefinition]
-	Public = JSON.get("Public", Public);
-	Private = JSON.get("Private", Private);
+	Serina = JSON.get("Serina", Serina);
 
 
 
-
-
-def Reload(Path: str | None = None) -> None:
+def reload(Path: str | None = None) -> None:
 	if (not Path):
-		if (File.Exists(f"{File.Main_Directory}/App.tsna")): Reload(f"{File.Main_Directory}/App.tsna");
-		if (File.Exists("App.tsna")): Reload("App.tsna");
+		if (File.Exists(f"{File.Main_Directory}/App.tsna")): reload(f"{File.Main_Directory}/App.tsna");
+		if (File.Exists("App.tsna")): reload("App.tsna");
 	else:
-		apptsna = File.Read_JSON(Path);
+		apptsna: dict[str, Any] = File.Read_JSON(Path);
 		if ("Private" in apptsna): del apptsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
-		JSON(apptsna);
+		load(apptsna);
 		del apptsna;
 
-Reload();
+
+
+
+
+
+
+
+
+
+reload();

@@ -1,0 +1,27 @@
+{
+	"Name": "Kiyosumi",
+	"Description": "Host Server for verifying whenever TSNA-Based Programs are healthy.",
+	"Author": ["Ascellayn", "The Sirio Network"],
+	"Contributors": [],
+	"License": "TSN License 2.3 - Universal",
+	"Year": "2025-2026",
+	"Codename": "TSN_Kiyosumi",
+	"Branch": "Release",
+	"Version": [1,0,0],
+	"TSNA": [7,0,5],
+	"Serina": {
+		"Icon": "https://sirio-network.com/Media/Serina/Kiyosumi.png",
+		"Data": [
+			{
+				"Key": "Pixiv API Latency",
+				"Description": "The latency between The Sirio Network and Pixiv.",
+				"Type": "Integer",
+				"Warning": 250,
+				"Error": 500,
+				"Critical": 1000,
+				"isHidden": false,
+				"doGraph": true
+			}
+		]
+	}
+}

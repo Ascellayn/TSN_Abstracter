@@ -24,7 +24,7 @@ def Base(Clear: bool = True) -> None:
 	if (Clear): Window.clear();
 	Window.border();
 
-	Title: str = String.Abbreviate(f" {App.Name} - {TSN_Abstracter.App_Version()} ", curses.COLS - 4);
+	Title: str = String.Abbreviate(f" {App.Name} - {App.version()} ", curses.COLS - 4);
 	Window.addstr(0, 2, Title, curses.A_BOLD);
 
 
