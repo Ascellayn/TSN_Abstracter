@@ -53,7 +53,7 @@ def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=
 		Description: list[str] = [];
 		for line in iDescription:
 			if (len(line) > curses.COLS - 8):
-				for splitted in String.Split_Length(line, curses.COLS - 8):
+				for splitted in String.lengthSplit(line, curses.COLS - 8):
 					Description.append(splitted);
 			else: Description.append(line);
 

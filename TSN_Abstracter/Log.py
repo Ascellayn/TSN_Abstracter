@@ -145,11 +145,11 @@ class Awaited_Log:
 				if (Awaited_File == self.Caller and doReturn):
 					# WARNING: This is slow, should come up with a better solution in the future
 					Lines: list[str] = open(Log_Path(), "r").readlines();
-					Lines[-1] = String.Clear_ASCII_Formatting(self.Text + Status + "\n");
+					Lines[-1] = String.ASCII.clearFormatting(self.Text + Status + "\n");
 					open(Log_Path(), "w").writelines(Lines);
 
 					Awaited_File = None;
-				else: Logger_File.log(self.Level, String.Clear_ASCII_Formatting(self.Text + Status));
+				else: Logger_File.log(self.Level, String.ASCII.clearFormatting(self.Text + Status));
 
 
 
@@ -386,7 +386,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 	Verify_Config();
 	if (Config.Logger.File and (Level >= Config.Logger.File_Level)):
-		Logger_File.log(Level, String.Clear_ASCII_Formatting(Logged_Text));
+		Logger_File.log(Level, String.ASCII.clearFormatting(Logged_Text));
 
 
 

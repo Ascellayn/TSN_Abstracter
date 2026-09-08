@@ -112,10 +112,10 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 				case _: pass;
 
 			Entry_Text: str = e.Name + " " + Entry_Quirk;
-			if (Entry_Text != String.Abbreviate(Entry_Text, curses.COLS - eX - 1)):
+			if (Entry_Text != String.abbreviate(Entry_Text, curses.COLS - eX - 1)):
 				match (e.Type):
-					case eType.Toggle: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2 - len(Entry_Quirk)) + f" {Entry_Quirk}";
-					case _: Entry_Text = String.Abbreviate(Entry_Text, curses.COLS - eX - 2);
+					case eType.Toggle: Entry_Text = String.abbreviate(Entry_Text, curses.COLS - eX - 2 - len(Entry_Quirk)) + f" {Entry_Quirk}";
+					case _: Entry_Text = String.abbreviate(Entry_Text, curses.COLS - eX - 2);
 
 			if (e.Unavailable): __ColorAttribute(TSNDL.Color.Moon.Grey_TERM);
 			if (e.Bold): Window.attron(curses.A_BOLD);
@@ -135,12 +135,12 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 					Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
 
 		# Description
-		Description: str = String.Abbreviate(f"[{String.Trailing_Zero(fakeIndex, len(str(len(Entries))))}] {Entries[Index].Description}", curses.COLS - 4);
+		Description: str = String.abbreviate(f"[{String.trailingZero(fakeIndex, len(str(len(Entries))))}] {Entries[Index].Description}", curses.COLS - 4);
 		Window.addstr(curses.LINES - 2, 2, Description);
 
 		# Low Res. Terms: Give scroll Hint
 		if (Remaining > 0): # Rounding error correction band-aid fix	
-			Window.addstr(curses.LINES - 4, 2, String.Abbreviate(f" ... ({Remaining} more)", curses.COLS - 5));
+			Window.addstr(curses.LINES - 4, 2, String.abbreviate(f" ... ({Remaining} more)", curses.COLS - 5));
 
 		# Cursor & Refresh
 		match (Entries[Index].Type):

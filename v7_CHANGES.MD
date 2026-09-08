@@ -82,6 +82,16 @@
 
 
 
+- ### `String` Changes
+	- Renamed function `String.ify_Array()` → `String.ifyArray()`
+	- Renamed function `String.Bulk_Replace()` → `String.bulkReplace()`
+	- Renamed function `String.Trailing_Zero()` → `String.trailingZero()`
+	- Renamed function `String.Split_Length()` → `String.lengthSplit()`
+	- Renamed function `String.Abbreviate()` → `String.abbreviate()`
+	- Moved and renamed function `String.Clear_ASCII_Formatting()` → `String.ASCII.clearFormatting()`
+
+
+
 - ### `File` Changes
 	- `CSV` support. (TBD)
 

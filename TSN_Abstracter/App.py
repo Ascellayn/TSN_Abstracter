@@ -139,7 +139,7 @@ def info() -> Type.Dictionary:
 
 def version() -> str:
 	"""Returns a readable string of the TSNA-Based Application Version."""
-	return f"v{Version_Prefix}{".".join(String.ify_Array(Version))}{Version_Suffix}";
+	return f"v{Version_Prefix}{".".join(String.ifyArray(Version))}{Version_Suffix}";
 
 
 
