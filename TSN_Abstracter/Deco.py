@@ -9,9 +9,9 @@
 >>>	P.Count();
 
 """
-from . import Time;
 from . import Log;
 from . import Safe;
+from . import Time;
 
 
 
