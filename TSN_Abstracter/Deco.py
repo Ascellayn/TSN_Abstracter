@@ -17,6 +17,9 @@ from . import Safe;
 
 
 
+
+
+
 class Progresser():
 	""" Automatic carriage-based progression display, if you have a task that has a set amount of operations to do this will be useful to show the progression of it.
 
@@ -35,23 +38,29 @@ class Progresser():
 		- `{Operations}` → The amount of completed tasks done every second.
 		- `{ETA}` → An estimation of when all tasks will be finished.
 	"""
-	def __init__(self, Size: int, Template: str = "Progression: {Done}/{Size} - ({Operations} OP/s) | ETA: {ETA}", Delay: int | float = 1) -> None:
-		self.Size: int = Size;
-		self.Delay: int | float = Delay;
-		self.Template = Template;
+	def __init__(self,
+		SIZE: int, TEMPLATE: str = "Progression: {Done}/{Size} - ({Operations} OP/s) | ETA: {ETA}",
+			*,
+		DELAY: int | float = 1
+	) -> None:
+		self.SIZE: int = SIZE;
+		self.Delay: int | float = DELAY;
+		self.Template = TEMPLATE;
 
 		self.Done: int = 0;
 		self.Done_Cycle: int = 0;
 		self.Cycles: list[int] = [];
 
-		self.__Precise: bool = True if (type(Delay) == float) else False;
+		self.__Precise: bool = True if (type(DELAY) == float) else False;
 		self._Unix_Last = Time.Get_Unix(self.__Precise);
 
 
 
-	def __Text(self) -> str:
+
+
+	def __text(self) -> str:
 		""" Retrieve the text to print out """
-		OPs: float = round(
+		ops: float = round(
 			(
 				sum(self.Cycles)
 				/
@@ -62,23 +71,21 @@ class Progresser():
 			, 2
 		);
 
-		ETA: str = Time.Elapsed_String(
+		eta: str = Time.Elapsed_String(
 			round(
-				self.Size / OPs
+				self.SIZE / ops
 			),
 		);
 
 		return self.Template\
 .replace("{Done}", str(self.Done))\
-.replace("{Size}", str(self.Size))\
-.replace("{Operations}", str(OPs))\
-.replace("{ETA}", str(ETA));
+.replace("{Size}", str(self.SIZE))\
+.replace("{Operations}", str(ops))\
+.replace("{ETA}", str(eta));
 
 
 
-
-
-	def Count(self, Increment: int = 1) -> None:
+	def count(self, Increment: int = 1) -> None:
 		""" Increment the progression counter. Automatically displays progress whenever applicable.
 
 		Arguments:
@@ -87,8 +94,10 @@ class Progresser():
 		self.Done += Increment; self.Done_Cycle += Increment;
 		if ((self._Unix_Last + self.Delay) > Time.Get_Unix(self.__Precise)): return;
 
+
 		self.Cycles.append(self.Done_Cycle);
 		self.Done_Cycle = 0;
 		self._Unix_Last = Time.Get_Unix(self.__Precise);
 
-		Log.Carriage(self.__Text());
+
+		Log.Carriage(self.__text());

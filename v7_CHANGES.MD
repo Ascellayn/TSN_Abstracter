@@ -52,6 +52,15 @@
 
 
 
+- ### `Deco` Changes
+	- `Deco.Progresser`'s `DELAY` argument is now a keyword argument
+	- Renamed attribute `Deco.Progresser.Size` → `Deco.Progresser.SIZE`
+	- Renamed method `Deco.Progresser.__Text` → `Deco.Progresser.__text`
+	- Renamed method `Deco.Progresser.count` → `Deco.Progresser.count`
+
+
+
+
 - ### `File` Changes
 	- `CSV` support. (TBD)
 
