@@ -129,9 +129,9 @@
 	- Renamed function `Time.Elapsed_Time()` → `Time.Elapsed.dict()`
 	- Renamed function `Time.Elapsed_String()` → `Time.Elapsed.string()`
 	- Renamed function `Time.String_Time()` → `Time.Unix.fromString()`
-	- Renamed constant `Time.Unit_Short()` → `Time.Unit.SHORT`
-	- Renamed constant `Time.Unit_Power()` → `Time.Unit.POWER`
-	- Renamed class `Time.Time_Dict()` → `Time.Dict`
+	- Renamed constant `Time.Unit_Short` → `Time.Unit.SHORT`
+	- Renamed constant `Time.Unit_Power` → `Time.Unit.POWER`
+	- Renamed class `Time.Time_Dict()` → `Time.Dict()`
 	- Moved and Renamed function `Time.Unit_Edges()` → `Time.Unit.edges()`
 
 
