@@ -111,7 +111,7 @@
 	- Fixed a bug where the value for the length of a day inside of `Time.Unix.*` was the same as an hour and the amount of seconds inside of a minute was the one of an hour
 	- TSNA now considers a year to be as long as a **tropical year**
 		- This equals roughly to 365 days, 5 hours, 48 minutes and 45 seconds.
-	- TSNA now considers a year to be as long as a **tropical year divided by 12**
+	- TSNA now considers a month to be as long as a **tropical year divided by 12**
 		- This equals roughly to 30 days, 10 hours, 29 minutes, 3 seconds and 750 milliseconds and 192 microseconds.
 	- `Time.Elapsed.dict()` has been made slower in order to make the code significantly more readable and accurate.
 	- `Time.Elapsed.dict()` now uses the defined values in `Unix.[UNIT]` whenever applicable.
