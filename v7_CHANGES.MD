@@ -60,18 +60,31 @@
 
 
 
-- ### `Multi` Changes
-	- `newThread` and `newProcess` now return their appropriate objects.
-	- Resolved typing issues for `newThread` and `newProcess`
-	- Renamed function `Misc.Thread_Start()` → `Multi.newThread()`
-	- Renamed function `Misc.Process_Start()` → `Multi.newProcess()`
+- ### `File` Changes
+	- `CSV` support. (TBD)
+
+
+
+- ### `Log` Changes
+	- (TBD)
 
 
 
 - ### `Misc` Changes
 	- The `Misc` module has entirely been "removed", its functions have been moved to other modules such as `Multi` and `Number`.
 	- Removed `Misc.is_Even()` to promote more performant practice (due to not calling a function for `X % 2`)
-	- Renamed function `Misc.Under_At()` → `Number.underAt()`
+
+
+
+- ### "New" `Multi` Module
+	- `newThread` and `newProcess` now return their appropriate objects.
+	- Resolved typing issues for `newThread` and `newProcess`
+	- Renamed function `Misc.Thread_Start()` → `Multi.newThread()`
+	- Renamed function `Misc.Process_Start()` → `Multi.newProcess()`
+
+
+- ### "New" `Number` Module
+	- Renamed and moved function `Misc.Under_At()` → `Number.underAt()`
 
 
 
@@ -92,8 +105,44 @@
 
 
 
-- ### `File` Changes
-	- `CSV` support. (TBD)
+- ### `Time` Changes
+	- `Time.dateStrings()` has been optimized and no longer duplicates objects.
+	- `Time.dateStrings()` now has an extra option to use `DD/MM/YYYY` instead of `YYYY/MM/DD` by setting its new `REVERSED` argument to `False` (reversed format stays the default).
+	- Fixed a bug where the value for the length of a day inside of `Time.Unix.*` was the same as an hour and the amount of seconds inside of a minute was the one of an hour
+	- TSNA now considers a year to be as long as a **tropical year**
+		- This equals roughly to 365 days, 5 hours, 48 minutes and 45 seconds.
+	- TSNA now considers a year to be as long as a **tropical year divided by 12**
+		- This equals roughly to 30 days, 10 hours, 29 minutes, 3 seconds and 750 milliseconds and 192 microseconds.
+	- `Time.Elapsed.dict()` has been made slower in order to make the code significantly more readable and accurate.
+	- `Time.Elapsed.dict()` now uses the defined values in `Unix.[UNIT]` whenever applicable.
+	- `Time.Unix.fromString()` now uses the defined values in `Unix.[UNIT]` whenever applicable.
+	- `Time.Unix.fromString()` now correctly uses the `unix_t` return data type.
+	- You can now acquire directly a datetime object of the current time (similar to `Time.Unix.now()`) with `Time.Datetime.now()`.
+	- Created new `Unit` class to regroup constants under `Unit_*`
+	- Created new `Elapsed` class to regroup all functions related to time passing.
+	- Renamed function `Time.Get_Unix()` → `Time.Unix.now()`
+	- Renamed function `Time.Get_Dawn()` → `Time.Unix.dawn()`
+	- Renamed function `Time.Convert_Unix()` → `Time.Unix.toDatetime()`
+	- Renamed function `Time.Convert_Datetime()` → `Time.Datetime.toUnix()`
+	- Renamed function `Time.Convert_ISO8601()` → `Time.Datetime.fromISO8601()`
+	- Renamed function `Time.Get_DateStrings()` → `Time.dateStrings()`
+	- Renamed function `Time.Elapsed_Time()` → `Time.Elapsed.dict()`
+	- Renamed function `Time.Elapsed_String()` → `Time.Elapsed.string()`
+	- Renamed function `Time.String_Time()` → `Time.Unix.fromString()`
+	- Renamed constant `Time.Unit_Short()` → `Time.Unit.SHORT`
+	- Renamed constant `Time.Unit_Power()` → `Time.Unit.POWER`
+	- Renamed class `Time.Time_Dict()` → `Time.Dict`
+	- Moved and Renamed function `Time.Unit_Edges()` → `Time.Unit.edges()`
+
+
+
+- ### `TSNDL` Changes
+	- (TBD)
+
+
+
+- ### `TUI` Changes
+	- (TBD)
 
 
 

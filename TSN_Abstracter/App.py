@@ -49,7 +49,7 @@ Description: str = "This is a program which uses TSN Abstracter.";
 Author: list[str] = ["John Doe"]; Contributors: list[str] = [];
 
 License: str = "Public Domain";
-Year: str = str(Time.Elapsed_Time(Time.Get_Unix())["Years"] + 1970); # pyright: ignore[reportTypedDictNotRequiredAccess] | Calculates the current year.
+Year: str = str(Time.Elapsed.dict(Time.Unix.now())["Years"] + 1970); # pyright: ignore[reportTypedDictNotRequiredAccess] | Calculates the current year.
 
 
 Codename: str = "NoCodename";

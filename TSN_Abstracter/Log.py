@@ -368,7 +368,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 
 	# Log Message Formatting
-	Date_Str, Time_Str = Time.Get_DateStrings(Time.Get_Unix());
+	Date_Str, Time_Str = Time.dateStrings(Time.Unix.now());
 	Logged_Text: str = ""; # Prefix if previous log was Awaited
 
 	if (Config.Logger.Display_Date): Logged_Text += f"{TSNDL.Log_Color("Grey")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
