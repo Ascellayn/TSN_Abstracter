@@ -69,7 +69,7 @@ class Hex:
 		Converts Hex to Base 10 alias Decimal.  
 
 		Arguments:
-			Hex (str*): The character representing a number in base 16.
+			Hex (str): The character representing a number in base 16.
 
 		Returns:
 			int: The corresponding base 10 number.
@@ -107,7 +107,7 @@ class Hex:
 		Transforms an SNC Tuple into an ASCII Color escape sequence string.
 
 		Arguments:
-			HEX_TUPLE (tuple[int, int, int]*): A tuple containing 3 integers of a range of 0 to 255 representing a 8bit RGB value.
+			HEX_TUPLE (tuple[int, int, int]): A tuple containing 3 integers of a range of 0 to 255 representing a 8bit RGB value.
 			FOREGROUND (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
 
 		Returns:
@@ -232,7 +232,7 @@ class Color:
 		Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.TSNDL_Group` variable of the TSNA Config.
 
 		Arguments:
-			Color (str*): The name of the color.
+			Color (str): The name of the color.
 			Foreground (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
 
 		Returns:

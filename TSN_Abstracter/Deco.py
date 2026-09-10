@@ -28,7 +28,7 @@ class Progresser():
 	Automatic carriage-based progression display, if you have a task that has a set amount of operations to do this will be useful to show the progression of it.
 
 	Arguments:
-		Size (int*): The amount of total tasks to complete.
+		Size (int): The amount of total tasks to complete.
 		Template (str = "Progression: {Done}/{Size} - ({Operations} OP/s) | ETA: {ETA}"): The format of the progression text.
 		Delay: (int | float): The __*minimum*__ delay before the progresser has a chance to display its text.
 

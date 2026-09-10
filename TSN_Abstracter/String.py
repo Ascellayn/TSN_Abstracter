@@ -24,8 +24,8 @@ def abbreviate(Text: str, MAX_LENGTH: int, ABBREVIATION: str = "(...)") -> str:
 	Shortens end of text with `Abbreviate` if `Text` is longer than `Max_Length`
 
 	Arguments:
-		Text (str*): The string we want to potentially abbreviate.
-		Max_Length (int*): The maximum size of the string.
+		Text (str): The string we want to potentially abbreviate.
+		Max_Length (int): The maximum size of the string.
 		Abbreviate (str = "(...)"): The string to replace the end of the text with.
 
 	Returns:
@@ -43,7 +43,7 @@ def trailingZero(NUMBER: int, ZEROS: int = 2) -> str:
 	Adds trailing Zeros to a specified Number.
 
 	Arguments:
-		Number (int*): The Number we want to potentially add zeros at the start.
+		Number (int): The Number we want to potentially add zeros at the start.
 		Zeros (int = 2): The amount of digits we aim to have at the end.
 
 	Returns:
@@ -67,7 +67,7 @@ def ifyArray(ARRAY: list[Any] | tuple[Any, ...]) -> list[str]:
 	Transforms everything inside `Array` into strings.
 
 	Arguments:
-		Array (list[Any] | tuple[Any, ...]*): The array we wish to turn all its items into strings.
+		Array (list[Any] | tuple[Any, ...]): The array we wish to turn all its items into strings.
 
 	Returns:
 		list[str]: A newly formed list with all of the elements of `Array` as strings.
@@ -86,8 +86,8 @@ def lengthSplit(Text: str, MAX_LENGTH: int) -> list[str]:
 	Splits a string after a new line (unless there are no line breaks, in that case it will stop after a space, otherwise raw cuts through words if neither lines breaks nor spaces are present) into an array according to Max_Length.
 
 	Arguments:
-		Text (str*): The string we want to split.
-		MAX_LENGTH (int*): The maximum size of each string element.
+		Text (str): The string we want to split.
+		MAX_LENGTH (int): The maximum size of each string element.
 
 	Returns:
 		list[str]: A list containing the split text, each of around `MAX_LENGTH` in size.
@@ -123,8 +123,8 @@ def bulkReplace(REPLACERS: Iterable[tuple[str, str] | list[str] | str], String: 
 	Bulk replaces every string in `String` to `New` or the 2nd element of a pair inside `Replacers`.
 
 	Arguments:
-		Replacers (list[tuple[str, str] | list[str] | str]*): A list of strings or a list of lists/tuples containing the first element being which element to replace within `String` to replace with the second element of the pair.
-		String (str*): The string to replace stuff from.
+		Replacers (list[tuple[str, str] | list[str] | str]): A list of strings or a list of lists/tuples containing the first element being which element to replace within `String` to replace with the second element of the pair.
+		String (str): The string to replace stuff from.
 		New (str = ""): If `Replacers` isn't in pairs of strings, the replaced string will have the value of `New`.
 
 	Returns:
@@ -167,7 +167,7 @@ class ASCII:
 		This function takes in a String and then clears out all the ASCII Formatting according to the TF/FC/BC objects. Used for making Log files look cleaner.
 
 		Arguments:
-			Text (str*): A "dirty" Log String that was supposed to be destined for printing on the Console.
+			Text (str): A "dirty" Log String that was supposed to be destined for printing on the Console.
 
 		Returns:
 			str: A "clean" Log String devoid of special ASCII Formatting text.
@@ -244,8 +244,8 @@ class ASCII:
 			Move the cursor to Line X and Column Y.
 
 			Arguments:
-				X (int*): The Line to go to.
-				Y (int*): The Column to go to.
+				X (int): The Line to go to.
+				Y (int): The Column to go to.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go to Line X and Column Y.
@@ -261,7 +261,7 @@ class ASCII:
 			Move the cursor up `Lines` lines.
 
 			Arguments:
-				Lines (int*): The amount of lines we want to go up.
+				Lines (int): The amount of lines we want to go up.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go up `Lines` lines.
@@ -275,7 +275,7 @@ class ASCII:
 			Move the cursor down `Lines` lines.
 
 			Arguments:
-				Lines (int*): The amount of lines we want to go down.
+				Lines (int): The amount of lines we want to go down.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go down `Lines` lines.
@@ -289,7 +289,7 @@ class ASCII:
 			Move the cursor right `Columns` columns.
 
 			Arguments:
-				Columns (int*): The amount of columns we want to go right.
+				Columns (int): The amount of columns we want to go right.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go right `Columns` characters.
@@ -303,7 +303,7 @@ class ASCII:
 			Move the cursor left `Columns` columns.
 
 			Arguments:
-				Columns (int*): The amount of columns we want to go left.
+				Columns (int): The amount of columns we want to go left.
 			
 			Returns:
 				str: An ASCII escape sequence that makes the cursor go left `Columns` characters.

@@ -18,8 +18,8 @@ def underAt(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] |
 	Specify at which index a value of A is under B. Returns `-1` if no value is.
 
 	Arguments:
-		A (tuple[int | float, ...] | list[int | float]*): The iterable of numbers we wanna know the index of the value under B.
-		B (tuple[int | float, ...] | list[int | float]*): The iterable of numbers to compare A to.
+		A (tuple[int | float, ...] | list[int | float]): The iterable of numbers we wanna know the index of the value under B.
+		B (tuple[int | float, ...] | list[int | float]): The iterable of numbers to compare A to.
 
 	Returns:
 		int: The index of A[x] that is under B[x]. Returns `-1` if it never happens.

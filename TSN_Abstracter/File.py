@@ -32,7 +32,7 @@ def Exists(Path: str) -> bool:
 	Verifies whenever a file or folder exists at the provided path.
 
 	Arguments:
-		Path (str*): String representing the Path.
+		Path (str): String representing the Path.
 
 	Returns:
 		bool: If the file or a folder exists according to `Path`, returns True, otherwise False.
@@ -53,7 +53,7 @@ def Path_Create(Path: str) -> bool:
 	Creates the full folder structure specified. Equivalent to `mkdir -p`.
 
 	Arguments:
-		Path (str*): String representing the Path of folders you wish to create.
+		Path (str): String representing the Path of folders you wish to create.
 
 	Returns:
 		bool: Represents whenever the action was successful.
@@ -78,7 +78,7 @@ def Path_Require(Path: str) -> bool:
 	Similar to `Path_Create()`, but instead specifies if the folder structure already existed before.
 
 	Arguments:
-		Path (str*): String representing the Path of folders you wish to require.
+		Path (str): String representing the Path of folders you wish to require.
 
 	Returns:
 		bool: Represents if the folder structure already existed before.
@@ -108,7 +108,7 @@ def Read(Path: str, Compressed: bool = False) -> str | None:
 	Read the contents of a file, supports LZMA compressed files.
 
 	Arguments:
-		Path (str*): String representing the Path to a file.
+		Path (str): String representing the Path to a file.
 		Compressed (bool = False): Specify the use of LZMA Compression.
 
 	Returns:
@@ -142,8 +142,8 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
 	Write the contents of a string to a file, supports LZMA compressed files.
 	
 	Arguments:
-		Path (str*): String representing the Path to a file.
-		Data (str*): Whichever data we wish to write to the file.
+		Path (str): String representing the Path to a file.
+		Data (str): Whichever data we wish to write to the file.
 		Compressed (bool = False): Specify the use of LZMA Compression.
 
 	Returns:
@@ -184,7 +184,7 @@ def Read_JSON(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 	**QUIRK**: Automatically creates the file path if it doesn't exist, returns an empty dictionary if the file didn't exist prior.
 	
 	Arguments:
-		Path (str*): String representing the Path to a json file.
+		Path (str): String representing the Path to a json file.
 		Compressed (bool = False): Specify the use of LZMA Compression.
 
 	Returns:
@@ -210,8 +210,8 @@ def Write_JSON(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.An
 	Automatically creates the file structure and file if it doesn't exist.
 	
 	Arguments:
-		Path (str*): String representing the Path to a json file.
-		Data (dict / list*): Serializable data that we want to write to a JSON File.
+		Path (str): String representing the Path to a json file.
+		Data (dict / list): Serializable data that we want to write to a JSON File.
 		Compressed (bool = False): Specify the use of LZMA Compression.
 
 	Returns:
@@ -237,8 +237,8 @@ def Update_JSON(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compress
 	**QUIRK**: Acts as a regular `Write_JSON()` if the file did not exist prior.
 	
 	Arguments:
-		Path (str*): String representing the Path to a json file.
-		Dictionary (dict*): A serializable dictionary that we want to append to the JSON File.
+		Path (str): String representing the Path to a json file.
+		Dictionary (dict): A serializable dictionary that we want to append to the JSON File.
 		Compressed (bool = False): Specify the use of LZMA Compression.
 
 	Returns:
@@ -320,7 +320,7 @@ def Path_Folder(Path: str) -> str:
 	Takes in a Path and returns itself, minus the file name at the end if it exists by checking for "." and "/" in the filename.  
 
 	Arguments:
-		Path (str*): String representing the Path of a file or folder where we wish to remove the file from the string.
+		Path (str): String representing the Path of a file or folder where we wish to remove the file from the string.
 
 	Returns:
 		str: The same path string, devoid of the file at the end.
@@ -371,7 +371,7 @@ def List(Path: str) -> Folder_Contents:
 	Returns a matrix of the folders and files inside Path.
 
 	Arguments:
-		Path (str*): The folder we wish to view the contents of.
+		Path (str): The folder we wish to view the contents of.
 
 	Returns:
 		Folder_Contents: A tuple containing two other tuples, the first containing folders, the second files.
@@ -400,7 +400,7 @@ def Tree(Path: str) -> Folder_Tree:
 	**WARNING**: You will loose your sanity using this function.
 
 	Arguments:
-		Path (str*): The folder we wish to view the contents of, including its sub-folders.
+		Path (str): The folder we wish to view the contents of, including its sub-folders.
 
 	Returns:
 		Array containing two arrays, the first one being a list of folders, and the second one being files.  

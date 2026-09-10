@@ -25,8 +25,8 @@ def array(ARRAY: list[object], INDEX: int) -> Any: # Isn't there a Python functi
 	Attempts to safely try to read an array's specified index.
 
 	Arguments:
-		Array (list[object]*): The List that we want to check a specific index.
-		Index (int*): The Index element we want to read.
+		Array (list[object]): The List that we want to check a specific index.
+		Index (int): The Index element we want to read.
 
 	Returns:
 		Any/None: The returned item can be anything. In the case of a failed read, the return value will always be None.
@@ -49,8 +49,8 @@ def dictionary(Dict: dict[str, Any], KEYS: list[str], DEFAULT: Any = None) -> An
 	Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
 
 	Arguments:
-		Dict (dict[str, Any]*): The dictionary we wish to retrieve data from its sub-dictionaries.
-		Keys (list[str]*): A list of key strings we wish to go through in the Dictionary.
+		Dict (dict[str, Any]): The dictionary we wish to retrieve data from its sub-dictionaries.
+		Keys (list[str]): A list of key strings we wish to go through in the Dictionary.
 		Default (Any = None): The value to return when no data from Dict[*Keys] can be retrieved.
 
 	Returns:
@@ -85,7 +85,7 @@ def nonZero(NUMBER: int | float, DEFAULT: int = 1) -> int | float:
 	Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
 
 	Arguments:
-		Number (int*): Which number we want to check if it's potentially null.
+		Number (int): Which number we want to check if it's potentially null.
 		Default (int = 1): What integer we replace `Number` with.
 
 	Returns:

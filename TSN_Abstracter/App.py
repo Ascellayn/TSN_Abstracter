@@ -165,7 +165,7 @@ def load(JSON: Type.Dictionary) -> None:
 	Replaces the currently active TSNA App Data with whatever data is present in the argument.
 
 	Arguments:
-		JSON (dict[str, Any]*): A TSNA App Dictionary.
+		JSON (dict[str, Any]): A TSNA App Dictionary.
 
 	Examples:
 		>>> App.Name;

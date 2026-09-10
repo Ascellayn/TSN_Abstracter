@@ -36,7 +36,7 @@ class Entry:
 	An Entry Object is a displayable `TUI.Menu` object that holds functions to execute along with arguments and a whole lot of other parameters.
 
 	Arguments:
-		Type (int*): The Type of the Entry.
+		Type (int): The Type of the Entry.
 		Name (str): The (selectable) text to display.
 		Description (str): The text to display in most notably the Description Box of `TUI.Menu`.
 		ID (str | None = None): An ID to specify to more easily fetch data from.
@@ -138,7 +138,7 @@ def Entries_To_Dict(Entries: Entries) -> dict[str, Any]:
 	Takes in a list of Entry Objects and dumps their `.Value` with the key `.ID` when it is defined into a dictionary.
 
 	Arguments:
-		Entries (Entries*): The list of Entry Objects.
+		Entries (Entries): The list of Entry Objects.
 
 	Returns:
 		dict[str, Any]: The returned Dictionary containing the data extracted from each Entry with an `ID`.

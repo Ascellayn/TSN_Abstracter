@@ -85,7 +85,7 @@ class Unit:
 		Get the maximum and minimum power units of a given Time Dict.
 
 		Arguments:
-			TIME_DICT (Time.Dict)*: The dictionary containing time, where we'll look for the biggest unit in it.
+			TIME_DICT (Time.Dict): The dictionary containing time, where we'll look for the biggest unit in it.
 		
 		Returns:
 			tuple (int, int): The biggest then smallest units' powers present in the Time Dict.
@@ -152,7 +152,7 @@ class Unix:
 		Get the first second of the day specified in the Unix Timestamp.
 
 		Arguments:
-			Unix (unix_t)*: The Unix Timestamp.
+			Unix (unix_t): The Unix Timestamp.
 
 		Returns:
 			int/float: The Unix Timestamp of the first second of the specified day.
@@ -177,7 +177,7 @@ class Unix:
 		Converts an Unix Timestamp to a datetime object.
 
 		Arguments:
-			Unix (unix_t)*: The Unix Timestamp.
+			Unix (unix_t): The Unix Timestamp.
 
 		Returns:
 			datetime: The datetime object that we converted the Unix Timestamp from.
@@ -199,7 +199,7 @@ class Unix:
 		Get how much time has passed according to the passed string.
 
 		Arguments:
-			Text (str)*: A string in the format "X{Unit.SHORT} [...]".
+			Text (str): A string in the format "X{Unit.SHORT} [...]".
 
 		Returns:
 			float: The amount of time that has passed.
@@ -267,7 +267,7 @@ class Datetime:
 		Converts a Datetime Object to a Unix Timestamp.
 
 		Arguments:
-			DATETIME (datetime)*: Datetime Object to be converted to an Integer or Float.
+			DATETIME (datetime): Datetime Object to be converted to an Integer or Float.
 			PRECISE (bool = False): Boolean defining if we want a Precise Unix Time. Defaults to False.
 
 		Returns:
@@ -291,7 +291,7 @@ class Datetime:
 		Converts ISO 8601 Timestamps to datetime objects.
 
 		Arguments:
-			ISO_8601 (str)*: A timestamp in the ISO_8601 format.
+			ISO_8601 (str): A timestamp in the ISO_8601 format.
 
 		Returns:
 			datetime: The datetime object that we converted the ISO 8601 from.
@@ -318,7 +318,7 @@ class Elapsed:
 		**NOTE**: Everything is calculated according to a year being **365.25 days** long. This function will breakdown the moment you reach into the days.
 
 		Arguments:
-			TIMESTAMP (unix_t*): Integer/Float representing the time since the Epoch.
+			TIMESTAMP (unix_t): Integer/Float representing the time since the Epoch.
 		Returns:
 			Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 		"""
@@ -365,7 +365,7 @@ class Elapsed:
 		Gives a dynamically sized string of the amount of time passed.
 
 		Arguments:
-			Time (unix_t)*: How much time has passed passed.
+			Time (unix_t): How much time has passed passed.
 			Delimiter (str = ", "): What should separate each unit.
 			BIGGER (bool = False): Should we still display units that are bigger than the smallest unit available?
 			BIGGER_START (int = 6): At what "Unit Power" we should start displaying the time passed, even if the specified `Time` is too small to naturally display the unit.
@@ -442,7 +442,7 @@ def dateStrings(Date: unix_t | datetime, REVERSED: bool = True) -> tuple[str, st
 	Get the specified Timestamp's date and time string in the preferred format.
 
 	Arguments:
-		Date (unix_t | datetime)*: The timestamp we wish to get readable strings from.
+		Date (unix_t | datetime): The timestamp we wish to get readable strings from.
 		REVERSED (bool = True): Whenever to use `YYYY/MM/DD` for the date format or `DD/MM/YYYY`.
 		*And no, `MM/DD/YYYY` is not a real date format.*
 

@@ -55,7 +55,7 @@ def Can_Log(Level: int) -> bool:
 	Returns if a Log can be display anywhere according to its importance level and TSNA's Config.
 
 	Arguments:
-		Level (int*): Integer corresponding to how severe the message is.
+		Level (int): Integer corresponding to how severe the message is.
 
 	Returns:
 		bool: Whenever the Log Level and TSNA's Config can allow Logging to either the Console or File.
@@ -123,8 +123,8 @@ class Awaited_Log:
 		Replace the "..." part of the Awaited Log with the status of your choosing.
 
 		Arguments:
-			Status (str*): The custom status to replace the ellipsis with.
-			Level (int*): The logging level of the Status Update itself.
+			Status (str): The custom status to replace the ellipsis with.
+			Level (int): The logging level of the Status Update itself.
 
 		Examples:
 			>>> Log.Info("Cooking Ascellayn...");
@@ -269,7 +269,7 @@ def TSN_Debug(Text: str) -> None:
 	Log a debug message for **Libraries** *(Level: 10)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.TSN_Debug(f"Hello World!");
@@ -283,7 +283,7 @@ def Debug(Text: str) -> None:
 	Log a debug message for **TSNA Programs** *(Level: 15)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Debug(f"Hello World!");
@@ -297,7 +297,7 @@ def Stateless(Text: str) -> None:
 	Log a message with only the time if it's enabled *(Level: 20)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Stateless(f"Hello World!");
@@ -311,7 +311,7 @@ def Info(Text: str) -> None:
 	Log a standard informal message *(Level: 25)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Info(f"Hello World!");
@@ -325,7 +325,7 @@ def Warning(Text: str) -> None:
 	Log a standard warning message *(Level: 30)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Warning(f"Hello World!");
@@ -339,7 +339,7 @@ def Error(Text: str) -> None:
 	Log a standard error message *(Level: 40)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Error(f"Hello World!");
@@ -353,7 +353,7 @@ def Critical(Text: str) -> None:
 	Log a standard critical message *(Level: 50)*.
 
 	Arguments:
-		Text (str*): The string to be displayed in the Log.
+		Text (str): The string to be displayed in the Log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Critical(f"Hello World!");
@@ -374,7 +374,7 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	#### **DO NOT USE THIS FUNCTION DIRECTLY, USE THE FUNCTIONS SUCH AS Log.Info()!**  
 
 	Arguments:
-		Text (str*): String corresponding to the message to Log.
+		Text (str): String corresponding to the message to Log.
 		Level (int = 0): Integer corresponding to how severe the message is.
 		Caller (str = ""): Enforce the displayed function that called the Logger, if left empty, automatically figure out who called the Logger.
 	
@@ -447,7 +447,7 @@ def Carriage(Text: str) -> None:
 	Print a message that can be overwritten thanks to carriage returns.
 
 	Arguments:
-		Text (str*): The message you wish to display and be able to overwrite using the same function.
+		Text (str): The message you wish to display and be able to overwrite using the same function.
 
 	Examples:
 		>>> for i in range(10): Log.Carriage(i);

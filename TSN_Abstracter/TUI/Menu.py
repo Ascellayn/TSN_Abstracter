@@ -32,7 +32,7 @@ def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 	Refer to `TUI.Entry` for what this function can return.
 
 	Arguments:
-		Entries (Entries*): A list of Entry Objects.
+		Entries (Entries): A list of Entry Objects.
 		Keybinds (Keybinds): A list of Keybinds. **[!]** When a Keybind is called, its first argument is __ALWAYS__ the selected entry **[!]**
 		Index (int = 0): Which (fake) Index to pre-select instead of going from the first element.
 		Visual_Only (bool = False): This disables the interactive part of the Menu, this useful for very hacky "Step by step" progression.

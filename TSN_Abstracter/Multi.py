@@ -20,7 +20,7 @@ def newThread(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool = 
 	Abstraction to launch a new thread.
 
 	Arguments:
-		Function (Callable*): The function you wish to execute in the new thread.
+		Function (Callable): The function you wish to execute in the new thread.
 		Arguments (list[object] = []): A list of arguments to pass to the function.
 		Daemon (bool = True): Whenever the thread should be treated as a daemon.
 	
@@ -46,7 +46,7 @@ def newProcess(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool =
 	Abstraction to launch a new Process.
 
 	Arguments:
-		Function (Callable*): The function you wish to execute in the new process.
+		Function (Callable): The function you wish to execute in the new process.
 		Arguments (list[object] = []): A list of arguments to pass to the function.
 		Daemon (bool = True): Whenever the process should be treated as a daemon.
 	

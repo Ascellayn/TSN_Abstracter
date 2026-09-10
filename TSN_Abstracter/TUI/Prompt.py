@@ -16,8 +16,8 @@ def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=
 	Displays a floating popup at the center of the screen, asking the user to make a choice.
 
 	Arguments:
-		Title (str*): The text to show at the top of the Prompt Frame.
-		Description (str*): The text to show inside the Prompt Frame before the Entry.
+		Title (str): The text to show at the top of the Prompt Frame.
+		Description (str): The text to show inside the Prompt Frame before the Entry.
 		Entry (Entry): **[!] MUST BE EITHER AN `IOText (11)` OR `Array (12)` ENTRY [!]** - The Entry with the options available to choose from or to type in.
 		Align (str = "Center"): The text alignment. Can be either "Center", "Left" or "Right".
 	"""
