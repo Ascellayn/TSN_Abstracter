@@ -144,9 +144,13 @@
 
 
 - ### `TSNDL` Changes
-	- `Time.Hex.toDecimal()` now converts the WHOLE string instead of just the first character.
-	- Renamed function `TSNDL.Hex_Tuple()` → `Time.Hex.toTuple()`
-	- Renamed function `TSNDL.Hex_To_Decimal()` → `Time.Hex.toDecimal()`
+	- Added `TSNDL.Hex.fromTuple()` which converts a list of decimal numbers into their hex counterpart.
+	- Added `TSNDL.decimalConversion()` which converts any decimal number to by default hexadecimal. Configurable to use any base to convert to, along with a base alphabet that is also configurable.
+	- `TSNDL.Hex.toDecimal()` now converts the WHOLE string instead of just the first character.
+	- Renamed function `TSNDL.Hex_Tuple()` → `TSNDL.Hex.toTuple()`
+	- Renamed function `TSNDL.Hex_To_Decimal()` → `TSNDL.Hex.toDecimal()`
+	- Renamed function `TSNDL.ASCII_Color()` → `TSNDL.Hex.toASCII()`
+	- Renamed function `TSNDL.Log_Color()` → `TSNDL.Color.log()`
 
 
 

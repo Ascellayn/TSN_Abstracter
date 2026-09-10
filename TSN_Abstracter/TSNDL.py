@@ -1,4 +1,5 @@
-"""
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
 This module from TSN Abstracter is in charge of providing functions related to manipulating colors.  
 It also contains the entire suite of TSNDL Colors.
 ##### The Sirio Network Design Language © The Sirio Network 2023-2026 // All Rights Reserved
@@ -9,120 +10,184 @@ It also contains the entire suite of TSNDL Colors.
 (255, 150, 255)
 """
 from . import Config;
-from . import Misc;
+
+
+from typing import cast;
 
 
 
 
 
-def Hex_Tuple(Hex: str) -> tuple[int, int, int, int] | tuple[int, int, int]:
-	""" Transform a Hex Code representing colors into a Tuple containing RGB(A) colors.
 
-	Arguments:
-		Hex (str*): The string representing the Hex Code. The hashtag at the start is not required.
 
-	Returns:
-		tuple (of either 3 or 4 integers): Each element is an integer from a range of 0 to 255, representing in order an RGB(A) Color.
 
-	Examples:
-		>>> TSNDL.Hex_Tuple("#50235080");
-		(80, 35, 80, 128)
-		>>> TSNDL.Hex_Tuple("#502350");
-		(80, 35, 80)
-	"""
-	# Gets rid of the first character if it's an "#"
-	if (Hex[:1] == "#"): Hex = Hex[:1];
+class Hex:
+	@staticmethod
+	def toTuple(HEX_COLOR: str) -> tuple[int, int, int, int] | tuple[int, int, int]:
+		""" ***Implemented in __TSNA `v7.0.0`__***  
 
-	if (len(Hex) > 8): raise ValueError("Invalid Hex Code Length (Too long!)");
-	elif (len(Hex) < 6): raise ValueError("Invalid Hex Code Length (Too short!)");
-	elif (not Misc.is_Even(len(Hex))): raise ValueError("Invalid Hex Code Length (Incorrect Length!)");
+		Transform a Hex Code representing colors into a Tuple containing RGB(A) colors.  
+
+		Arguments:
+			Hex (str): The string representing the Hex Code. The hashtag at the start is not required.
+
+		Raises:
+			ValueError: If `hex` is of invalid length then this error gets thrown along with a message detailing what went wrong exactly.
+
+		Returns:
+			tuple (of either 3 or 4 integers): Each element is an integer from a range of 0 to 255, representing in order an RGB(A) Color.
+
+		Examples:
+			>>> TSNDL.Hex_Tuple("#50235080");
+			(80, 35, 80, 128)
+			>>> TSNDL.Hex_Tuple("#502350");
+			(80, 35, 80)
+		"""
+		# Gets rid of the first character if it's an "#"
+		hex_color: str = HEX_COLOR[:1] if (HEX_COLOR[:1] == "#") else HEX_COLOR;
+
+		if (len(HEX_COLOR) > 8): raise ValueError("Invalid Hex Code Length (Too long!)");
+		elif (len(HEX_COLOR) < 6): raise ValueError("Invalid Hex Code Length (Too short!)");
+		elif (not len(HEX_COLOR) % 2 == 0): raise ValueError("Invalid Hex Code Length (Incorrect Length!)");
+
+		hexes: list[int] = [];
+		hexes.append(Hex.toDecimal(hex_color[:1]));		# R
+		hexes.append(Hex.toDecimal(hex_color[2:4]));	# G
+		hexes.append(Hex.toDecimal(hex_color[4:6])); 	# B
+
+
+		if (len(hex_color) != 8): return cast(tuple[int, int, int], tuple(hexes)); # If no Alpha
+		hexes.append(Hex.toDecimal(hex_color[6:8]));	# Alpha
+		return cast(tuple[int, int, int, int], tuple(hexes));
+
+
+
+	@staticmethod
+	def toDecimal(Hex: str) -> int:
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Converts Hex to Base 10 alias Decimal.  
+
+		Arguments:
+			Hex (str*): The character representing a number in base 16.
+
+		Returns:
+			int: The corresponding base 10 number.
+
+		Raises:
+			ValueError: If the provided Hex Character is not one.
+
+		Examples:
+			>>> TSNDL.Hex_To_Decimal("F");
+			15
+		"""
+		decimal: int = 0;
+		mult: int = 1;
+		while (len(Hex) != 0):
+			match Hex[:-1].upper():
+				case "F": decimal += 15 * mult;
+				case "E": decimal += 14 * mult;
+				case "D": decimal += 13 * mult;
+				case "C": decimal += 12 * mult;
+				case "B": decimal += 11 * mult;
+				case "A": decimal += 10 * mult;
+				case _:
+					if (Hex[1:] in ["1234567890"]): decimal += int(Hex[1:]) * mult;
+					else: raise ValueError(f"Invalid Hex Character: {Hex[1:]}");
+			mult += 1;
+			Hex = Hex[:-1];
+		return decimal;
+
+
+
+	@staticmethod
+	def toASCII(HEX_TUPLE: tuple[int, int, int], FOREGROUND: bool = True) -> str:
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Transforms an SNC Tuple into an ASCII Color escape sequence string.
+
+		Arguments:
+			HEX_TUPLE (tuple[int, int, int]*): A tuple containing 3 integers of a range of 0 to 255 representing a 8bit RGB value.
+			FOREGROUND (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
+
+		Returns:
+			str: The ASCII Color escape sequence string.
+
+		Examples:
+			>>> TSNDL.ASCII_Color(TSNDL.Color.Sun.White);
+			# TSNDL.Color.Sun.White = (255, 250, 255)
+			"\x1b[38;2;255;250;255m"
+		"""
+		return f"\x1b[{'38' if (FOREGROUND) else '48'};2;{HEX_TUPLE[0]};{HEX_TUPLE[1]};{HEX_TUPLE[2]}m";
+
+
+
+
+
+	@staticmethod
+	def fromTuple(DECIMALS: tuple[int, ...]) -> list[str]:
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+		
+		Converts a tuple of Decimal numbers into their respective Hexadecimal representation.
+
+		Arguments:
+			DECIMALS (tuple[int, ...]): A tuple containing the base 10 numbers to be converted into hexadecimal.
+
+		Returns:
+			list[str]: The list of hexadecimal numbers that was converted from DECIMALS.
+		"""
+		return [
+				f"0{y}" if (len(y) == 1) else y for y in [
+					decimalConversion(x) for x in DECIMALS
+				]
+			];
+
+
+
+
+
+def decimalConversion(
+		DECIMAL: int, BASE: int = 16,
+			*,
+		BASE_INDEX: list[str] = [x for x in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz"]
+	) -> str:
+	""" ***Implemented in __TSNA `v7.0.0`__***  
 	
-	Hex_List: list[int] = [];
-	Hex_List.append(16 * Hex_To_Decimal(Hex[:1]) + Hex_To_Decimal(Hex[1:2]));						# R
-	Hex_List.append(16 * Hex_To_Decimal(Hex[2:3]) + Hex_To_Decimal(Hex[3:4]));						# G
-	Hex_List.append(16 * Hex_To_Decimal(Hex[4:5]) + Hex_To_Decimal(Hex[4:6])); 						# B
-	if (len(Hex) == 8): Hex_List.append(16 * Hex_To_Decimal(Hex[5:6]) + Hex_To_Decimal(Hex[5:7]));	# A
-
-	return tuple(Hex_List); # type: ignore | SHUSH. Otherwise this function would look retarded. I could just return a list but eh.
-
-
-
-def Hex_To_Decimal(Hex: str) -> int:
-	""" Transform a SINGULAR Hex Character into Base 10 alias Decimal.  
-	*All further characters are IGNORED!*
+	Convert a base 10 decimal number into whichever BASE you would like to while using BASE_INDEX as the base's alphabet.
 
 	Arguments:
-		Hex (str*): The character representing a number in base 16.
+		DECIMAL (int): The decimal number to convert into BASE.
+		BASE (int): The base we want to convert from decimal.
+		*BASE_INDEX (int): The alphabet that represents the target BASE.
 
 	Returns:
-		int: The corresponding base 10 number.
-
-	Raises:
-		ValueError: If the provided Hex Character is not one.
-
-	Examples:
-		>>> TSNDL.Hex_To_Decimal("F");
-		15
+		str: The representation of DECIMAL in BASE.
 	"""
-	match Hex[1:].upper():
-		case "F": return 15;
-		case "E": return 14;
-		case "D": return 13;
-		case "C": return 12;
-		case "B": return 11;
-		case "A": return 10;
-		case _:
-			if (Hex[1:] in ["1234567890"]): return int(Hex[1:]);
-			else: raise ValueError("Invalid Hex Character!");
+	if (BASE > len(BASE_INDEX)): raise ValueError("BASE is higher than the amount of indices defined in BASE_INDEX.");
+	quotient: int;
+
+	digits: list[int] = [];
+	digits.append(DECIMAL % BASE);
+	quotient = DECIMAL // BASE;
+
+	while (quotient != 0 and digits[-1] != 0):
+		digits.append(quotient % BASE);
+		quotient = quotient // BASE;
+	if (quotient != 0): digits.append(quotient);
+
+	return "".join(reversed([BASE_INDEX[x] for x in digits]));
 
 
 
-def ASCII_Color(SNC: tuple[int, int, int], Foreground: bool = True) -> str:
-	""" Transforms an SNC Tuple into an ASCII Color escape sequence string.
-
-	Arguments:
-		SNC (tuple[int, int, int]*): A tuple containing 3 integers of a range of 0 to 255 representing a 8bit RGB value.
-		Foreground (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
-
-	Returns:
-		str: The ASCII Color escape sequence string.
-
-	Examples:
-		>>> TSNDL.ASCII_Color(TSNDL.Color.Sun.White);
-		# TSNDL.Color.Sun.White = (255, 250, 255)
-		"\x1b[38;2;255;250;255m"
-	"""
-	return f"\x1b[{'38' if (Foreground) else '48'};2;{SNC[0]};{SNC[1]};{SNC[2]}m";
-
-
-
-def Log_Color(Color_Name: str, Foreground: bool = True) -> str:
-	""" Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.TSNDL_Group` variable of the TSNA Config.
-
-	Arguments:
-		Color (str*): The name of the color.
-		Foreground (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
-
-	Returns:
-		str: The ASCII Color escape sequence string depending on the TSNA Config.
-
-	Examples:
-		>>> TSNDL.Log_Color("White");
-		"\x1b[38;2;255;250;255m"
-	"""
-	return ASCII_Color(
-		getattr(
-			getattr(Color, Config.Logger.TSNDL_Group),
-			Color_Name
-		), Foreground
-	);
 
 
 
 
 
 class Color:
-	""" Classes containing TSNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Classes containing TSNDL v3.1 Colors, each color is stored as a RGB Tuple within their respective `Color Group` then followed its name.  
 	Optionally, the Hex Code is available by appending `_Hex` to the color.  
 	If you are using TSNA's `TUI.*` functions, the curses colors are available by appending `_TERM`.  
 	*These colors may be referred as The "Sirio Network Colors" (SNC).*
@@ -160,11 +225,39 @@ class Color:
 	*: TSNDL v2.0's Colors behaved SIGNIFICANTLY differently from 3.0 and onwards, while newer versions actually change the colors, TSNDL v2.0 only relied on opacity to emulate lighter colors.  
 	The color Grey was added in TSNDL v3.2 and does not have any old colors that can be migrated from.  
 	"""
+	@staticmethod
+	def log(Color_Name: str, Foreground: bool = True) -> str:
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Get an ASCII Color escape sequence of the requested color according to the `Config.Logger.TSNDL_Group` variable of the TSNA Config.
+
+		Arguments:
+			Color (str*): The name of the color.
+			Foreground (bool = True): Specify if we want an ASCII Foreground (Text) or Background Color.
+
+		Returns:
+			str: The ASCII Color escape sequence string depending on the TSNA Config.
+
+		Examples:
+			>>> TSNDL.Log_Color("White");
+			"\x1b[38;2;255;250;255m"
+		"""
+		return Hex.toASCII(
+			getattr(
+				getattr(Color, Config.Logger.TSNDL_Group),
+				Color_Name
+			), Foreground
+		);
+
+
 
 
 
 	class Abyss:
-		"""Dark-Mode: Tertiary Color"""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Dark-Mode: Tertiary Color
+		"""
 		Black: tuple[int, int, int] = (20, 0, 20);
 		Grey: tuple[int, int, int] = (90, 70, 90);
 		White: tuple[int, int, int] = (225, 190, 225);
@@ -202,8 +295,12 @@ class Color:
 		Pink_TERM: int = 10;
 
 
+
 	class Night:
-		"""Dark-Mode: Secondary Color"""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Dark-Mode: Secondary Color
+		"""
 		Black: tuple[int, int, int] = (30, 10, 30);
 		Grey: tuple[int, int, int] = (110, 90, 110);
 		White: tuple[int, int, int] = (230, 200, 230);
@@ -239,10 +336,14 @@ class Color:
 		Blue_TERM: int = 28;
 		Purple_TERM: int = 29;
 		Pink_TERM: int = 30;
-	
+
+
 
 	class Moon:
-		"""Dark-Mode: Primary Color"""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Dark-Mode: Primary Color
+		"""
 		Black: tuple[int, int, int] = (40, 15, 40);
 		Grey: tuple[int, int, int] = (130, 110, 130);
 		White: tuple[int, int, int] = (235, 210, 235);
@@ -280,8 +381,12 @@ class Color:
 		Pink_TERM: int = 50;
 
 
+
 	class Sky:
-		"""Light-Mode: Tertiary Color"""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Light-Mode: Tertiary Color
+		"""
 		Black: tuple[int, int, int] = (60, 25, 60);
 		Grey: tuple[int, int, int] = (170, 150, 170);
 		White: tuple[int, int, int] = (245, 230, 245);
@@ -319,8 +424,12 @@ class Color:
 		Pink_TERM: int = 70;
 
 
+
 	class Day:
-		"""Light-Mode: Secondary Color"""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Light-Mode: Secondary Color
+		"""
 		Black: tuple[int, int, int] = (70, 30, 70);
 		Grey: tuple[int, int, int] = (190, 170, 190);
 		White: tuple[int, int, int] = (250, 240, 250);
@@ -358,8 +467,12 @@ class Color:
 		Pink_TERM: int = 90;
 
 
+
 	class Sun:
-		"""Light-Mode: Primary Color"""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Light-Mode: Primary Color
+		"""
 		Black: tuple[int, int, int] = (80, 35, 80);
 		Grey: tuple[int, int, int] = (210, 190, 210);
 		White: tuple[int, int, int] = (255, 250, 255);
