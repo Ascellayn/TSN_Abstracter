@@ -1,4 +1,5 @@
-"""
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
 This module from TSN Abstracter contains functions related to processing numbers.  
 """
 
@@ -12,7 +13,9 @@ This module from TSN Abstracter contains functions related to processing numbers
 
 
 def underAt(A: tuple[int | float, ...] | list[int], B: tuple[int | float, ...] | list[int | float]) -> int:
-	""" Specify at which index a value of A is under B. Returns `-1` if no value is.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Specify at which index a value of A is under B. Returns `-1` if no value is.
 
 	Arguments:
 		A (tuple[int | float, ...] | list[int | float]*): The iterable of numbers we wanna know the index of the value under B.

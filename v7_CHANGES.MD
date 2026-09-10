@@ -8,6 +8,13 @@
 
 
 
+- ## General Changes
+	- Every single function/method/module now starts with the string specifying which version of TSNA it was implemented.  
+	This will hopefully help developers know which version of TSNA is the bare minimum for them to support.  
+	Since everything was refactored and renamed, everything is specified as being implemented in TSNA `v7.0.0`.
+
+
+
 - ## Serina Heartbeat Module
 	- (TBD)
 
@@ -137,7 +144,9 @@
 
 
 - ### `TSNDL` Changes
-	- (TBD)
+	- `Time.Hex.toDecimal()` now converts the WHOLE string instead of just the first character.
+	- Renamed function `TSNDL.Hex_Tuple()` → `Time.Hex.toTuple()`
+	- Renamed function `TSNDL.Hex_To_Decimal()` → `Time.Hex.toDecimal()`
 
 
 

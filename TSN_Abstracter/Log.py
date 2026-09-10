@@ -1,4 +1,5 @@
-"""
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
 This module from TSN Abstracter contains TSNA's logger and its associated derivative functions related to printing stuff on the screen.
 
 ## Examples
@@ -15,7 +16,9 @@ import datetime, inspect, logging, shutil, sys, traceback;
 
 
 def Log_Path() -> str:
-	""" Get the path to where all the Log Files are located. 
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Get the path to where all the Log Files are located. 
 	
 	Returns:
 		str: A relative path to the Log Files Folder.
@@ -31,7 +34,10 @@ Logger_File: logging.Logger = logging.getLogger("TSN-File");
 
 
 def Verify_Config() -> None:
-	""" Internal Logging Function used to re-add the File Handler when the TSNA Configuration updates. """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Internal Logging Function used to re-add the File Handler when the TSNA Configuration updates.
+	"""
 	global Logger_File;
 	if (Config.Logger.File and not Config.Logger.Disable):
 		Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
@@ -44,7 +50,9 @@ def Verify_Config() -> None:
 
 # Logging Dependencies
 def Can_Log(Level: int) -> bool:
-	""" Returns if a Log can be display anywhere according to its importance level and TSNA's Config.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Returns if a Log can be display anywhere according to its importance level and TSNA's Config.
 
 	Arguments:
 		Level (int*): Integer corresponding to how severe the message is.
@@ -62,7 +70,9 @@ def Can_Log(Level: int) -> bool:
 
 
 def Get_Caller(Depth: int = 2) -> str:
-	""" Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "module".
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Gives the name of the function who called the function where this function is executed OR the filename where the function was executed if the function returned is "module".
 
 	Arguments:
 		Depth (int = 2): How far we go back to get the function name.
@@ -89,7 +99,9 @@ def Get_Caller(Depth: int = 2) -> str:
 
 
 class Awaited_Log:
-	""" The Awaited Log System permits TSNA Programs to update the status of Log Entries dynamically.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	The Awaited Log System permits TSNA Programs to update the status of Log Entries dynamically.  
 	They're used primarily for confirming the end of loading something.  
 
 	Awaited Logs are automatically created when Log Entries end with "...", changing the status of the log will replace said ellipsis with the new status.
@@ -106,7 +118,9 @@ class Awaited_Log:
 
 
 	def Status_Update(self, Status: str, Level: int) -> None:
-		""" Replace the "..." part of the Awaited Log with the status of your choosing.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Replace the "..." part of the Awaited Log with the status of your choosing.
 
 		Arguments:
 			Status (str*): The custom status to replace the ellipsis with.
@@ -154,28 +168,36 @@ class Awaited_Log:
 
 
 	def OK(self, Status: str | None = None) -> None:
-		""" >>> Log.Awaited.OK();
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		>>> Log.Awaited.OK();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
 		self.Status_Update(f"{TSNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", self.Level);
 
 
 
 	def WARNING(self, Status: str) -> None:
-		""" >>> Log.Awaited.WARNING("2 Modules Skipped");
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		>>> Log.Awaited.WARNING("2 Modules Skipped");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped] """
 		self.Status_Update(f"{TSNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 30);
 
 
 
 	def ERROR(self, Status: str) -> None:
-		""" >>> Log.Awaited.ERROR("1 Outdated Module");
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		>>> Log.Awaited.ERROR("1 Outdated Module");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR: 1 Outdated Module] """
 		self.Status_Update(f"{TSNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 40);
 
 
 
 	def EXCEPTION(self, Except: Exception, Raise: bool = False, Traceback: bool = True) -> None:
-		""" >>> Log.Awaited.EXCEPTION(Except);
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		>>> Log.Awaited.EXCEPTION(Except);
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 		Cannot divide by zero.
 		"""
@@ -187,7 +209,10 @@ class Awaited_Log:
 
 
 class Awaited_Dummy(Awaited_Log):
-	""" An Awaited Log that doesn't do anything, to be used when the Caller doesn't correspond to the awaited one. """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	An Awaited Log that doesn't do anything, to be used when the Caller doesn't correspond to the awaited one.
+	"""
 	def __init__(self): return;
 	def __str__(self): return "";
 	def Status_Update(self, Status: str, Level: int): return;
@@ -201,7 +226,9 @@ class Awaited_Dummy(Awaited_Log):
 
 
 def Awaited(Custom_Caller: str | None = None) -> Awaited_Log | Awaited_Dummy:
-	""" Get the latest Awaited Log, you may specify a Custom Caller if you wish to handle the Log of another function.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Get the latest Awaited Log, you may specify a Custom Caller if you wish to handle the Log of another function.
 	
 	Arguments:
 		Custom_Caller (str | None = None): The name of the caller.
@@ -237,7 +264,9 @@ Awaited_File: str | None = None;
 
 # Simplified logging functions
 def TSN_Debug(Text: str) -> None:
-	""" Log a debug message for **Libraries** *(Level: 10)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a debug message for **Libraries** *(Level: 10)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -249,7 +278,9 @@ def TSN_Debug(Text: str) -> None:
 	"""
 	Log(Text, 10);
 def Debug(Text: str) -> None:
-	""" Log a debug message for **TSNA Programs** *(Level: 15)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a debug message for **TSNA Programs** *(Level: 15)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -261,7 +292,9 @@ def Debug(Text: str) -> None:
 	"""
 	Log(Text, 15);
 def Stateless(Text: str) -> None:
-	""" Log a message with only the time if it's enabled *(Level: 20)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a message with only the time if it's enabled *(Level: 20)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -273,7 +306,9 @@ def Stateless(Text: str) -> None:
 	"""
 	Log(Text, 20);
 def Info(Text: str) -> None:
-	""" Log a standard informal message *(Level: 25)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a standard informal message *(Level: 25)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -285,7 +320,9 @@ def Info(Text: str) -> None:
 	"""
 	Log(Text, 25);
 def Warning(Text: str) -> None:
-	""" Log a standard warning message *(Level: 30)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a standard warning message *(Level: 30)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -297,7 +334,9 @@ def Warning(Text: str) -> None:
 	"""
 	Log(Text, 30);
 def Error(Text: str) -> None:
-	""" Log a standard error message *(Level: 40)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a standard error message *(Level: 40)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -309,7 +348,9 @@ def Error(Text: str) -> None:
 	"""
 	Log(Text, 40);
 def Critical(Text: str) -> None:
-	""" Log a standard critical message *(Level: 50)*.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a standard critical message *(Level: 50)*.
 
 	Arguments:
 		Text (str*): The string to be displayed in the Log.
@@ -327,7 +368,9 @@ def Critical(Text: str) -> None:
 
 # The actual logging function
 def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
-	""" Log a message depending on its Level, logging the Caller and Time if it was enabled or is possible into the Python Console or a File according to the TSNA Config.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Log a message depending on its Level, logging the Caller and Time if it was enabled or is possible into the Python Console or a File according to the TSNA Config.
 	#### **DO NOT USE THIS FUNCTION DIRECTLY, USE THE FUNCTIONS SUCH AS Log.Info()!**  
 
 	Arguments:
@@ -399,7 +442,9 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 # Miscellaneous Logging
 def Carriage(Text: str) -> None:
-	""" Print a message that can be overwritten thanks to carriage returns.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Print a message that can be overwritten thanks to carriage returns.
 
 	Arguments:
 		Text (str*): The message you wish to display and be able to overwrite using the same function.
@@ -416,7 +461,9 @@ def Carriage(Text: str) -> None:
 
 
 def Clear() -> None:
-	""" Clear the console's text without needing to call OS specific commands.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Clear the console's text without needing to call OS specific commands.
 
 	### Examples
 	>>> Log.Clear();
@@ -427,7 +474,9 @@ def Clear() -> None:
 
 
 def Delete() -> None:
-	""" COMPLETELY empties the latest Log File. To be used only during the development & debugging process!
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	COMPLETELY empties the latest Log File. To be used only during the development & debugging process!
 
 	### Examples
 	>>> Log.Delete();

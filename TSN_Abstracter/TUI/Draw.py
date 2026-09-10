@@ -1,4 +1,7 @@
-""" Generic Drawing Functions such as the Window Frame. """
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+Generic Drawing Functions such as the Window Frame.
+"""
 
 from .Globals import *;
 
@@ -14,7 +17,9 @@ __all__: list[str] = [
 
 
 def Base(Clear: bool = True) -> None:
-	""" Draw the Window Frame with the TSNA App's Name
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Draw the Window Frame with the TSNA App's Name
 	
 	Arguments:
 		Clear (bool = True): Whenever to clear completely the Window before drawing the frame.
@@ -30,7 +35,9 @@ def Base(Clear: bool = True) -> None:
 
 
 def Base_Box(Offset: int = 0) -> None:
-	""" Draw a straight line to be used primarily for the description box when hovering elements in `TUI.Menu`.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Draw a straight line to be used primarily for the description box when hovering elements in `TUI.Menu`.  
 	Draws from the bottom, by default with only a size of 1 line.  
 	**Requires manual execution of `TUI.Base()`.**  
 	

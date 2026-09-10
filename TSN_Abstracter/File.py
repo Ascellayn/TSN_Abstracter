@@ -1,4 +1,6 @@
-""" This module from TSN Abstracter is in charge of providing functions related to File Operations.
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+This module from TSN Abstracter is in charge of providing functions related to File Operations.
 
 ### Examples
 >>> from TSN_Abstracter import File;
@@ -25,7 +27,9 @@ except: Main_Directory: str = os.path.dirname(os.path.abspath(__file__));
 
 # General File Processing
 def Exists(Path: str) -> bool:
-	""" Verifies whenever a file or folder exists at the provided path.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Verifies whenever a file or folder exists at the provided path.
 
 	Arguments:
 		Path (str*): String representing the Path.
@@ -44,7 +48,9 @@ def Exists(Path: str) -> bool:
 
 
 def Path_Create(Path: str) -> bool:
-	""" Creates the full folder structure specified. Equivalent to `mkdir -p`.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Creates the full folder structure specified. Equivalent to `mkdir -p`.
 
 	Arguments:
 		Path (str*): String representing the Path of folders you wish to create.
@@ -67,7 +73,9 @@ def Path_Create(Path: str) -> bool:
 
 
 def Path_Require(Path: str) -> bool:
-	""" Similar to `Path_Create()`, but instead specifies if the folder structure already existed before.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Similar to `Path_Create()`, but instead specifies if the folder structure already existed before.
 
 	Arguments:
 		Path (str*): String representing the Path of folders you wish to require.
@@ -95,7 +103,9 @@ def Path_Require(Path: str) -> bool:
 
 
 def Read(Path: str, Compressed: bool = False) -> str | None:
-	""" Read the contents of a file, supports LZMA compressed files.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Read the contents of a file, supports LZMA compressed files.
 
 	Arguments:
 		Path (str*): String representing the Path to a file.
@@ -127,7 +137,9 @@ def Read(Path: str, Compressed: bool = False) -> str | None:
 
 
 def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) -> bool:
-	""" Write the contents of a string to a file, supports LZMA compressed files.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Write the contents of a string to a file, supports LZMA compressed files.
 	
 	Arguments:
 		Path (str*): String representing the Path to a file.
@@ -166,7 +178,9 @@ def Write(Path: str, Data: str, Compressed: bool = False, Append: bool = False) 
 
 # JSON Specific Abstraction
 def Read_JSON(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
-	""" `Read()` Wrapper for reading JSON Files.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	`Read()` Wrapper for reading JSON Files.  
 	**QUIRK**: Automatically creates the file path if it doesn't exist, returns an empty dictionary if the file didn't exist prior.
 	
 	Arguments:
@@ -190,7 +204,9 @@ def Read_JSON(Path: str, Compressed: bool = False) -> dict[str, typing.Any]:
 
 
 def Write_JSON(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.Any], Compressed: bool = False) -> bool:
-	""" `Write()` Wrapper for writing JSON Files.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	`Write()` Wrapper for writing JSON Files.  
 	Automatically creates the file structure and file if it doesn't exist.
 	
 	Arguments:
@@ -215,7 +231,9 @@ def Write_JSON(Path: str, Data: typing.Mapping[str, typing.Any] | list[typing.An
 
 
 def Update_JSON(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compressed: bool = False) -> bool:
-	""" `Write()` Wrapper for updating data to JSON Files.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	`Write()` Wrapper for updating data to JSON Files.  
 	**QUIRK**: Acts as a regular `Write_JSON()` if the file did not exist prior.
 	
 	Arguments:
@@ -251,7 +269,9 @@ def Update_JSON(Path: str, Dictionary: typing.Mapping[str, typing.Any], Compress
 
 
 def Read_Array(Path: str, Compressed: bool = False) -> list[typing.Any]:
-	""" `Read_JSON()` alias, but instead of Dictionaries, it's Arrays.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	`Read_JSON()` alias, but instead of Dictionaries, it's Arrays.  
 	This function has a very slight difference with `Read_JSON()`: it returns an empty list instead of an empty dictionary. """
 	if (not Path_Require(Path)):
 		Log.TSN_Debug(f"404 Warning - {Path}"); return [];
@@ -261,14 +281,18 @@ def Read_Array(Path: str, Compressed: bool = False) -> list[typing.Any]:
 
 
 def Write_Array(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
-	""" `Write_JSON()` alias, but instead of Dictionaries it's Arrays.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	`Write_JSON()` alias, but instead of Dictionaries it's Arrays.  
 	This function directly calls `Write_JSON()` and should only be used to make code easier to read and comprehend."""
 	return Write_JSON(Path, Array, Compressed);
 
 
 
 def Update_Array(Path: str, Array: list[typing.Any], Compressed: bool = False) -> bool:
-	""" `Update_JSON()` alias, but instead of Dictionaries it's Arrays.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	`Update_JSON()` alias, but instead of Dictionaries it's Arrays.  
 	This function behaves identically to `Update_JSON()`. """
 	try:
 		if (not Exists(Path)): return Write_JSON(Path, Array, Compressed);
@@ -291,7 +315,9 @@ def Update_Array(Path: str, Array: list[typing.Any], Compressed: bool = False) -
 
 # Path Manipulation
 def Path_Folder(Path: str) -> str:
-	""" Takes in a Path and returns itself, minus the file name at the end if it exists by checking for "." and "/" in the filename.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Takes in a Path and returns itself, minus the file name at the end if it exists by checking for "." and "/" in the filename.  
 
 	Arguments:
 		Path (str*): String representing the Path of a file or folder where we wish to remove the file from the string.
@@ -340,7 +366,9 @@ type Folder_Tree = tuple[tuple[Folder_Matrix, ...], Folder_Contents];
 
 
 def List(Path: str) -> Folder_Contents:
-	""" Returns a matrix of the folders and files inside Path.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Returns a matrix of the folders and files inside Path.
 
 	Arguments:
 		Path (str*): The folder we wish to view the contents of.
@@ -366,7 +394,9 @@ def List(Path: str) -> Folder_Contents:
 
 
 def Tree(Path: str) -> Folder_Tree:
-	""" Returns a matrix of ALL folders and files inside Path.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Returns a matrix of ALL folders and files inside Path.  
 	**WARNING**: You will loose your sanity using this function.
 
 	Arguments:

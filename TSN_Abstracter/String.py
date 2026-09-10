@@ -1,4 +1,6 @@
-""" This module from TSN Abstracter is in charge of providing functions related to Strings.
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+This module from TSN Abstracter is in charge of providing functions related to Strings.
 
 ### Examples
 >>> from TSN_Abstracter import String;
@@ -17,7 +19,9 @@ from typing import Any, Iterable;
 
 # String Modification
 def abbreviate(Text: str, MAX_LENGTH: int, ABBREVIATION: str = "(...)") -> str:
-	""" Shortens end of text with `Abbreviate` if `Text` is longer than `Max_Length`
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Shortens end of text with `Abbreviate` if `Text` is longer than `Max_Length`
 
 	Arguments:
 		Text (str*): The string we want to potentially abbreviate.
@@ -34,7 +38,9 @@ def abbreviate(Text: str, MAX_LENGTH: int, ABBREVIATION: str = "(...)") -> str:
 
 
 def trailingZero(NUMBER: int, ZEROS: int = 2) -> str:
-	""" Adds trailing Zeros to a specified Number.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Adds trailing Zeros to a specified Number.
 
 	Arguments:
 		Number (int*): The Number we want to potentially add zeros at the start.
@@ -56,7 +62,9 @@ def trailingZero(NUMBER: int, ZEROS: int = 2) -> str:
 
 
 def ifyArray(ARRAY: list[Any] | tuple[Any, ...]) -> list[str]:
-	""" Transforms everything inside `Array` into strings.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Transforms everything inside `Array` into strings.
 
 	Arguments:
 		Array (list[Any] | tuple[Any, ...]*): The array we wish to turn all its items into strings.
@@ -73,7 +81,9 @@ def ifyArray(ARRAY: list[Any] | tuple[Any, ...]) -> list[str]:
 
 
 def lengthSplit(Text: str, MAX_LENGTH: int) -> list[str]:
-	""" Splits a string after a new line (unless there are no line breaks, in that case it will stop after a space, otherwise raw cuts through words if neither lines breaks nor spaces are present) into an array according to Max_Length.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Splits a string after a new line (unless there are no line breaks, in that case it will stop after a space, otherwise raw cuts through words if neither lines breaks nor spaces are present) into an array according to Max_Length.
 
 	Arguments:
 		Text (str*): The string we want to split.
@@ -108,7 +118,9 @@ def lengthSplit(Text: str, MAX_LENGTH: int) -> list[str]:
 
 
 def bulkReplace(REPLACERS: Iterable[tuple[str, str] | list[str] | str], String: str, NEW: str = "") -> str:
-	""" Bulk replaces every string in `String` to `New` or the 2nd element of a pair inside `Replacers`.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Bulk replaces every string in `String` to `New` or the 2nd element of a pair inside `Replacers`.
 
 	Arguments:
 		Replacers (list[tuple[str, str] | list[str] | str]*): A list of strings or a list of lists/tuples containing the first element being which element to replace within `String` to replace with the second element of the pair.
@@ -138,7 +150,10 @@ def bulkReplace(REPLACERS: Iterable[tuple[str, str] | list[str] | str], String: 
 
 
 class ASCII:
-	""" A class containing numerous ASCII Escape Sequences to aid with formatting. """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	A class containing numerous ASCII Escape Sequences to aid with formatting.
+	"""
 	Clear_Screen: str = "\x1b[2J";
 
 
@@ -147,7 +162,9 @@ class ASCII:
 
 	@staticmethod
 	def clearFormatting(TEXT: str) -> str:
-		""" This function takes in a String and then clears out all the ASCII Formatting according to the TF/FC/BC objects. Used for making Log files look cleaner.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		This function takes in a String and then clears out all the ASCII Formatting according to the TF/FC/BC objects. Used for making Log files look cleaner.
 
 		Arguments:
 			Text (str*): A "dirty" Log String that was supposed to be destined for printing on the Console.
@@ -162,13 +179,19 @@ class ASCII:
 
 
 	class Shortcut:
-		""" A class containing frequently used ASCII Escape Sequences combinaisons. """
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		A class containing frequently used ASCII Escape Sequences combinaisons.
+		"""
 		BSOD: str = "\x1b[48;2;40;0;255m\x1b[38;2;255;250;255m";
 
 
 
 	class Text:
-		""" A class containing numerous ASCII Escape Sequences to aid with text formatting. """
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		A class containing numerous ASCII Escape Sequences to aid with text formatting.
+		"""
 		Reset: str = "\x1b[0m"; Reset_Color: str = "\x1b[39m\x1b[49m";
 		Bold: str = "\x1b[1m"; Bold_OFF: str = "\x1b[24m";
 		Dim: str = "\x1b[2m"; Dim_OFF: str = "\x1b[22m";
@@ -178,7 +201,10 @@ class ASCII:
 		Hide: str = "\x1b[8m"; Hide_OFF: str = "\x1b[28m";
 
 	class Line:
-		""" A class containing numerous ASCII Escape Sequences to aid with clearing lines of text. """
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		A class containing numerous ASCII Escape Sequences to aid with clearing lines of text.
+		"""
 		Return: str = "\x1b[1A\x1b[2K";
 		Clear: str = "\x1b[2K";
 		Erase_Forward: str = "\x1b[K";
@@ -188,7 +214,9 @@ class ASCII:
 
 
 	class Cursor:
-		""" A class containing numerous ASCII Escape Sequences to aid with cursor movement. """
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+		A class containing numerous ASCII Escape Sequences to aid with cursor movement.
+		"""
 		@staticmethod
 		def Save() -> str:
 			""" Save the current cursor position.
@@ -200,7 +228,9 @@ class ASCII:
 
 		@staticmethod
 		def Load() -> str:
-			""" Load the saved cursor position.
+			""" ***Implemented in __TSNA `v7.0.0`__***  
+
+			Load the saved cursor position.
 
 			Returns:
 				str: An ASCII escape sequence that loads the last saved cursor position.
@@ -209,7 +239,9 @@ class ASCII:
 
 		@staticmethod
 		def Move(X: int, Y: int) -> str:
-			""" Move the cursor to Line X and Column Y.
+			""" ***Implemented in __TSNA `v7.0.0`__***  
+
+			Move the cursor to Line X and Column Y.
 
 			Arguments:
 				X (int*): The Line to go to.
@@ -224,7 +256,9 @@ class ASCII:
 
 		@staticmethod
 		def Up(Lines: int) -> str:
-			""" Move the cursor up `Lines` lines.
+			""" ***Implemented in __TSNA `v7.0.0`__***  
+
+			Move the cursor up `Lines` lines.
 
 			Arguments:
 				Lines (int*): The amount of lines we want to go up.
@@ -236,7 +270,9 @@ class ASCII:
 
 		@staticmethod
 		def Down(Lines: int) -> str:
-			""" Move the cursor down `Lines` lines.
+			""" ***Implemented in __TSNA `v7.0.0`__***  
+
+			Move the cursor down `Lines` lines.
 
 			Arguments:
 				Lines (int*): The amount of lines we want to go down.
@@ -248,7 +284,9 @@ class ASCII:
 
 		@staticmethod
 		def Right(Columns: int) -> str:
-			""" Move the cursor right `Columns` columns.
+			""" ***Implemented in __TSNA `v7.0.0`__***  
+
+			Move the cursor right `Columns` columns.
 
 			Arguments:
 				Columns (int*): The amount of columns we want to go right.
@@ -260,7 +298,9 @@ class ASCII:
 
 		@staticmethod
 		def Left(Columns: int) -> str:
-			""" Move the cursor left `Columns` columns.
+			""" ***Implemented in __TSNA `v7.0.0`__***  
+
+			Move the cursor left `Columns` columns.
 
 			Arguments:
 				Columns (int*): The amount of columns we want to go left.

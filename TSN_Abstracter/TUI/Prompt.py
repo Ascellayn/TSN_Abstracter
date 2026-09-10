@@ -1,4 +1,7 @@
-""" Module in charge of being able to display Popups and get data from the user. """
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+Module in charge of being able to display Popups and get data from the user.
+"""
 from .Globals import *;
 from . import Draw, Input;
 from .Entry import Entry as __Entry, eType;
@@ -8,7 +11,9 @@ from .Entry import Entry as __Entry, eType;
 
 
 def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=["OK"]), Align: str = "Center") -> Any: # pyright: ignore[reportRedeclaration]
-	""" Displays a floating popup at the center of the screen, asking the user to make a choice.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Displays a floating popup at the center of the screen, asking the user to make a choice.
 
 	Arguments:
 		Title (str*): The text to show at the top of the Prompt Frame.

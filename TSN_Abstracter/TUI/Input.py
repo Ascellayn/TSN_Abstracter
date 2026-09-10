@@ -1,4 +1,6 @@
-""" User Input functions for the TUI Framework 
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+User Input functions for the TUI Framework 
 
 ### Examples
 >>> from TSN_Abstracter import *;
@@ -29,7 +31,10 @@ Key_Held: int = -1;
 
 
 def Get(HZ: int = 1000) -> int:
-	""" Blocking Input Catcher """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Blocking Input Catcher
+	"""
 	global Key_Held;
 	while True:
 		CHAR = Window.getch();
@@ -42,8 +47,11 @@ def Get(HZ: int = 1000) -> int:
 
 
 def Text(Value: str = "", Allowed: str = r".", Limitation: tuple[int, int, int] | None = None) -> str:
-	""" allowed represents regex, if regex fails then character is not inputted, value is default 
-	limitation is minX, maxX, Y"""
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	allowed represents regex, if regex fails then character is not inputted, value is default 
+	limitation is minX, maxX, Y
+	"""
 	Initial: str = Value;
 	Cursor: int = 0;
 

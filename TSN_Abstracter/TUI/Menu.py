@@ -1,4 +1,7 @@
-""" Module in charge of being able to display fully interactive Menus and get data from the results of the User's Inputs. """
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+Module in charge of being able to display fully interactive Menus and get data from the results of the User's Inputs.
+"""
 from .Globals import *;
 
 from .Prompt import *;
@@ -11,14 +14,21 @@ from . import Draw, Input;
 
 
 
-def __ColorAttribute(Color: int) -> None: Window.attron(curses.color_pair(Color));
+def __ColorAttribute(Color: int) -> None: 
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	wtf does this do
+	"""
+	Window.attron(curses.color_pair(Color));
 
 
 
 
 
 def Menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only: bool = False) -> Any:
-	""" Interactive TUI Menu based off Entries with Keybind support.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Interactive TUI Menu based off Entries with Keybind support.  
 	Refer to `TUI.Entry` for what this function can return.
 
 	Arguments:

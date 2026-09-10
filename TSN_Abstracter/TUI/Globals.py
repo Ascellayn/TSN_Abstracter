@@ -1,5 +1,8 @@
-""" Global Variables and imports for the TUI Framework.  
-Contains also the `Window` variable along with `TUI.Init()` / `TUI.Exit()` and the `curses` module import. """
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+Global Variables and imports for the TUI Framework.  
+Contains also the `Window` variable along with `TUI.Init()` / `TUI.Exit()` and the `curses` module import.
+"""
 
 from .. import App, Config, Log, String, TSNDL; # pyright: ignore[reportUnusedImport]
 
@@ -17,6 +20,10 @@ Window: curses.window = curses.initscr();
 
 
 def Init() -> None:
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	s
+	"""
 	Window.move(0,0);
 	Window.erase();
 	Window.refresh();
@@ -41,6 +48,10 @@ def Init() -> None:
 
 
 def Exit() -> None:
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	s
+	"""
 	Window.move(0,0);
 	Window.clear();
 	Window.refresh();

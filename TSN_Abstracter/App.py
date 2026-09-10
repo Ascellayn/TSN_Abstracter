@@ -1,4 +1,5 @@
-"""
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
 This module from TSN Abstracter is in charge of storing Application Information and Configuration automatically.  
 It simply loads `App.tsna` if it finds it.  
 
@@ -71,7 +72,15 @@ Data: dict[str, Any] = {};
 
 
 class Type():
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	TSNA Application Metadata Types
+	"""
 	class Dictionary(TypedDict):
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Dictionary all the metadata of a TSNA-Based Application.
+		"""
 		Name: str;
 		Description: str;
 		Author: list[str];
@@ -95,7 +104,9 @@ class Type():
 
 
 def info() -> Type.Dictionary:
-	""" Retrieve the currently active-in-memory TSNA App JSON
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Retrieve the currently active-in-memory TSNA App JSON
 
 	Returns:
 		dict[str, str | list[str] | tuple[int, ...] | dict[str, Any]]: The TSNA App JSON
@@ -138,7 +149,10 @@ def info() -> Type.Dictionary:
 
 
 def version() -> str:
-	"""Returns a readable string of the TSNA-Based Application Version."""
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Returns a readable string of the TSNA-Based Application Version.
+	"""
 	return f"v{Version_Prefix}{".".join(String.ifyArray(Version))}{Version_Suffix}";
 
 
@@ -146,7 +160,9 @@ def version() -> str:
 
 
 def load(JSON: Type.Dictionary) -> None:
-	""" Replaces the currently active TSNA App Data with whatever data is present in the argument.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Replaces the currently active TSNA App Data with whatever data is present in the argument.
 
 	Arguments:
 		JSON (dict[str, Any]*): A TSNA App Dictionary.
@@ -199,6 +215,10 @@ def load(JSON: Type.Dictionary) -> None:
 
 
 def reload(Path: str | None = None) -> None:
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Attempt to reload all information stored inside `App.tsna`
+	"""
 	if (not Path):
 		if (File.Exists(f"{File.Main_Directory}/App.tsna")): reload(f"{File.Main_Directory}/App.tsna");
 		if (File.Exists("App.tsna")): reload("App.tsna");

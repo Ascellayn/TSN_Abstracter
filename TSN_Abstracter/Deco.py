@@ -1,4 +1,6 @@
-""" This module from TSN Abstracter is in charge of providing Python Decorators, mostly to time the execution of functions or doing light processing.
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+This module from TSN Abstracter is in charge of providing Python Decorators, mostly to time the execution of functions or doing light processing.
 
 ### Examples
 >>> from TSN_Abstracter import Deco;
@@ -21,7 +23,9 @@ from . import Time;
 
 
 class Progresser():
-	""" Automatic carriage-based progression display, if you have a task that has a set amount of operations to do this will be useful to show the progression of it.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Automatic carriage-based progression display, if you have a task that has a set amount of operations to do this will be useful to show the progression of it.
 
 	Arguments:
 		Size (int*): The amount of total tasks to complete.
@@ -52,14 +56,17 @@ class Progresser():
 		self.Cycles: list[int] = [];
 
 		self.__Precise: bool = True if (type(DELAY) == float) else False;
-		self._Unix_Last = Time.Get_Unix(self.__Precise);
+		self._Unix_Last = Time.Unix.now(self.__Precise);
 
 
 
 
 
 	def __text(self) -> str:
-		""" Retrieve the text to print out """
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Retrieve the text to print out
+		"""
 		ops: float = round(
 			(
 				sum(self.Cycles)
@@ -71,7 +78,7 @@ class Progresser():
 			, 2
 		);
 
-		eta: str = Time.Elapsed_String(
+		eta: str = Time.Elapsed.string(
 			round(
 				self.SIZE / ops
 			),
@@ -86,18 +93,20 @@ class Progresser():
 
 
 	def count(self, Increment: int = 1) -> None:
-		""" Increment the progression counter. Automatically displays progress whenever applicable.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Increment the progression counter. Automatically displays progress whenever applicable.
 
 		Arguments:
 			Increment (int = 1): The amount of tasks to add as complete.
 		"""
 		self.Done += Increment; self.Done_Cycle += Increment;
-		if ((self._Unix_Last + self.Delay) > Time.Get_Unix(self.__Precise)): return;
+		if ((self._Unix_Last + self.Delay) > Time.Unix.now(self.__Precise)): return;
 
 
 		self.Cycles.append(self.Done_Cycle);
 		self.Done_Cycle = 0;
-		self._Unix_Last = Time.Get_Unix(self.__Precise);
+		self._Unix_Last = Time.Unix.now(self.__Precise);
 
 
 		Log.Carriage(self.__text());

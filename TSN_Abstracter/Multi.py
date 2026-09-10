@@ -1,4 +1,5 @@
-"""
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
 This module from TSN Abstracter contains functions related to parallel processing.  
 """
 from typing import Any;
@@ -14,7 +15,9 @@ import multiprocessing, threading;
 
 
 def newThread(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool = True) -> threading.Thread:
-	""" Abstraction to launch a new thread
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Abstraction to launch a new thread.
 
 	Arguments:
 		Function (Callable*): The function you wish to execute in the new thread.
@@ -38,7 +41,9 @@ def newThread(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool = 
 
 
 def newProcess(FUNC: Callable[..., Any], ARGS: list[object] = [], DAEMON: bool = True) -> multiprocessing.Process: 
-	""" Abstraction to launch a new Process
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Abstraction to launch a new Process.
 
 	Arguments:
 		Function (Callable*): The function you wish to execute in the new process.

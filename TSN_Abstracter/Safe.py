@@ -1,4 +1,6 @@
-""" This module from TSN Abstracter is in charge of providing ways to access elements without causing exceptions.
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+This module from TSN Abstracter is in charge of providing ways to access elements without causing exceptions.
 
 ## Examples
 >>> from TSN_Abstracter import Safe;
@@ -18,7 +20,9 @@ from typing import Any;
 
 
 def array(ARRAY: list[object], INDEX: int) -> Any: # Isn't there a Python function to already do this?
-	""" Attempts to safely try to read an array's specified index.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Attempts to safely try to read an array's specified index.
 
 	Arguments:
 		Array (list[object]*): The List that we want to check a specific index.
@@ -40,7 +44,9 @@ def array(ARRAY: list[object], INDEX: int) -> Any: # Isn't there a Python functi
 
 
 def dictionary(Dict: dict[str, Any], KEYS: list[str], DEFAULT: Any = None) -> Any:
-	""" Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Safely retrieve the data from a nested dictionary, returns `Default` when the function fails due to a key not existing.
 
 	Arguments:
 		Dict (dict[str, Any]*): The dictionary we wish to retrieve data from its sub-dictionaries.
@@ -74,7 +80,9 @@ def dictionary(Dict: dict[str, Any], KEYS: list[str], DEFAULT: Any = None) -> An
 
 
 def nonZero(NUMBER: int | float, DEFAULT: int = 1) -> int | float:
-	""" Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Returns the `Number` unless it is 0, in this case we return whatever `Default` is set to.
 
 	Arguments:
 		Number (int*): Which number we want to check if it's potentially null.

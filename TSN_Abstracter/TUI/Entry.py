@@ -5,7 +5,9 @@ from .Globals import *;
 
 
 class eType():
-	""" A class containing every single type of Entries currently implemented in the TUI Framework.  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	A class containing every single type of Entries currently implemented in the TUI Framework.  
 	INTs are used instead of strings to specify Entry Types for performance/memory reasons, it's also much faster to type.  
 	Using raw integers is still preferred over typing `TUI.eType.Function.value`, mostly because it's painfully long to write than just `0`."""
 	# FUNCTION GROUP - 0X
@@ -29,7 +31,9 @@ class eType():
 def _NULL() -> None: pass;
 @dataclass
 class Entry:
-	""" An Entry Object is a displayable `TUI.Menu` object that holds functions to execute along with arguments and a whole lot of other parameters.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	An Entry Object is a displayable `TUI.Menu` object that holds functions to execute along with arguments and a whole lot of other parameters.
 
 	Arguments:
 		Type (int*): The Type of the Entry.
@@ -116,7 +120,9 @@ class Entry:
 
 
 	def Toggle(self) -> bool:
-		""" Toggle between `True` and `False`, to be used with a Toggle Entry (`10`).  
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Toggle between `True` and `False`, to be used with a Toggle Entry (`10`).  
 		Also returns the new state of `self.Value`."""
 		self.Value = False if (self.Value) else True;
 		return self.Value;
@@ -127,7 +133,9 @@ type Entries = list[Entry] | tuple[Entry, ...];
 
 
 def Entries_To_Dict(Entries: Entries) -> dict[str, Any]:
-	""" Takes in a list of Entry Objects and dumps their `.Value` with the key `.ID` when it is defined into a dictionary.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Takes in a list of Entry Objects and dumps their `.Value` with the key `.ID` when it is defined into a dictionary.
 
 	Arguments:
 		Entries (Entries*): The list of Entry Objects.

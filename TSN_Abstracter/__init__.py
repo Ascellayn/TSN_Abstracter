@@ -97,8 +97,10 @@ unix_t = Time.unix_t;
 
 
 class TSNA:
-	"""Class containing some information about TSN_Abstracter & Version Checking
-	Yes this looks like a mess."""
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Initialization methods for TSNA-Based Applications and Services.
+	"""
 	VERSION: tuple[int, int, int] = (7,0,0);
 
 
@@ -126,14 +128,20 @@ class TSNA:
 
 	@staticmethod
 	def version(VERSION: tuple[int, int, int] | None = None) -> str:
-		""" Returns a v.X.Y.Z string of the current TSN Abstracter Version (or of a provided Version Tuple) """
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Returns a v.X.Y.Z string of the current TSN Abstracter Version (or of a provided Version Tuple)
+		"""
 		return f"v{".".join(String.ify_Array(TSNA.VERSION if (not VERSION) else VERSION))}";
 
 
 
 	@staticmethod
 	def require(MINIMUM: tuple[int, int, int], QUIT: bool = True) -> bool:
-		"""Returns a boolean confirming if the TSN_Abstracter version provided by the MINIMUM tuple is equal or above, if QUIT is True the program will quit after the exception."""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Returns a boolean confirming if the TSN_Abstracter version provided by the MINIMUM tuple is equal or above, if QUIT is True the program will quit after the exception.
+		"""
 		try:
 			if ((TSNA.VERSION[0] == MINIMUM[0] and TSNA.VERSION[1] >= MINIMUM[1])):
 				if (TSNA.VERSION[1] == MINIMUM[1]):
@@ -152,15 +160,21 @@ class TSNA:
 
 	@staticmethod
 	def denyImport() -> None:
-		"""If your TSNA-Based Application does not support being imported as a Python Module run this when `(__name__ != "__main__")`, this will quit the application with exit code 126."""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		If your TSNA-Based Application does not support being imported as a Python Module run this when `(__name__ != "__main__")`, this will quit the application with exit code 126.
+		"""
 		Log.Critical(f"{App.Name} does not support being imported as a Python Module. Exiting!"); exit(126);
 
 
 
 	@staticmethod
 	def init(Clear_Console: bool = False) -> None:
-		"""When your TSNA-Based Application runs, use this command to print basic information about your Application. (When `(__name__ == "__main__")`)  
-		Provides a single argument to specify if we should clear the console on the App's successful launch."""
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		When your TSNA-Based Application runs, use this command to print basic information about your Application. (When `(__name__ == "__main__")`)  
+		Provides a single argument to specify if we should clear the console on the App's successful launch.
+		"""
 		TSNA.require(App.TSNA, False);
 		if (Clear_Console): Log.Clear();
 		Log.Stateless(f"{App.Name} {App.Branch} {App.version()} © ({App.Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");

@@ -1,4 +1,6 @@
-""" ### Terminal User Interface Framework for TSNA-Based Applications  
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+### Terminal User Interface Framework for TSNA-Based Applications  
 *THIS MODULE IS __NOT__ AUTOMATICALLY IMPORTED BY TSN ABSTRACTER!*  
 Prior knowledge of how `curses` functions is heavily recommended.  
 

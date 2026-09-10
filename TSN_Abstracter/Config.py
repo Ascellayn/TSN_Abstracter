@@ -1,4 +1,5 @@
-"""
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
 This module from TSN Abstracter is in charge of configuring its behavior.  
 
 ### Available Configuration Classes:
@@ -15,6 +16,10 @@ import platform;
 
 # Read Only Attributes, not meant to be modified by the Developer, only by TSNA itself.
 class System:
+	""" ***Implemented in __TSNA `v7.0.0`__***   
+
+	Read-Only (for the end-developer) system data & context.
+	"""
 	OS: str = platform.system();
 	TUI_Enabled: bool = False;
 
@@ -23,7 +28,8 @@ class System:
 
 
 class Logger:
-	"""
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
 	Class used to configure settings related to the TSNA Logger.  
 
 	### General Settings:
@@ -76,7 +82,8 @@ class Logger:
 
 
 class TUI:
-	"""
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
 	Class used to configure settings related to the TUI Framework.
 
 	### Visual Settings:

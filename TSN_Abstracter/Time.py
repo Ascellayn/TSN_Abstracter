@@ -1,4 +1,6 @@
-""" This module from TSN Abstracter is in charge of providing functions related to Time.
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+This module from TSN Abstracter is in charge of providing functions related to Time.
 
 ### Examples
 >>> from TSN_Abstracter import Time;
@@ -26,20 +28,27 @@ type unix_t = int | float;
 
 
 class Dict(TypedDict):
-		Years: NotRequired[int];
-		Months: NotRequired[int];
-		Days: NotRequired[int];
-		Hours: NotRequired[int];
-		Minutes: NotRequired[int];
-		Seconds: NotRequired[int];
-		Milliseconds: NotRequired[int];
-		Microseconds: NotRequired[int];
-		Nanoseconds: NotRequired[int];
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+	
+	Time Dictionary containing the amount of [X] of a particular Unit.
+	"""
+	Years: NotRequired[int];
+	Months: NotRequired[int];
+	Days: NotRequired[int];
+	Hours: NotRequired[int];
+	Minutes: NotRequired[int];
+	Seconds: NotRequired[int];
+	Milliseconds: NotRequired[int];
+	Microseconds: NotRequired[int];
+	Nanoseconds: NotRequired[int];
 
 
 
 class Unit:
-	""" Constants Helpers for Time functions and "Unit Power" related methods. """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Constants Helpers for Time functions and "Unit Power" related methods.
+	"""
 	SHORT: dict[str, str] = {
 		"Years": "Y",
 		"Months": "M",
@@ -71,7 +80,9 @@ class Unit:
 
 	@staticmethod
 	def edges(TIME_DICT: Dict) -> tuple[int, int]:
-		""" Get the maximum and minimum power units of a given Time Dict.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Get the maximum and minimum power units of a given Time Dict.
 
 		Arguments:
 			TIME_DICT (Time.Dict)*: The dictionary containing time, where we'll look for the biggest unit in it.
@@ -100,7 +111,10 @@ class Unit:
 
 
 class Unix:
-	""" Functions to manipulate integers representing Unix Timestamps """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Functions to manipulate integers representing Unix Timestamps
+	"""
 	YEAR: int = 31556925; # Topical Year, this equals roughly to 365 days, 5 hours, 48 minutes and 45 seconds.
 	MONTH: float = 2629743.75; # Topical Year / 12, this equals roughly to 30 days, 10 hours, 29 minutes, 3 seconds and 750 milliseconds and 192 microseconds.
 	DAY: int = 86400;
@@ -113,7 +127,9 @@ class Unix:
 
 	@staticmethod
 	def now(Precise: bool = False) -> unix_t:
-		""" Get an Integer/Float representing Unix Time.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Get an Integer/Float representing Unix Time.
 
 		Arguments:
 			Precise (bool = False): Specify if we want a precise Unix Time.
@@ -131,7 +147,9 @@ class Unix:
 
 	@staticmethod
 	def dawn(UNIX: unix_t) -> unix_t:
-		""" Get the first second of the day specified in the Unix Timestamp.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Get the first second of the day specified in the Unix Timestamp.
 
 		Arguments:
 			Unix (unix_t)*: The Unix Timestamp.
@@ -154,7 +172,9 @@ class Unix:
 
 	@staticmethod
 	def toDatetime(UNIX: unix_t) -> datetime:
-		""" Converts an Unix Timestamp to a datetime object.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Converts an Unix Timestamp to a datetime object.
 
 		Arguments:
 			Unix (unix_t)*: The Unix Timestamp.
@@ -174,7 +194,9 @@ class Unix:
 
 	@staticmethod
 	def fromString(TEXT: str) -> unix_t:
-		""" Get how much time has passed according to the passed string.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Get how much time has passed according to the passed string.
 
 		Arguments:
 			Text (str)*: A string in the format "X{Unit.SHORT} [...]".
@@ -215,10 +237,15 @@ class Unix:
 
 
 class Datetime:
-	""" Functions to manipulate datetime objects """
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Functions to manipulate datetime objects
+	"""
 	@staticmethod
 	def now() -> datetime:
-		""" Get a datetime object of the current date.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Get a datetime object of the current date.
 
 		Returns:
 			datetime: The current Date/Time in a datetime object.
@@ -235,7 +262,9 @@ class Datetime:
 
 	@staticmethod
 	def toUnix(DATETIME: datetime, PRECISE: bool = False) -> unix_t:
-		""" Converts a Datetime Object to a Unix Timestamp.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Converts a Datetime Object to a Unix Timestamp.
 
 		Arguments:
 			DATETIME (datetime)*: Datetime Object to be converted to an Integer or Float.
@@ -257,7 +286,9 @@ class Datetime:
 
 	@staticmethod
 	def fromISO8601(ISO_8601: str) -> datetime:
-		""" Converts ISO 8601 Timestamps to datetime objects.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Converts ISO 8601 Timestamps to datetime objects.
 
 		Arguments:
 			ISO_8601 (str)*: A timestamp in the ISO_8601 format.
@@ -281,7 +312,9 @@ class Datetime:
 class Elapsed:
 	@staticmethod
 	def dict(TIMESTAMP: unix_t) -> Dict:
-		""" Calculate how much time since the Epoch has passed.  
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Calculate how much time since the Epoch has passed.  
 		**NOTE**: Everything is calculated according to a year being **365.25 days** long. This function will breakdown the moment you reach into the days.
 
 		Arguments:
@@ -327,7 +360,9 @@ class Elapsed:
 			UNTIL: int = 0,
 			TRAIL_AT: int = 2,
 		) -> str:
-		""" Gives a dynamically sized string of the amount of time passed.
+		""" ***Implemented in __TSNA `v7.0.0`__***  
+
+		Gives a dynamically sized string of the amount of time passed.
 
 		Arguments:
 			Time (unix_t)*: How much time has passed passed.
@@ -402,7 +437,9 @@ class Elapsed:
 
 
 def dateStrings(Date: unix_t | datetime, REVERSED: bool = True) -> tuple[str, str]:
-	""" Get the specified Timestamp's date and time string in the preferred format.
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	Get the specified Timestamp's date and time string in the preferred format.
 
 	Arguments:
 		Date (unix_t | datetime)*: The timestamp we wish to get readable strings from.

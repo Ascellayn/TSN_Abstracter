@@ -1,4 +1,7 @@
-""" Custom actions triggered by pressing a Key for `TUI.Menu` """
+""" ***Implemented in __TSNA `v7.0.0`__***  
+
+Custom actions triggered by pressing a Key for `TUI.Menu`
+"""
 from .Globals import *;
 
 
@@ -14,7 +17,9 @@ __all__: list[str] = [
 
 @dataclass
 class Keybind:
-	""" A Keybind object to be passed in `TUI.Menu`  
+	""" ***Implemented in __TSNA `v7.0.0`__***  
+
+	A Keybind object to be passed in `TUI.Menu`  
 	**[!]** When a Keybind is called, its first argument is __ALWAYS__ the selected entry from `TUI.Menu` **[!]**
 
 	Arguments:
