@@ -172,7 +172,7 @@ class Awaited_Log:
 
 		>>> Log.Awaited.OK();
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK] """
-		self.Status_Update(f"{TSNDL.Log_Color("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", self.Level);
+		self.Status_Update(f"{TSNDL.Color.log("Green")}[OK{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", self.Level);
 
 
 
@@ -181,7 +181,7 @@ class Awaited_Log:
 
 		>>> Log.Awaited.WARNING("2 Modules Skipped");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped] """
-		self.Status_Update(f"{TSNDL.Log_Color("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 30);
+		self.Status_Update(f"{TSNDL.Color.log("Yellow")}[WARNING{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 30);
 
 
 
@@ -190,7 +190,7 @@ class Awaited_Log:
 
 		>>> Log.Awaited.ERROR("1 Outdated Module");
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR: 1 Outdated Module] """
-		self.Status_Update(f"{TSNDL.Log_Color("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 40);
+		self.Status_Update(f"{TSNDL.Color.log("Red")}[ERROR{f": {Status}" if (Status) else ""}]{String.ASCII.Text.Reset}", 40);
 
 
 
@@ -201,7 +201,7 @@ class Awaited_Log:
 		[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 		Cannot divide by zero.
 		"""
-		self.Status_Update(f"{TSNDL.Log_Color("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{'\n'.join(traceback.format_exception(Except)) if (Traceback) else ""}{String.ASCII.Text.Reset}", 50);
+		self.Status_Update(f"{TSNDL.Color.log("Orange")}[EXCEPTION]{String.ASCII.Text.Reset}\n{String.ASCII.Shortcut.BSOD}{Except}{'\n'.join(traceback.format_exception(Except)) if (Traceback) else ""}{String.ASCII.Text.Reset}", 50);
 		if (Raise): raise Except;
 
 
@@ -389,14 +389,14 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 
 	Level_Color: str;
 	match Level:
-		case 50: Level_Color = TSNDL.Log_Color("Purple"); Level_String = String.ASCII.Text.Blink + "Critical" + String.ASCII.Text.Blink_OFF;
-		case 40: Level_Color = TSNDL.Log_Color("Red"); Level_String = String.ASCII.Text.Blink + "Error" + String.ASCII.Text.Blink_OFF;
-		case 30: Level_Color = TSNDL.Log_Color("Yellow"); Level_String = "Warning";
-		case 25: Level_Color = TSNDL.Log_Color("Blue"); Level_String = "Info";
-		case 20: Level_Color = TSNDL.Log_Color("White"); Level_String = "Stateless";
-		case 15: Level_Color = TSNDL.Log_Color("Cyan"); Level_String = "Debug";
-		case 10: Level_Color = TSNDL.Log_Color("Green"); Level_String = "TSN_Debug";
-		case _: Level_Color = TSNDL.Log_Color("White"); Level_String = "Unknown";
+		case 50: Level_Color = TSNDL.Color.log("Purple"); Level_String = String.ASCII.Text.Blink + "Critical" + String.ASCII.Text.Blink_OFF;
+		case 40: Level_Color = TSNDL.Color.log("Red"); Level_String = String.ASCII.Text.Blink + "Error" + String.ASCII.Text.Blink_OFF;
+		case 30: Level_Color = TSNDL.Color.log("Yellow"); Level_String = "Warning";
+		case 25: Level_Color = TSNDL.Color.log("Blue"); Level_String = "Info";
+		case 20: Level_Color = TSNDL.Color.log("White"); Level_String = "Stateless";
+		case 15: Level_Color = TSNDL.Color.log("Cyan"); Level_String = "Debug";
+		case 10: Level_Color = TSNDL.Color.log("Green"); Level_String = "TSN_Debug";
+		case _: Level_Color = TSNDL.Color.log("White"); Level_String = "Unknown";
 	Logger_Console.setLevel(Level); Logger_File.setLevel(Level);
 
 	# Get function name that called the logger
@@ -414,11 +414,11 @@ def Log(Text: str, Level: int = 0, Caller: str = "") -> None:
 	Date_Str, Time_Str = Time.dateStrings(Time.Unix.now());
 	Logged_Text: str = ""; # Prefix if previous log was Awaited
 
-	if (Config.Logger.Display_Date): Logged_Text += f"{TSNDL.Log_Color("Grey")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
+	if (Config.Logger.Display_Date): Logged_Text += f"{TSNDL.Color.log("Grey")}[{Date_Str} - {Time_Str}]{String.ASCII.Text.Reset} - "; # Date
 
 	if (Level != 20): # Check for Stateless before adding Caller
 		Logged_Text += f"{String.ASCII.Text.Bold}{Level_Color}{Level_String}{String.ASCII.Text.Reset}: "; # Log Level
-		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{TSNDL.Log_Color("Grey")}{Caller}{String.ASCII.Text.Reset} → ";
+		if (Config.Logger.Display_Caller): Logged_Text += f"{String.ASCII.Text.Underline}{TSNDL.Color.log("Grey")}{Caller}{String.ASCII.Text.Reset} → ";
 
 	Logged_Text += Text; # Finally add the actual message we want to Log.
 

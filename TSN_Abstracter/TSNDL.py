@@ -38,9 +38,9 @@ class Hex:
 			tuple (of either 3 or 4 integers): Each element is an integer from a range of 0 to 255, representing in order an RGB(A) Color.
 
 		Examples:
-			>>> TSNDL.Hex_Tuple("#50235080");
+			>>> TSNDL.Hex.toTuple("#50235080");
 			(80, 35, 80, 128)
-			>>> TSNDL.Hex_Tuple("#502350");
+			>>> TSNDL.Hex.toTuple("#502350");
 			(80, 35, 80)
 		"""
 		# Gets rid of the first character if it's an "#"
@@ -78,7 +78,7 @@ class Hex:
 			ValueError: If the provided Hex Character is not one.
 
 		Examples:
-			>>> TSNDL.Hex_To_Decimal("F");
+			>>> TSNDL.Hex.toDecimal("F");
 			15
 		"""
 		decimal: int = 0;
@@ -114,7 +114,7 @@ class Hex:
 			str: The ASCII Color escape sequence string.
 
 		Examples:
-			>>> TSNDL.ASCII_Color(TSNDL.Color.Sun.White);
+			>>> TSNDL.Hex.toASCII(TSNDL.Color.Sun.White);
 			# TSNDL.Color.Sun.White = (255, 250, 255)
 			"\x1b[38;2;255;250;255m"
 		"""
@@ -239,7 +239,7 @@ class Color:
 			str: The ASCII Color escape sequence string depending on the TSNA Config.
 
 		Examples:
-			>>> TSNDL.Log_Color("White");
+			>>> TSNDL.Color.log("White");
 			"\x1b[38;2;255;250;255m"
 		"""
 		return Hex.toASCII(
