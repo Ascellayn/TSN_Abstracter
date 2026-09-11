@@ -322,17 +322,27 @@ class Elapsed:
 		Returns:
 			Dictionary with every key containing an Integer correspond to how much [KEY NAME] has passed since the Epoch.
 		"""
-		time_dict: Dict = { # The ints are required because otherwise we have a trailing ".X"
-			"Years": int(TIMESTAMP // Unix.YEAR),
-			"Months": int((TIMESTAMP // Unix.MONTH) % 12),
-			"Days": int((TIMESTAMP // Unix.DAY) % Unix.MONTH / (Unix.HOUR*24)), # This is stupid, but this is what you have to do to avoid dealing with leap years entirely
-
-			"Hours": int((TIMESTAMP // Unix.HOUR) % 24),
-			"Minutes": int((TIMESTAMP // Unix.MINUTE) % 60),
-			"Seconds": int(math.floor(TIMESTAMP % 60)),
+		time_dict: Dict = {
+			"Years": int(TIMESTAMP // Unix.YEAR)
 		};
 
-		x: unix_t = TIMESTAMP;
+		x: unix_t = TIMESTAMP % Unix.YEAR;
+		time_dict["Months"] = math.floor(x // Unix.MONTH);
+
+		x = x % Unix.MONTH;
+		time_dict["Days"] = math.floor(x // Unix.DAY);
+
+		x = x % Unix.DAY;
+		time_dict["Hours"] = math.floor(x // Unix.HOUR);
+
+		x = x % Unix.HOUR;
+		time_dict["Minutes"] = math.floor(x // Unix.MINUTE);
+
+		x = x % Unix.MINUTE;
+		time_dict["Seconds"] = math.floor(x);
+
+
+
 		x -= math.floor(x);
 		x = x*1000;
 		time_dict["Milliseconds"] = int(x);
