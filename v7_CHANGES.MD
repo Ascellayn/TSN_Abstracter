@@ -69,13 +69,14 @@
 
 - ### `File` Changes
 	- `CSV` support. (TBD)
-	- `DIRECTORY` is now far more accurate as TSNA now sets it to the location of `App.tsna` if it can be found.
+	- `DIRECTORY` is now far more accurate as TSNA now sets it to the location of `App.tsna` if it can be found, it also uses `ArgV[0]` instead of `__file__` to get where the TSNA Project is.
 	- Optimized `File.Path.folder()` by using the modern ancient technology of learning that `os.dirname()` exists.
 	- The `Append` argument no longer exists for `File.write()`, it instead was sent to be on its own function to reduce unnecessary operations on a barely used feature. This also helps improve code readability by not having confusing `write()` calls everywhere that in the end appends data.
 	- Improved the `Folder_*` types by adding `Folder_Name`, `File_Name` TypeAliases to improve readability.
 	- Deleted `Folder_Tree` and modified `Folder_Matrix` to make better sense.
 		- Reworked `File.tree()` as a consequence, the code is also SIGNIFICANTLY more readable.
-	- Rewrote core `read()` `write()` functions to be faster (TBD)
+	- Rewrote `read()` `write()` functions to be faster (TBD)
+	- Added `[read/write/append]Bytes()` functions.
 	- Renamed Constant `Main_Directory` → `DIRECTORY`
 	- Renamed function `File.Exists()` → `File.exists()`
 	- Renamed function `File.List()` → `File.ls()`

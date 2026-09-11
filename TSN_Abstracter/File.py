@@ -8,19 +8,19 @@ This module from TSN Abstracter is in charge of providing functions related to F
 True
 """
 from . import Log, String;
-import pathlib, os, lzma, json, typing;
-from typing import Any, TypeAlias;
+import pathlib, os, lzma, json, sys;
+from typing import Any, Mapping, TypeAlias;
 
 
 
 
 
 # Get folder where the TSNA Application is located by searching for App.tsna, if it can't be found then use `__file__`.
-tmp: list[str] = os.path.dirname(__file__).split("/");
+tmp: list[str] = os.path.dirname(sys.argv[0]).split("/");
 while (len(tmp) != 0):
 	if (pathlib.Path(f"/{'/'.join(tmp)}/App.tsna").exists()): break;
 	tmp.pop();
-DIRECTORY: str = os.path.dirname(__file__) if (len(tmp) == 0) else f"/{'/'.join(tmp)}";
+DIRECTORY: str = os.path.dirname(__file__) if (len(tmp) == 0) else "/".join(tmp);
 del tmp;
 
 
@@ -348,7 +348,7 @@ def readJSON(PATH: str, COMPRESSED: bool = False) -> dict[str, Any]:
 
 
 
-def writeJSON(PATH: str, Data: typing.Mapping[str, Any] | list[Any], COMPRESSED: bool = False) -> bool:
+def writeJSON(PATH: str, Data: Mapping[str, Any] | list[Any], COMPRESSED: bool = False) -> bool:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	`write()` Wrapper for writing JSON Files.  
@@ -375,7 +375,7 @@ def writeJSON(PATH: str, Data: typing.Mapping[str, Any] | list[Any], COMPRESSED:
 
 
 
-def appendJSON(PATH: str, Dictionary: typing.Mapping[str, Any], COMPRESSED: bool = False) -> bool:
+def appendJSON(PATH: str, Dictionary: Mapping[str, Any], COMPRESSED: bool = False) -> bool:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	`write()` Wrapper for updating data to JSON Files.  
