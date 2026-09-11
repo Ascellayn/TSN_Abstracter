@@ -24,8 +24,8 @@ def Log_Path() -> str:
 		str: A relative path to the Log Files Folder.
 	"""
 	# Check if the Logs folder doesn't exist, create it if it isn't, only if File Logging is enabled.
-	if (Config.Logger.File): File.Path_Require(Config.Logger.File_Folder);
-	return f"{File.Main_Directory}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
+	if (Config.Logger.File): File.Path.require(Config.Logger.File_Folder);
+	return f"{File.DIRECTORY}/{Config.Logger.File_Folder}/{datetime.datetime.now().strftime("%Y-%m_%d")}.log";
 
 # Configure Loggers
 Logger_Console: logging.Logger = logging.getLogger("TSN-Console"); Logger_Console.addHandler(logging.StreamHandler(stream=sys.stdout));
@@ -41,7 +41,7 @@ def Verify_Config() -> None:
 	global Logger_File;
 	if (Config.Logger.File and not Config.Logger.Disable):
 		Logger_File.handlers = [logging.FileHandler(filename=Log_Path())];
-		File.Path_Require(Config.Logger.File_Folder);
+		File.Path.require(Config.Logger.File_Folder);
 	else: Logger_File.handlers = [];
 
 
@@ -486,4 +486,4 @@ def Delete() -> None:
 	"""
 	Clear();
 	Critical("=== DELETING THE LOG FILE! ===");
-	File.Write(Log_Path(), "");
+	File.write(Log_Path(), "");

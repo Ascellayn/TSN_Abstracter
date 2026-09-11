@@ -220,10 +220,10 @@ def reload(Path: str | None = None) -> None:
 	Attempt to reload all information stored inside `App.tsna`
 	"""
 	if (not Path):
-		if (File.Exists(f"{File.Main_Directory}/App.tsna")): reload(f"{File.Main_Directory}/App.tsna");
-		if (File.Exists("App.tsna")): reload("App.tsna");
+		if (File.exists(f"{File.DIRECTORY}/App.tsna")): reload(f"{File.DIRECTORY}/App.tsna");
+		if (File.exists("App.tsna")): reload("App.tsna");
 	else:
-		app_tsna: Type.Dictionary = cast(Type.Dictionary, File.Read_JSON(Path));
+		app_tsna: Type.Dictionary = cast(Type.Dictionary, File.readJSON(Path));
 		if ("Private" in app_tsna): del app_tsna["Private"]; # You are not supposed to insert ANYTHING in the Private key from the App.tsna file, only within the code you should access this.
 		load(app_tsna);
 		del app_tsna;

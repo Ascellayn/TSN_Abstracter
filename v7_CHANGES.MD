@@ -69,6 +69,28 @@
 
 - ### `File` Changes
 	- `CSV` support. (TBD)
+	- `DIRECTORY` is now far more accurate as TSNA now sets it to the location of `App.tsna` if it can be found.
+	- Optimized `File.Path.folder()` by using the modern ancient technology of learning that `os.dirname()` exists.
+	- The `Append` argument no longer exists for `File.write()`, it instead was sent to be on its own function to reduce unnecessary operations on a barely used feature. This also helps improve code readability by not having confusing `write()` calls everywhere that in the end appends data.
+	- Improved the `Folder_*` types by adding `Folder_Name`, `File_Name` TypeAliases to improve readability.
+	- Deleted `Folder_Tree` and modified `Folder_Matrix` to make better sense.
+		- Reworked `File.tree()` as a consequence, the code is also SIGNIFICANTLY more readable.
+	- Rewrote core `read()` `write()` functions to be faster (TBD)
+	- Renamed Constant `Main_Directory` → `DIRECTORY`
+	- Renamed function `File.Exists()` → `File.exists()`
+	- Renamed function `File.List()` → `File.ls()`
+	- Renamed function `File.Tree()` → `File.tree()`
+	- Renamed function `File.Read()` → `File.read()`
+	- Renamed function `File.Write()` → `File.write()`
+	- Renamed function `File.Read_JSON()` → `File.readJSON()`
+	- Renamed function `File.Write_JSON()` → `File.writeJSON()`
+	- Renamed function `File.Update_JSON()` → `File.appendJSON()`
+	- Renamed function `File.Read_Array()` → `File.readArray()`
+	- Renamed function `File.Write_Array()` → `File.writeArray()`
+	- Renamed function `File.Update_Array()` → `File.appendArray()`
+	- Renamed function `File.Path_Create()` → `File.Path.create()`
+	- Renamed function `File.Path_Require()` → `File.Path.require()`
+	- Renamed function `File.Path_Folder()` → `File.Path.folder()`
 
 
 
