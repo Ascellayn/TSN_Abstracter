@@ -37,7 +37,7 @@ def abbreviate(Text: str, MAX_LENGTH: int, ABBREVIATION: str = "(...)") -> str:
 
 
 
-def trailingZero(NUMBER: int, ZEROS: int = 2) -> str:
+def trailingZero(NUMBER: int | float, ZEROS: int = 2) -> str:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Adds trailing Zeros to a specified Number.

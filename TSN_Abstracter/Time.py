@@ -10,7 +10,7 @@ This module from TSN Abstracter is in charge of providing functions related to T
 from . import String;
 
 
-from typing import TypedDict, NotRequired;
+from typing import TypedDict, NotRequired, cast;
 from datetime import datetime;
 import time, math;
 
@@ -101,7 +101,7 @@ class Unit:
 			if (K not in Unit.POWER.keys()): raise ValueError(f"Invalid Key in Time Dict: \"{K}\".");
 
 			if (TIME_DICT[K] != 0):
-				if (Unit.POWER[K] > unit_biggest): unit_smallest = Unit.POWER[K];
+				if (Unit.POWER[K] > unit_biggest): unit_biggest = Unit.POWER[K];
 				unit_smallest = Unit.POWER[K];
 
 		return unit_biggest, unit_smallest;
@@ -341,8 +341,6 @@ class Elapsed:
 		x = x % Unix.MINUTE;
 		time_dict["Seconds"] = math.floor(x);
 
-
-
 		x -= math.floor(x);
 		x = x*1000;
 		time_dict["Milliseconds"] = int(x);
@@ -365,10 +363,10 @@ class Elapsed:
 			DELIMITER: str = ", ",
 			UNITS: bool = True, UNITS_LONG: bool = False,
 				*,
-			BIGGER: bool = False, BIGGER_START: int = 2,
-			START: int = 6, SMALLER: bool = True,
-			UNTIL: int = 0,
-			TRAIL_AT: int = 2,
+			UNTIL: int = Unit.POWER["Seconds"],
+			BIGGER: bool = False, SMALLER: bool = True,
+			BIGGER_START: int = Unit.POWER["Hours"],
+			TRAIL_AT: int = Unit.POWER["Hours"],
 		) -> str:
 		""" ***Implemented in __TSNA `v7.0.0`__***  
 
@@ -377,14 +375,13 @@ class Elapsed:
 		Arguments:
 			Time (unix_t): How much time has passed passed.
 			Delimiter (str = ", "): What should separate each unit.
-			BIGGER (bool = False): Should we still display units that are bigger than the smallest unit available?
-			BIGGER_START (int = 6): At what "Unit Power" we should start displaying the time passed, even if the specified `Time` is too small to naturally display the unit.
-			START (int = 2): At what "Unit Power" we should start displaying the time passed.
-			SMALLER (bool = True): Should we still display units that are smaller than the smallest unit available?
-			UNTIL (int = 0): Until what "Unit Power" we should display the time passed.
-			TRAIL_AT (int = 2): At what "Unit Power" we should start adding trailing Zeros.
 			UNITS (bool = True): Allow the display of units.
 			UNITS_LONG (bool = False): Display full length units instead of just their short name.
+			*UNTIL (int = Unit.POWER["Seconds"]): Until what "Unit Power" we should display the time passed.
+			*BIGGER (bool = False): Should we still display units that are bigger than the smallest unit available?
+			*SMALLER (bool = True): Should we still display units that are smaller than the smallest unit available?
+			*BIGGER_START (int = Unit.POWER["Hours"]): At what "Unit Power" we should start displaying the time passed, even if the specified `Time` is too small to naturally display the unit.
+			*TRAIL_AT (int = Unit.POWER["Hours"]): At what "Unit Power" we should start adding trailing Zeros.
 
 		Returns:
 			str: The amount of time that has passed in the format "X{Unit}{Delimiter}".
@@ -393,49 +390,25 @@ class Elapsed:
 			>>> Time.Elapsed_String(69420, ":", UNITS=False)
 			"19:17:00"
 		"""
-		time_dict: Dict = Elapsed.dict(TIME);
+		TIME_DICT: Dict = Elapsed.dict(TIME);
+		BIGGEST, SMALLEST = Unit.edges(TIME_DICT);
 		string: str = "";
 
-		unit_bigger, unit_smaller = Unit.edges(time_dict);
-		if (SMALLER): unit_smaller = UNTIL;
+		MAX: int = max(BIGGER_START, BIGGEST) if (BIGGER) else BIGGEST;
+		MIN: int = UNTIL if (UNTIL > SMALLEST and SMALLER) else SMALLEST;
+		del BIGGEST; del SMALLEST;
 
-		for K in time_dict.keys():
-			power = Unit.POWER[K]; display: bool = False;
 
-			if (time_dict[K] != 0): display = True;
-			if (BIGGER and (BIGGER_START >= power)): display = True;
-			if (SMALLER and (unit_bigger >= power)): display = True;
-			if (START < power): display = False;
-			if (UNTIL > power): display = False;
-			#print(f"{Key}: {display} | Trailing: {String.trailingZero(time_dict[Key])}");
-			if (display):
-				suffix: str = DELIMITER if ((power) != unit_smaller) else "";
+		for K, V in TIME_DICT.items():
+			POWER: int = Unit.POWER[K];
+			if (POWER > MAX or MIN > POWER): continue;
 
-				# Tried my best to make this slightly readable, pretty sure I failed.
-				string += \
-	f"{
-		(
-			String.trailingZero(time_dict[K]) # pyright: ignore[reportUnknownArgumentType]
-			if (K not in ["Milliseconds", "Microseconds", "Nanoseconds"])
-			else String.trailingZero(time_dict[K], 4) # pyright: ignore[reportUnknownArgumentType]
-		)
-		if (TRAIL_AT >= power)
-		else time_dict[K]
-	}\
-	{
-		(
-			' ' + (
-				K.lower()
-				if (time_dict[K] > 1)
-				else K.lower()[:-1]
-			)
-			if (UNITS_LONG)
-			else Unit.SHORT[K]
-		)
-		if (UNITS)
-		else ""
-	}\
-	{suffix}";
+
+			string += str(V) if (POWER >= TRAIL_AT) else String.trailingZero(cast(int | float, V), 4 if (0 > POWER) else 2);
+			if (UNITS): string += f" {K}" if (UNITS_LONG) else Unit.SHORT[K];	# Units below seconds 4 trailing zeros
+			if (POWER != MIN):
+				string += DELIMITER;
+
 
 		return string;
 

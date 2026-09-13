@@ -126,6 +126,7 @@
 
 
 - ### `String` Changes
+	- `String.trailingZero()` now properly accepts `float` values.
 	- Renamed function `String.ify_Array()` → `String.ifyArray()`
 	- Renamed function `String.Bulk_Replace()` → `String.bulkReplace()`
 	- Renamed function `String.Trailing_Zero()` → `String.trailingZero()`
@@ -143,6 +144,9 @@
 		- This equals roughly to 365 days, 5 hours, 48 minutes and 45 seconds.
 	- TSNA now considers a month to be as long as a **tropical year divided by 12**
 		- This equals roughly to 30 days, 10 hours, 29 minutes, 3 seconds and 750 milliseconds and 192 microseconds.
+	- `Time.Elapsed.string()` has been entirely rewritten for speed.
+		- The `START` argument was removed.
+		- Fixed a bug where units that had a value of 0 would never show up.
 	- `Time.Elapsed.dict()` has been made slower in order to make the code significantly more readable and accurate.
 	- `Time.Elapsed.dict()` now uses the defined values in `Unix.[UNIT]` whenever applicable.
 	- `Time.Unix.fromString()` now uses the defined values in `Unix.[UNIT]` whenever applicable.
@@ -150,6 +154,7 @@
 	- You can now acquire directly a datetime object of the current time (similar to `Time.Unix.now()`) with `Time.Datetime.now()`.
 	- Created new `Unit` class to regroup constants under `Unit_*`
 	- Created new `Elapsed` class to regroup all functions related to time passing.
+	- Fixed a bug where in between units would not show if their value was 0 in `Time.Elapsed.string()` (TBD)
 	- Renamed function `Time.Get_Unix()` → `Time.Unix.now()`
 	- Renamed function `Time.Get_Dawn()` → `Time.Unix.dawn()`
 	- Renamed function `Time.Convert_Unix()` → `Time.Unix.toDatetime()`
