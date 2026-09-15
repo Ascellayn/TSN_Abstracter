@@ -190,7 +190,6 @@
 	- You can now acquire directly a datetime object of the current time (similar to `Time.Unix.now()`) with `Time.Datetime.now()`.
 	- Created new `Unit` class to regroup constants under `Unit_*`
 	- Created new `Elapsed` class to regroup all functions related to time passing.
-	- Fixed a bug where in between units would not show if their value was 0 in `Time.Elapsed.string()` (TBD)
 	- Renamed function `Time.Get_Unix()` → `Time.Unix.now()`
 	- Renamed function `Time.Get_Dawn()` → `Time.Unix.dawn()`
 	- Renamed function `Time.Convert_Unix()` → `Time.Unix.toDatetime()`

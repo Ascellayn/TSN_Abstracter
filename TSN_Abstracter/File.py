@@ -299,10 +299,10 @@ def write(PATH: str, DATA: str, COMPRESSED: bool = False, APPEND: bool = False) 
 			else:
 				with open(PATH, mode, encoding="UTF-8") as FILE: FILE.write(DATA); # pyright: ignore[reportConstantRedefinition] // you are fucking stupid pyright
 
-			Log.Awaited().OK(); return True;
+			Log.ok(); return True;
 		except Exception as Except:
 			if (not Log.gable(10)): Log.error(f"{'Writing' if (mode == "w") else 'Appending'} {PATH} - Compression: {COMPRESSED} - Data: {len(DATA)} Characters\n{String.ASCII.Shortcut.BSOD}{Except}");
-			else: Log.Awaited().EXCEPTION(Except);
+			else: Log.exception(Except);
 	return False;
 
 
