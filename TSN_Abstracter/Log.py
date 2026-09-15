@@ -37,7 +37,7 @@ Status_File: str | None = None;
 
 
 
-def __updateFile() -> None:
+def _updateFile() -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Internal Logging Function used to re-add the File Handler when the TSNA Configuration updates.  
@@ -102,8 +102,8 @@ def caller(Depth: int = 2) -> str:
 	Returns:
 		str: The name of the function or module name.
 	"""
-	caller: str = inspect.getouterframes(inspect.currentframe())[Depth][3];
-	return App.Codename if (caller == "<module>") else caller;
+	Caller: str = inspect.getouterframes(inspect.currentframe())[Depth][3];
+	return App.Codename if (Caller == "<module>") else Caller;
 
 
 
@@ -181,14 +181,14 @@ class Status:
 
 	Awaited Logs are automatically created when Log Entries end with "...", changing the status of the log will replace said ellipsis with the new status.
 	"""
-	def __init__(self, LEVEL: int, CALLER: str, TEXT: str) -> None:
+	def __init__(self, LEVEL: int, Caller: str, TEXT: str) -> None:
 		self.Level: int = LEVEL;
-		self.CALLER: str = CALLER;
+		self.Caller: str = Caller;
 		self.TEXT = TEXT[:-3] if (TEXT[-4:] == " ...") else TEXT[:-3] + " ";
 
 
 
-	def __str__(self) -> str: return f"{self.Level}: {self.CALLER}() - {self.TEXT}";
+	def __str__(self) -> str: return f"{self.Level}: {self.Caller}() - {self.TEXT}";
 	def __repr__(self) -> str: return self.__str__();
 
 
@@ -222,7 +222,7 @@ class Status:
 		if (gable(LEVEL)):
 			# Update Console Log Entry
 			if (self.Level >= Config.Logger.Print_Level):
-				if (Status_Console == self.CALLER):
+				if (Status_Console == self.Caller):
 					if (do_return): CONSOLE.log(self.Level, String.ASCII.Line.Return + self.TEXT + STATUS);
 					else: CONSOLE.log(self.Level, self.TEXT + STATUS);
 
@@ -230,11 +230,11 @@ class Status:
 				else: CONSOLE.log(self.Level, self.TEXT + STATUS);
 
 			# Update File Log Entry
-			__updateFile();
+			_updateFile();
 			if (Config.Logger.File and (self.Level >= Config.Logger.File_Level)):
 
 				# Check if we can easily overwrite the last line
-				if (Status_File == self.CALLER and do_return):
+				if (Status_File == self.Caller and do_return):
 					# warn: This is slow, should come up with a better solution in the future
 					Lines: list[str] = open(path(), "r").readlines();
 					Lines[-1] = String.ASCII.clearFormatting(f"{self.TEXT}{STATUS}\n");
@@ -303,30 +303,30 @@ class StatusDummy(Status):
 
 
 
-def status(CALLER: str = caller()) -> Status | StatusDummy:
+def status(Caller: str | None = None) -> Status | StatusDummy:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Get the latest Awaited Log, you may specify a Custom Caller if you wish to handle the Log of another function.  
 	Using this function is generally not recommended if you're going to run the usual `.ok()`, `.alert()`, `.bad()` or `.exception()` methods, as doing so here is slower. Only use this function if you know what you're doing.
 	
 	Arguments:
-		CALLER (str = caller()): A custom name for the caller.
+		Caller (str | None = None): A custom name for the caller.
 
 	Returns:
 		Status/StatusDummy: The corresponding Log Object or a Dummy one if it wasn't found.
 
 	"""
-	global Statuses;
+	if (not Caller): Caller = caller();
 
-	if (CALLER in Statuses.keys()):
-		status: Status = Statuses[CALLER].pop();
-		if (len(Statuses[CALLER]) == 0): del Statuses[CALLER];
+	if (Caller in Statuses.keys()):
+		status: Status = Statuses[Caller].pop();
+		if (len(Statuses[Caller]) == 0): del Statuses[Caller];
 		return status;
 	return StatusDummy();
 
 
 
-def ok(TEXT: str | None = None, CALLER: str = caller()) -> None:
+def ok(TEXT: str | None = None, Caller: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	More optimized shortcut for `Log.status().ok()`.  
@@ -334,19 +334,22 @@ def ok(TEXT: str | None = None, CALLER: str = caller()) -> None:
 
 	Arguments:
 		TEXT (str | None = None): Extra text to add after `OK`, pre-appends `: `.
-		CALLER (str = caller()): Which function has an active Status Log, can be set to something customized.
+		Caller (str | None = None): Which function has an active Status Log, can be set to something customized. By default, automatically attempts to get the running function.
 
 
 	>>> Log.Status.ok();
 	[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [OK]
 	"""
-	statuses: list[Status] | None = Statuses.get(CALLER);
-	if (not statuses): return;
-	Statuses[CALLER].pop().ok(TEXT);
+	if (not Caller): Caller = caller();
+	statuses: list[Status] | None = Statuses.get(Caller);
+	if (not statuses): 
+		print(Caller);
+		return;
+	Statuses[Caller].pop().ok(TEXT);
 
 
 
-def alert(TEXT: str | None = None, CALLER: str = caller()) -> None:
+def alert(TEXT: str | None = None, Caller: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	More optimized shortcut for `Log.status().alert()`.  
@@ -354,19 +357,20 @@ def alert(TEXT: str | None = None, CALLER: str = caller()) -> None:
 
 	Arguments:
 		TEXT (str | None = None): Extra text to add after `WARNING`, pre-appends `: `.
-		CALLER (str = caller()): Which function has an active Status Log, can be set to something customized.
+		Caller (str | None = None): Which function has an active Status Log, can be set to something customized. By default, automatically attempts to get the running function.
 
 
 	>>> Log.Status.error("1 Outdated Module");
 	[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [ERROR: 1 Outdated Module]
 	"""
-	statuses: list[Status] | None = Statuses.get(CALLER);
+	if (not Caller): Caller = caller();
+	statuses: list[Status] | None = Statuses.get(Caller);
 	if (not statuses): return;
-	Statuses[CALLER].pop().alert(TEXT);
+	Statuses[Caller].pop().alert(TEXT);
 
 
 
-def bad(TEXT: str | None = None, CALLER: str = caller()) -> None:
+def bad(TEXT: str | None = None, Caller: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	More optimized shortcut for `Log.status().bad()`.  
@@ -374,15 +378,16 @@ def bad(TEXT: str | None = None, CALLER: str = caller()) -> None:
 
 	Arguments:
 		TEXT (str | None = None): Extra text to add after `ERROR`, pre-appends `: `.
-		CALLER (str = caller()): Which function has an active Status Log, can be set to something customized.
+		Caller (str | None = None): Which function has an active Status Log, can be set to something customized. By default, automatically attempts to get the running function.
 
 
 	>>> Log.Status.warn("2 Modules Skipped");
 	[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [WARNING: 2 Modules Skipped]
 	"""
-	statuses: list[Status] | None = Statuses.get(CALLER);
+	if (not Caller): Caller = caller();
+	statuses: list[Status] | None = Statuses.get(Caller);
 	if (not statuses): return;
-	Statuses[CALLER].pop().bad(TEXT);
+	Statuses[Caller].pop().bad(TEXT);
 
 
 
@@ -390,7 +395,7 @@ def exception(
 		EXCEPTION: Exception,
 		RAISE: bool = False,
 		TRACEBACK: bool = True,
-		CALLER: str = caller()
+		Caller: str | None = None
 	) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
@@ -401,16 +406,17 @@ def exception(
 		EXCEPTION (Exception): The caught exception to log.
 		RAISE (bool = False): Whenever to throw the exception again.
 		TRACEBACK (bool = True): Whenever to show a more detailed error on why the exception happened.
-		CALLER (str = caller()): Which function has an active Status Log, can be set to something customized.
+		Caller (str | None = None): Which function has an active Status Log, can be set to something customized. By default, automatically attempts to get the running function.
 
 
 	>>> Log.Status.exception(Except);
 	[2016/05/20 - 17:00:00] - Info: setup_hook → Loading Kosaka [EXCEPTION]
 	Cannot divide by zero.
 	"""
-	statuses: list[Status] | None = Statuses.get(CALLER);
+	if (not Caller): Caller = caller();
+	statuses: list[Status] | None = Statuses.get(Caller);
 	if (not statuses): return;
-	Statuses[CALLER].pop().exception(EXCEPTION, RAISE, TRACEBACK);
+	Statuses[Caller].pop().exception(EXCEPTION, RAISE, TRACEBACK);
 
 
 
@@ -559,7 +565,7 @@ def crit(TEXT: str) -> None:
 
 
 # The actual logging function
-def log(TEXT: str, LEVEL: int = 0, CALLER: str = caller(3)) -> None:
+def log(TEXT: str, LEVEL: int = 0, Caller: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a message depending on its Level, logging the Caller and Time if it was enabled or is possible into the Python Console or a File according to the TSNA Config.
@@ -568,7 +574,7 @@ def log(TEXT: str, LEVEL: int = 0, CALLER: str = caller(3)) -> None:
 	Arguments:
 		Text (str): String corresponding to the message to Log.
 		Level (int = 0): Integer corresponding to how severe the message is.
-		Caller (str = caller(3)): Enforce the displayed function that called the Logger, if left empty, automatically figure out who called the Logger.
+		Caller (str = caller()): Enforce the displayed function that called the Logger, if left empty, automatically figure out who called the Logger.
 	
 	Examples:
 		>>> Log.log("Hug a Mika a day, keeps your sanity away~", 30, "Ascellayn");
@@ -576,7 +582,9 @@ def log(TEXT: str, LEVEL: int = 0, CALLER: str = caller(3)) -> None:
 	"""
 	global Statuses, Status_Console, Status_File, FILE; # Awaiting Log System Bullshit & Janky bug fix for date issues
 	if (not gable(LEVEL) and not Config.Logger.Awaited_Status): return;
-
+	if (not Caller):
+		Caller = caller(3);
+	# This causes bugs if `log()` is called directly, in the name of performance this should stay this way however.
 
 
 	Level_Color: str; Level_String: str;
@@ -594,9 +602,8 @@ def log(TEXT: str, LEVEL: int = 0, CALLER: str = caller(3)) -> None:
 
 	# Detects if the logged text is going to await a status update and changes the terminator accordingly, includes prefix.
 	if (TEXT.endswith("...")):
-		if (LEVEL >= Config.Logger.Print_Level): Status_Console = CALLER;
-		if (LEVEL >= Config.Logger.File_Level): Status_File = CALLER;
-
+		if (LEVEL >= Config.Logger.Print_Level): Status_Console = Caller;
+		if (LEVEL >= Config.Logger.File_Level): Status_File = Caller;
 
 
 	# Log Message Formatting
@@ -608,20 +615,18 @@ def log(TEXT: str, LEVEL: int = 0, CALLER: str = caller(3)) -> None:
 
 		if (LEVEL != 20): # Check for Stateless before adding Caller
 			log_text += f"{String.ASCII.Text.Bold}{Level_Color}{Level_String}{String.ASCII.Text.Reset}: "; # Log Level
-			if (Config.Logger.Display_Caller): log_text += f"{String.ASCII.Text.Underline}{TSNDL.Color.log("Grey")}{CALLER}{String.ASCII.Text.Reset} → ";
+			if (Config.Logger.Display_Caller): log_text += f"{String.ASCII.Text.Underline}{TSNDL.Color.log("Grey")}{Caller}{String.ASCII.Text.Reset} → ";
 
 	log_text += TEXT; # Finally add the actual message we want to Log.
-
 
 
 	# Verify for both the Console and File if the Level is high enough before logging. Also refuses to log if the TUI is currently enabled.
 	if (LEVEL >= Config.Logger.Print_Level and not Config.System.TUI_Enabled): CONSOLE.log(LEVEL, log_text);
 
-	__updateFile();
+	_updateFile();
 	if (Config.Logger.File and (LEVEL >= Config.Logger.File_Level)):
 		FILE.log(LEVEL, String.ASCII.clearFormatting(log_text));
 
 
-
-	if (CALLER not in Statuses.keys()): Statuses[CALLER] = [];
-	Statuses[CALLER].append(Status(LEVEL, CALLER, log_text));
+	if (Caller not in Statuses.keys()): Statuses[Caller] = [];
+	Statuses[Caller].append(Status(LEVEL, Caller, log_text));
