@@ -72,10 +72,10 @@ class Logger:
 	TSNDL_Group: str = "Sun";
 
 	File: bool = False;
-	File_Level: int = 20;
+	File_Level: int = 15;
 	File_Folder: str = "Logs";
 
-	Print_Level: int = 20;
+	Print_Level: int = 15;
 
 	Awaited_Status: bool = True;
 

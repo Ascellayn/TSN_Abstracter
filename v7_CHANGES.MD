@@ -96,7 +96,43 @@
 
 
 - ### `Log` Changes
-	- (TBD)
+	- Added `Log.ok()`, `Log.alert()`, `Log.bad()` and `Log.except()` which are faster and more efficient shortcuts to status logs' methods.
+	- Added `Log.text()`, which ONLY prints text to the console / log file and nothing else.
+		- Its logging level is 15.
+		- **By consequence, the default printing level is now 15 instead of 20!**
+	- `debugTSN` Logs are now level 5.
+	- `debug` Logs are now level 10.
+	- `Log.caller()` has been optimized and returns `App.Codename` instead of `TSN_Abstracter.Log` when the log is executed at the root level.
+	- Solved `Status_Dummy` having the wrong method name for `Warning`.
+	- Renamed constant `Log.Log_Console()` → `Log.CONSOLE()`
+	- Renamed constant `Log.Log_File()` → `Log.FILE()`
+	- Renamed global variable `Log.Awaited_Logs` → `Log.Statuses`
+	- Renamed global variable `Log.Awaited_Console` → `Log.StatusConsole`
+	- Renamed global variable `Log.Awaited_File` → `Log.StatusFile`
+	- Renamed function `Log.Verify_Config()` → `Log.__updateFile()`
+	- Renamed function `Log.Can_Log()` → `Log.gable()`
+	- Renamed function `Log.Log_Path()` → `Log.path()`
+	- Renamed function `Log.Get_Caller()` → `Log.caller()`
+	- Renamed function `Log.Clear()` → `Log.clear()`
+	- Renamed function `Log.Delete()` → `Log.delete()`
+	- Renamed function `Log.Carriage()` → `Log.carriage()`
+	- Renamed class `Log.Awaited_Log` → `Log.Status` and renamed methods:
+		- Renamed method `Log.Status.Status_Update()` → `Log.Status.update()`
+		- Renamed method `Log.Status.OK()` → `Log.Status.ok()`
+		- Renamed method `Log.Status.WARNING()` → `Log.Status.alert()`
+		- Renamed method `Log.Status.ERROR()` → `Log.Status.bad()`
+		These may seem like an odd change, but this is to avoid conflicts with the new quick status changes from `Log.ok()` / `Log.except()`.
+		- Renamed method `Log.Status.EXCEPTION()` → `Log.Status.except()`
+		- These changes are also applied to `Log.StatusDummy` (which itself was renamed from `Log.Awaited_Dummy`)
+	- Renamed function `Log.Awaited()` → `Log.status()`
+	- Renamed function `Log.TSN_Debug()` → `Log.debugTSN()`
+	- Renamed function `Log.Debug()` → `Log.debug()`
+	- Renamed function `Log.Stateless()` → `Log.stateless()`
+	- Renamed function `Log.Info()` → `Log.info()`
+	- Renamed function `Log.Warning()` → `Log.warn()`
+	- Renamed function `Log.Error()` → `Log.error()`
+	- Renamed function `Log.Critical()` → `Log.crit()`
+	- Renamed function `Log.Log()` → `Log.log()`
 
 
 

@@ -184,7 +184,7 @@ class Path:
 
 		try: os.makedirs(PATH_FOLDER); return True;
 		except Exception as Error:
-			Log.Error(f"Create Folder Structure: \"{PATH_FOLDER}\"\n{String.ASCII.Shortcut.BSOD}{Error}");
+			Log.error(f"Create Folder Structure: \"{PATH_FOLDER}\"\n{String.ASCII.Shortcut.BSOD}{Error}");
 			return False;
 
 
@@ -230,15 +230,6 @@ class Path:
 			"trade_secrets"
 		"""
 		return os.path.dirname(PATH);
-		"""
-		absolute: bool = True if (PATH[:1] == "/") else False;
-		if (PATH[-1] == "/"): return PATH;
-
-		if ("." not in PATH): return PATH;
-		path_folders: list[str] = PATH.split("/");
-		path_folders.pop(-1);
-		return "/" if (absolute) else "" + "/".join(path_folders);
-		"""
 
 
 
@@ -264,18 +255,18 @@ def read(PATH: str, COMPRESSED: bool = False) -> str | None:
 		"Hug a Mika a night, keeps your smile shinning bright~"
 	"""
 	if exists(PATH):
-		Log.TSN_Debug(f"Reading {PATH} - Compression: {COMPRESSED}...");
+		Log.debugTSN(f"Reading {PATH} - Compression: {COMPRESSED}...");
 		try:
 			if (COMPRESSED):
 				with lzma.open(PATH, "rt") as FILE: data = FILE.read();
 			else:
 				with open(PATH, "r", encoding="UTF8") as FILE: data = FILE.read(); # pyright: ignore[reportConstantRedefinition] // you are fucking stupid pyright
 
-			Log.Awaited().Status_Update(f"[OK] - {len(data)} characters\n{String.ASCII.Text.Dim}{data}", 10); return data;
+			Log.ok(f"{len(data)} characters\n{String.ASCII.Text.Dim}{data}"); return data;
 
 		except Exception as Except:
-			if (not Log.Can_Log(10)): Log.Error(f"Reading {Path} - Compression {COMPRESSED}\n{String.ASCII.Shortcut.BSOD}{Except}");
-			else: Log.Awaited().EXCEPTION(Except);
+			if (not Log.gable(10)): Log.error(f"Reading {Path} - Compression {COMPRESSED}\n{String.ASCII.Shortcut.BSOD}{Except}");
+			else: Log.exception(Except);
 
 	return None;
 
@@ -301,7 +292,7 @@ def write(PATH: str, DATA: str, COMPRESSED: bool = False, APPEND: bool = False) 
 	mode: str = "a" if (APPEND) else "w";
 
 	if (exists(Path.folder(PATH))):
-		Log.TSN_Debug(f"Writing {PATH} - Compression: {COMPRESSED} - Mode: {mode} - Data:\n{String.ASCII.Text.Dim}{DATA}{String.ASCII.Text.Dim_OFF}\n({len(DATA)} characters)...");
+		Log.debugTSN(f"Writing {PATH} - Compression: {COMPRESSED} - Mode: {mode} - Data:\n{String.ASCII.Text.Dim}{DATA}{String.ASCII.Text.Dim_OFF}\n({len(DATA)} characters)...");
 		try:
 			if (COMPRESSED):
 				with lzma.open(PATH, mode) as FILE: FILE.write(DATA.encode("utf-8"));
@@ -310,7 +301,7 @@ def write(PATH: str, DATA: str, COMPRESSED: bool = False, APPEND: bool = False) 
 
 			Log.Awaited().OK(); return True;
 		except Exception as Except:
-			if (not Log.Can_Log(10)): Log.Error(f"{'Writing' if (mode == "w") else 'Appending'} {PATH} - Compression: {COMPRESSED} - Data: {len(DATA)} Characters\n{String.ASCII.Shortcut.BSOD}{Except}");
+			if (not Log.gable(10)): Log.error(f"{'Writing' if (mode == "w") else 'Appending'} {PATH} - Compression: {COMPRESSED} - Data: {len(DATA)} Characters\n{String.ASCII.Shortcut.BSOD}{Except}");
 			else: Log.Awaited().EXCEPTION(Except);
 	return False;
 
@@ -342,7 +333,7 @@ def readJSON(PATH: str, COMPRESSED: bool = False) -> dict[str, Any]:
 		}
 	"""
 	if (not Path.require(PATH)):
-		Log.TSN_Debug(f"404 Warning - {PATH}"); return {};
+		Log.debugTSN(f"404 Warning - {PATH}"); return {};
 	JSON: str | None = read(PATH, COMPRESSED);
 	return json.loads(JSON if (JSON) else "{}");
 
@@ -370,7 +361,7 @@ def writeJSON(PATH: str, Data: Mapping[str, Any] | list[Any], COMPRESSED: bool =
 		Path.require(PATH);
 		return write(PATH, json.dumps(Data, indent=2 if (not COMPRESSED) else 0), COMPRESSED);
 	except Exception as Error:
-		Log.Error(f"Error Writing JSON {PATH}.\n\tDATA: {Data}\n\tEXCEPTION:{Error}");
+		Log.error(f"Error Writing JSON {PATH}.\n\tDATA: {Data}\n\tEXCEPTION:{Error}");
 	return False;
 
 
@@ -406,7 +397,7 @@ def appendJSON(PATH: str, Dictionary: Mapping[str, Any], COMPRESSED: bool = Fals
 		JSON.update(Dictionary);
 		return writeJSON(PATH, JSON, COMPRESSED);
 
-	except Exception as Except: Log.Error(f"Updating {PATH} - Compression: {COMPRESSED}\n{String.ASCII.Shortcut.BSOD}{Except}");
+	except Exception as Except: Log.error(f"Updating {PATH} - Compression: {COMPRESSED}\n{String.ASCII.Shortcut.BSOD}{Except}");
 	return False;
 
 
@@ -419,7 +410,7 @@ def readArray(PATH: str, COMPRESSED: bool = False) -> list[Any]:
 	`readJSON()` alias, but instead of Dictionaries, it's Arrays.  
 	This function has a very slight difference with `readJSON()`: it returns an empty list instead of an empty dictionary. """
 	if (not Path.require(PATH)):
-		Log.TSN_Debug(f"404 Warning - {PATH}"); return [];
+		Log.debugTSN(f"404 Warning - {PATH}"); return [];
 	JSON: str | None = read(PATH, COMPRESSED);
 	return json.loads(JSON if (JSON) else "[]");
 
@@ -446,5 +437,5 @@ def appendArray(PATH: str, ARRAY: list[Any], COMPRESSED: bool = False) -> bool:
 		JSON.extend(ARRAY);
 		return writeJSON(PATH, JSON, COMPRESSED);
 
-	except Exception as Except: Log.Error(f"Updating {PATH} - Compression: {COMPRESSED}\n{String.ASCII.Shortcut.BSOD}{Except}");
+	except Exception as Except: Log.error(f"Updating {PATH} - Compression: {COMPRESSED}\n{String.ASCII.Shortcut.BSOD}{Except}");
 	return False;

@@ -25,7 +25,7 @@ def Base(Clear: bool = True) -> None:
 		Clear (bool = True): Whenever to clear completely the Window before drawing the frame.
 	"""
 	curses.update_lines_cols();
-	if (curses.LINES < 6): Exit(); Log.Critical("Terminal size is way too small! TSN Abstracter's TUI Menu requires a terminal that's at the very least 6 lines long."); exit(78);
+	if (curses.LINES < 6): Exit(); Log.crit("Terminal size is way too small! TSN Abstracter's TUI Menu requires a terminal that's at the very least 6 lines long."); exit(78);
 	if (Clear): Window.clear();
 	Window.border();
 

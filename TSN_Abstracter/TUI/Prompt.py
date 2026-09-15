@@ -29,7 +29,7 @@ def Prompt(Title: str, Description: str, Entry: __Entry = __Entry(12, Arguments=
 			case _: raise ValueError(f"TSNA.TUI | Align property \"{Align}\" does not exist.");
 
 	if (Entry.Type not in [eType.Array, eType.IOText]):
-		Log.Critical(f"Entry Type of ID {Entry.Type} is unsupported by TUI.Prompt");
+		Log.crit(f"Entry Type of ID {Entry.Type} is unsupported by TUI.Prompt");
 		return;
 
 

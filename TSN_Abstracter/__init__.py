@@ -110,7 +110,7 @@ class TSNA:
 	class __VersionBad(Exception):
 		def __init__(self, Message: str, QUIT: bool):
 			self.Message: str = Message;
-			Log.Critical(self.Message);
+			Log.crit(self.Message);
 			if (QUIT): exit();
 		def __str__(self) -> str: return self.Message;
 
@@ -148,9 +148,9 @@ class TSNA:
 					if (TSNA.VERSION[2] >= MINIMUM[2]): return True;
 			elif (TSNA.VERSION[0] >= MINIMUM[0]): raise TSNA.__Breaking(MINIMUM, QUIT);
 			elif (QUIT): raise TSNA.__Outdated(MINIMUM, QUIT);
-			else: Log.Warning(f"{App.Codename} is asking for TSN Abstracter {TSNA.version(MINIMUM)} however we're using {TSNA.version()}!");
+			else: Log.warn(f"{App.Codename} is asking for TSN Abstracter {TSNA.version(MINIMUM)} however we're using {TSNA.version()}!");
 		except TSNA.__Breaking, TSNA.__Outdated:
-			Log.Stateless(f"You may ignore this error, however we do not guarantee that the program will function correctly.\nPress any key to continue.");
+			Log.stateless(f"You may ignore this error, however we do not guarantee that the program will function correctly.\nPress any key to continue.");
 			input();
 		return False;
 
@@ -164,7 +164,7 @@ class TSNA:
 
 		If your TSNA-Based Application does not support being imported as a Python Module run this when `(__name__ != "__main__")`, this will quit the application with exit code 126.
 		"""
-		Log.Critical(f"{App.Name} does not support being imported as a Python Module. Exiting!"); exit(126);
+		Log.crit(f"{App.Name} does not support being imported as a Python Module. Exiting!"); exit(126);
 
 
 
@@ -176,8 +176,8 @@ class TSNA:
 		Provides a single argument to specify if we should clear the console on the App's successful launch.
 		"""
 		TSNA.require(App.TSNA, False);
-		if (Clear_Console): Log.Clear();
-		Log.Stateless(f"{App.Name} {App.Branch} {App.version()} © ({App.Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
+		if (Clear_Console): Log.clear();
+		Log.text(f"{App.Name} {App.Branch} {App.version()} © ({App.Year}) - {", ".join(App.Author)} | {App.License}\n{App.Description}");
 
 
 

@@ -109,4 +109,4 @@ class Progresser():
 		self._Unix_Last = Time.Unix.now(self.__Precise);
 
 
-		Log.Carriage(self.__text());
+		Log.carriage(self.__text());
