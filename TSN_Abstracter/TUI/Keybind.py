@@ -6,10 +6,6 @@ from .Globals import *;
 
 
 
-__all__: list[str] = [
-	"Keybind",
-	"Keybinds"
-];
 
 
 
@@ -29,14 +25,28 @@ class Keybind:
 		Arguments (list[Any] | tuple[Any, ...]): The arguments to pass in `Function`.
 	"""
 	def __init__(self,
-			Key: int,
-			Name: str,
-			Function: Callable[[], Any] | Callable[[Any], Any],
-			Arguments: list[Any] | tuple[Any, ...] = (),
+			KEY: int,
+			NAME: str,
+			FUNC: Callable[[], Any] | Callable[[Any], Any],
+			ARGS: list[Any] | tuple[Any, ...] = (),
 		) -> None:
-		self.Key: int = Key;
-		self.Name: str = Name;
-		self.Function: Callable[[], Any] | Callable[[Any], Any] = Function;
-		self.Arguments: list[Any] | tuple[Any, ...] = tuple(Arguments);
+		self.Key: int = KEY;
+		self.Name: str = NAME;
+		self.Func: Callable[[], Any] | Callable[[Any], Any] = FUNC;
+		self.Args: list[Any] | tuple[Any, ...] = tuple(ARGS);
 
 type Keybinds = list[Keybind] | tuple[Keybind, ...];
+
+
+
+
+
+
+
+
+
+
+__all__: list[str] = [
+	"Keybind",
+	"Keybinds"
+];

@@ -4,38 +4,35 @@ from .Globals import *;
 
 
 
-class eType():
-	""" ***Implemented in __TSNA `v7.0.0`__***  
+# FUNCTION GROUP - 0X
+FUNCTION = 0;
+FINALIZE = 1;
+RETURN = 2;
 
-	A class containing every single type of Entries currently implemented in the TUI Framework.  
-	INTs are used instead of strings to specify Entry Types for performance/memory reasons, it's also much faster to type.  
-	Using raw integers is still preferred over typing `TUI.eType.Function.value`, mostly because it's painfully long to write than just `0`."""
-	# FUNCTION GROUP - 0X
-	Function = 0;
-	Finalize = 1;
-	Return = 2;
+# INPUT GROUP - 1X
+CHECKBOX = 10;
+INPUT = 11;
+CHOICE = 12;
 
-	# INPUT GROUP - 1X
-	Toggle = 10;
-	IOText = 11;
-	Array = 12;
-
-	# DISPLAY GROUP - 2X
-	Text = 20;
-	TextSelectable = 21;
+# DISPLAY GROUP - 2X
+TEXT = 20;
+TEXT_SELECTABLE = 21;
 
 
 
 
 
-def _NULL() -> None: pass;
+
+
+
+def _NULL(*args: Any, **kwargs: Any) -> None: pass;
 @dataclass
 class Entry:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	An Entry Object is a displayable `TUI.Menu` object that holds functions to execute along with arguments and a whole lot of other parameters.
 
-	Arguments:
+	ARGS:
 		Type (int): The Type of the Entry.
 		Name (str): The (selectable) text to display.
 		Description (str): The text to display in most notably the Description Box of `TUI.Menu`.
@@ -44,108 +41,111 @@ class Entry:
 		Unavailable (bool = False): Whenever the Entry is actionable.
 		Required (bool = False): Whenever the Entry must have a non-None value in order for a given `TUI.Menu`'s `TUI.Entry(1) (Finalize)` to function.
 		Bold (bool = False): Make the displayed `Name` bold.
-		Function (Callable): A function to run when actioned. Unused depending on the Entry Type.
-		Arguments (list[Any] | tuple[Any, ...] = ()): Arguments to pass through the function. **[!]** Behavior changes depending on the Entry Type, see Entry Type section. **[!]**
-		Value (str | bool = ""): The default value of the Entry.
+		FUNC (Callable): A function to run when actioned. Unused depending on the Entry Type.
+		ARGS (list[Any] | tuple[Any, ...] = ()): ARGS to pass through the function. **[!]** Behavior changes depending on the Entry Type, see Entry Type section. **[!]**
+		VALUE (str | bool = ""): The default value of the Entry.
 
 	# Entry Types
 	Generic Entry Types that are intended to exit `TUI.Menu`, primarily running functions in the end.
 	## FUNCTION GROUP
-	### Function (0)
-	This type when actioned inside a Menu simply runs `Function(*Arguments)`.
-	### Finalize (1)
-	This type when actioned inside a Menu returns the `TUI.Entries_To_Dict()` of every Entries sent to `TUI.Menu`.
-	### Return (2)
-	This type when actioned inside a Menu returns `Value`.
+	### FUNCTION (0)
+	This type when actioned inside a Menu simply runs `FUNC(*ARGS)`.
+	### FINALIZE (1)
+	This type when actioned inside a Menu returns the `TUI.entryJSON()` of every Entries sent to `TUI.Menu`.
+	### RETURN (2)
+	This type when actioned inside a Menu returns `VALUE`.
 
 	## INPUT GROUP
 	Generic Entry Types that handle user input.
-	### Toggle (10)
-	This type when actioned inside a Menu toggles its `Value` between `True` and `False`, specially displays a checkbox.
-	### IOText (11)
+	### CHECKBOX (10)
+	This type when actioned inside a Menu toggles its `VALUE` between `True` and `False`, specially displays a checkbox.
+	### INPUT (11)
 	This type when actioned inside a Menu runs `TUI.Text`, specially displays the current set text.  
-	**The `Arguments` value behaves differently here**, it must be a __singular string__ representing the regex pattern of what is valid to enter.
-	### Array (12)
+	**The `ARGS` value behaves differently here**, it must be a __singular string__ representing the regex pattern of what is valid to enter.
+	### CHOICE (12)
 	This type when actioned inside a Menu runs a sub-`TUI.Menu` with a list of the available elements to select, specially displays the selectable elements.  
 	Using the Left and Right arrow keys lets you quickly select one of the available options.
-	**The `Arguments` value behaves differently here**, it is an __array__ containing the available options to select from.
+	**The `ARGS` value behaves differently here**, it is an __array__ containing the available options to select from.
 
 	## TEXT GROUP
 	Generic Entry Types that are only used to display things.
-	### Text (20)
+	### TEXT (20)
 	Only used to display text, this Entry is automatically skipped and cannot be selected.  
-	### TextSelectable (21)
+	### TEXT_SELECTABLE (21)
 	Standard `Text` Entry Type, but can be selected instead of being skipped over.  
 	"""
 	def __init__(self,
-			Type: int,
-			Name: str = "Unnamed Entry",
-			Description: str = "This entry does not have any description.",
+			TYPE: int,
+			NAME: str = "Unnamed Entry",
+			DESCRIPTION: str = "This entry does not have any description.",
 			ID: str | None = None,
 
-			Indentation: int = 0,
-			Unavailable: bool = False,
-			Required: bool = False,
-			Bold: bool = False,
-
-			Function: Callable[[], Any] | Callable[[Any], Any] = _NULL,
-			Arguments: list[Any] | tuple[Any, ...] = (),
-			Value: str | bool = "",
+			INDENTATION: int = 0,
+			UNAVAILABLE: bool = False,
+			REQUIRED: bool = False,
+			BOLD: bool = False,
+				*,
+			FUNC: Callable[..., Any] = _NULL,
+			ARGS: list[Any] | tuple[Any, ...] = (),
+			VALUE: str | bool = "",
 		) -> None:
-		self.Type: int = Type;
+		self.Type: int = TYPE;
 
-		self.Name: str = Name;
-		self.Description: str = Description;
+		self.Name: str = NAME;
+		self.Description: str = DESCRIPTION;
 		self.ID: str | None = ID;
 
-		self.Indentation: int = Indentation;
-		self.Unavailable: bool = Unavailable;
-		self.Required: bool = Required;
-		self.Bold = Bold;
+		self.Indentation: int = INDENTATION;
+		self.Unavailable: bool = UNAVAILABLE;
+		self.Required: bool = REQUIRED;
+		self.Bold = BOLD;
 
 
-		self.Function: Callable[[], Any] | Callable[[Any], Any] = Function;
-		self.Arguments: list[Any] | tuple[Any, ...] = tuple(Arguments);
-		self.Value: str | bool = Value;
+		self.Func: Callable[..., Any] = FUNC;
+		self.Args: list[Any] | tuple[Any, ...] = tuple(ARGS);
+		self.Value: str | bool = VALUE;
 
 		self.__ValueInitial: Any = None;
 
 		match self.Type:
-			case eType.Finalize: self.Indentation = self.Indentation - 2;
-			case eType.Text: self.Indentation = self.Indentation - 2;
+			case 1: self.Indentation = self.Indentation - 2; # Finalize
+			case 20: self.Indentation = self.Indentation - 2; # Text
 			case _: pass;
 
 		self.Index: int = 0;
 
 
 
-	def Toggle(self) -> bool:
+	def toggle(self) -> bool:
 		""" ***Implemented in __TSNA `v7.0.0`__***  
 
 		Toggle between `True` and `False`, to be used with a Toggle Entry (`10`).  
-		Also returns the new state of `self.Value`."""
+		Also returns the new state of `self.VALUE`."""
 		self.Value = False if (self.Value) else True;
 		return self.Value;
+
+
+
 type Entries = list[Entry] | tuple[Entry, ...];
 
 
 
 
 
-def Entries_To_Dict(Entries: Entries) -> dict[str, Any]:
+def entryJSON(Entries: Entries) -> dict[str, Any]:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Takes in a list of Entry Objects and dumps their `.Value` with the key `.ID` when it is defined into a dictionary.
 
-	Arguments:
+	ARGS:
 		Entries (Entries): The list of Entry Objects.
 
 	Returns:
 		dict[str, Any]: The returned Dictionary containing the data extracted from each Entry with an `ID`.
 
 	Examples:
-		>>> TUI.Entries_To_Dict([
-			TUI.Entry(10, ID="Hello", Value="There"),
+		>>> TUI.entryJSON([
+			TUI.Entry(10, ID="Hello", VALUE="There"),
 			TUI.Entry(20, "This is some random thing"),
 		]);
 		{
@@ -162,9 +162,12 @@ def Entries_To_Dict(Entries: Entries) -> dict[str, Any]:
 
 
 
+
+
+
+
+
 __all__: list[str] = [
-	"eType",
-	"Entry",
-	"Entries",
-	"Entries_To_Dict"
+	"FUNCTION", "FINALIZE", "RETURN", "CHECKBOX", "INPUT", "CHOICE", "TEXT", "TEXT_SELECTABLE",
+	"Entry", "Entries", "entryJSON"
 ];

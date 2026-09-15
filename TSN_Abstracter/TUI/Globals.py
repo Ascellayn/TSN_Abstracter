@@ -1,7 +1,7 @@
 """ ***Implemented in __TSNA `v7.0.0`__***  
 
 Global Variables and imports for the TUI Framework.  
-Contains also the `Window` variable along with `TUI.Init()` / `TUI.Exit()` and the `curses` module import.
+Contains also the `Window` variable along with `TUI.init()` / `TUI.exit()` and the `curses` module import.
 """
 
 from .. import App, Config, Log, String, TSNDL; # pyright: ignore[reportUnusedImport]
@@ -13,16 +13,23 @@ from typing import Any, Callable, cast; # pyright: ignore[reportUnusedImport]
 
 
 
+
+
 Window: curses.window = curses.initscr();
 
 
 
 
 
-def Init() -> None:
+
+
+
+
+
+def init() -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
-	s
+	tbd
 	"""
 	Window.move(0,0);
 	Window.erase();
@@ -47,10 +54,10 @@ def Init() -> None:
 
 
 
-def Exit() -> None:
+def revert() -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
-	s
+	tbd
 	"""
 	Window.move(0,0);
 	Window.clear();
@@ -64,4 +71,13 @@ def Exit() -> None:
 
 	Config.System.TUI_Enabled = False;
 
-Exit(); # Creating the window object somewhat runs a partial Init which screws up everything, so we run an exit.
+
+
+
+
+
+
+
+
+
+revert(); # Creating the window object somewhat runs a partial Init which screws up everything, so we run an exit.
