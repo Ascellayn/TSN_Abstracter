@@ -24,14 +24,6 @@ FILE: logging.Logger = logging.getLogger("TSN-File");
 
 
 
-# My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
-	# v7.0.0: god damn it the awaited status system is kinda good... look what you've done past me, how dare you
-Statuses: dict[str, list[Status]] = {};
-Status_Console: str | None = None;
-Status_File: str | None = None;
-
-
-
 
 
 
@@ -284,8 +276,6 @@ class Status:
 
 
 
-
-
 class StatusDummy(Status):
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
@@ -298,6 +288,14 @@ class StatusDummy(Status):
 	def alert(self, STATUS: str | None = None): return;
 	def bad(self, STATUS: str | None = None): return;
 	def exception(self, EXCEPTION: Exception, RAISE: bool = False, TRACEBACK: bool = True): return;
+
+
+
+# My hope is that the "await" status system is so fucking bad that I'm NEVER EVER ALLOWED TO TOUCH PYTHON CODE IN MY ENTIRE LIFE EVER AGAIN
+	# v7.0.0: god damn it the awaited status system is kinda good... look what you've done past me, how dare you
+Statuses: dict[str, list[Status]] = {};
+Status_Console: str | None = None;
+Status_File: str | None = None;
 
 
 
