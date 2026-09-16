@@ -219,7 +219,7 @@
 
 - ### `TUI` Changes
 	- Optimized slightly `TUI.Draw.Base()` by avoid unnecessary variable
-	- Exploded `TUI.eType` and made each constant available under `TUI.Entry.[TYPE]`.  
+	- Exploded `TUI.eType` and made each constant available under `TUI.[TYPE]`.  
 	The constant's names have also been renamed and are now:
 		- `FUNCTION`
 		- `FINALIZE`
@@ -231,6 +231,11 @@
 		- `TEXT_SELECTABLE`
 	- Entries and Keybinds' `FUNCTION` argument now has the correct typing and accepts any function.
 	- Internal `__NULL` function now accepts any amount of arguments to prevent an exception when mistakenly running a `FUNCTION` Entry with no overwritten function, with arguments.
+	- Renamed attribute `TUI.Entry.Description()` → `TUI.Entry.Desc()`
+	- Renamed attribute `TUI.Entry.Indentation()` → `TUI.Entry.Indent()`
+	- Renamed attribute `TUI.Entry.Unavailable()` → `TUI.Entry.Disabled()`
+	- Renamed attribute `TUI.Entry.Function()` → `TUI.Entry.Func()`
+	- Renamed attribute `TUI.Entry.Arguments()` → `TUI.Entry.Args()`
 	- Renamed function `TUI.Draw.Base()` → `TUI.Draw.frame()`
 	- Renamed function `TUI.Draw.Base_Box()` → `TUI.Draw.frameLine()`
 	- Renamed method `TUI.Entry.Toggle()` → `TUI.Entry.toggle()`

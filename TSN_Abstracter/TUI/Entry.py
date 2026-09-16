@@ -33,14 +33,14 @@ class Entry:
 	An Entry Object is a displayable `TUI.Menu` object that holds functions to execute along with arguments and a whole lot of other parameters.
 
 	ARGS:
-		Type (int): The Type of the Entry.
-		Name (str): The (selectable) text to display.
-		Description (str): The text to display in most notably the Description Box of `TUI.Menu`.
+		TYPE (int): The Type of the Entry.
+		NAME (str): The (selectable) text to display.
+		DESC (str): The text to display in most notably the Description Box of `TUI.Menu`.
 		ID (str | None = None): An ID to specify to more easily fetch data from.
-		Indentation (int = 0): How far away from the left the Entry is displayed.
-		Unavailable (bool = False): Whenever the Entry is actionable.
-		Required (bool = False): Whenever the Entry must have a non-None value in order for a given `TUI.Menu`'s `TUI.Entry(1) (Finalize)` to function.
-		Bold (bool = False): Make the displayed `Name` bold.
+		INDENT (int = 0): How far away from the left the Entry is displayed.
+		DISABLED (bool = False): Whenever the Entry is actionable.
+		REQUIRED (bool = False): Whenever the Entry must have a non-None value in order for a given `TUI.Menu`'s `TUI.Entry(1) (Finalize)` to function.
+		BOLD (bool = False): Make the displayed `Name` bold.
 		FUNC (Callable): A function to run when actioned. Unused depending on the Entry Type.
 		ARGS (list[Any] | tuple[Any, ...] = ()): ARGS to pass through the function. **[!]** Behavior changes depending on the Entry Type, see Entry Type section. **[!]**
 		VALUE (str | bool = ""): The default value of the Entry.
@@ -77,11 +77,11 @@ class Entry:
 	def __init__(self,
 			TYPE: int,
 			NAME: str = "Unnamed Entry",
-			DESCRIPTION: str = "This entry does not have any description.",
+			DESC: str = "This entry does not have any description.",
 			ID: str | None = None,
 
-			INDENTATION: int = 0,
-			UNAVAILABLE: bool = False,
+			INDENT: int = 0,
+			DISABLED: bool = False,
 			REQUIRED: bool = False,
 			BOLD: bool = False,
 				*,
@@ -92,11 +92,11 @@ class Entry:
 		self.Type: int = TYPE;
 
 		self.Name: str = NAME;
-		self.Description: str = DESCRIPTION;
+		self.Desc: str = DESC;
 		self.ID: str | None = ID;
 
-		self.Indentation: int = INDENTATION;
-		self.Unavailable: bool = UNAVAILABLE;
+		self.Indent: int = INDENT;
+		self.Disabled: bool = DISABLED;
 		self.Required: bool = REQUIRED;
 		self.Bold = BOLD;
 
@@ -108,8 +108,8 @@ class Entry:
 		self.__ValueInitial: Any = None;
 
 		match self.Type:
-			case 1: self.Indentation = self.Indentation - 2; # Finalize
-			case 20: self.Indentation = self.Indentation - 2; # Text
+			case 1: self.Indent = self.Indent - 2; # Finalize
+			case 20: self.Indent = self.Indent - 2; # Text
 			case _: pass;
 
 		self.Index: int = 0;

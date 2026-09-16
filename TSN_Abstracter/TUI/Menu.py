@@ -8,7 +8,18 @@ from .Prompt import *;
 from .Keybind import Keybinds;
 
 from . import Entry, Entries, entryJSON;
-import Entry as T;
+from . import FUNCTION, FINALIZE, RETURN, CHECKBOX, INPUT, CHOICE, TEXT, TEXT_SELECTABLE;
+class T:
+	FUNCTION = FUNCTION;
+	FINALIZE = FINALIZE;
+	RETURN = RETURN;
+	CHECKBOX = CHECKBOX;
+	INPUT = INPUT;
+	CHOICE = CHOICE;
+	TEXT = TEXT;
+	TEXT_SELECTABLE = TEXT_SELECTABLE;
+# THIS IS FUCKING AWFUL AND NEEDS TO BE CHANGED!! SEPARATE THE TYPES INTO ANOTHER PYTHON MODULE FUCK IT
+# IF THIS MAKES RELEASE V7 IM GOING TO STRANGLE MY PAST SELF
 
 
 from . import Draw, Input;
@@ -98,7 +109,7 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 			if (e.Type == T.INPUT and e.Value == "" and e.Required): Missing_Entries.append(e.ID);
 
 
-		x = 3 + (2 * Entries[Index].Indentation);
+		x = 3 + (2 * Entries[Index].Indent);
 		# Display entries
 		Displayed: int = 0;
 		for i, e in enumerate(Entries):
@@ -107,12 +118,12 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 					if (i != len(Entries) - 1):
 						Remaining += 1; continue;
 				if (i + min(round(Max_Visible / Config.TUI.Scroll_Center), Max_Visible - Config.TUI.Scroll_Center) < Index): continue;
-			eX: int = 6 + (2 * e.Indentation); eY = 2 + Displayed;
+			eX: int = 6 + (2 * e.Indent); eY = 2 + Displayed;
 
 			if (e.Type == T.FINALIZE and e.Required and len(Missing_Entries) > 0):
-				e.Unavailable = True;
+				e.Disabled = True;
 			elif (e.Type == T.FINALIZE and e.Required):
-				e.Unavailable = False;
+				e.Disabled = False;
 
 
 			# Text Display
@@ -146,7 +157,7 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 					case _: Entry_Text = String.abbreviate(Entry_Text, curses.COLS - eX - 2);
 
 
-			if (e.Unavailable): __colorAttribute(TSNDL.Color.Moon.Grey_TERM);
+			if (e.Disabled): __colorAttribute(TSNDL.Color.Moon.Grey_TERM);
 			if (e.Bold): Window.attron(curses.A_BOLD);
 			Window.addstr(eY, eX, Entry_Text);
 			Window.attrset(0);
@@ -155,13 +166,13 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 
 
 		# Cursor Display
-		if (Entries[Index].Indentation != -2): # Ignore on -2 Indent
+		if (Entries[Index].Indent != -2): # Ignore on -2 Indent
 			if (Entries[Index].Type != T.FINALIZE): # No cursor on Finalize
 				if (Entries[Index].Type != T.CHECKBOX): # Don't overwrite the toggle state
-					Window.addch(y, x, "ø" if (Entries[Index].Unavailable) else ">");
+					Window.addch(y, x, "ø" if (Entries[Index].Disabled) else ">");
 
 		# Description
-		Description: str = String.abbreviate(f"[{String.trailingZero(fakeIndex, len(str(len(Entries))))}] {Entries[Index].Description}", curses.COLS - 4);
+		Description: str = String.abbreviate(f"[{String.trailingZero(fakeIndex, len(str(len(Entries))))}] {Entries[Index].Desc}", curses.COLS - 4);
 		Window.addstr(curses.LINES - 2, 2, Description);
 
 		# Low Res. Terms: Give scroll Hint
@@ -172,8 +183,8 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 		match (Entries[Index].Type):
 			case T.FINALIZE: Window.move(y, 2 + len(Entries[Index].Name));
 			case _:
-				if (Entries[Index].Indentation == -2): Window.move(y, 2 + len(Entries[Index].Name));
-				else: Window.move(y, 3 + (2 * Entries[Index].Indentation));
+				if (Entries[Index].Indent == -2): Window.move(y, 2 + len(Entries[Index].Name));
+				else: Window.move(y, 3 + (2 * Entries[Index].Indent));
 		Window.refresh();
 
 
@@ -234,7 +245,7 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 
 			# MISC INPUTS
 			case 104: # "h" - Help for Selected Entry
-				prompt(Entries[Index].Name, Entries[Index].Description, Entry(T.CHOICE, ARGS=["Ok"]));
+				prompt(Entries[Index].Name, Entries[Index].Desc, Entry(T.CHOICE, ARGS=["Ok"]));
 
 
 			case 72: # "H" - Help for Keybinds
@@ -285,7 +296,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 
 
 			case 10: # Enter - Execute Entry Features
-				if (Entries[Index].Unavailable and Entries[Index].Type != T.FINALIZE): curses.beep(); curses.flash(); continue;
+				if (Entries[Index].Disabled and Entries[Index].Type != T.FINALIZE): curses.beep(); curses.flash(); continue;
 
 				match (Entries[Index].Type):
 					# Function Group
@@ -295,7 +306,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 
 
 					case T.FINALIZE:
-						if (Entries[Index].Unavailable):
+						if (Entries[Index].Disabled):
 							Description: str = f"You have not filled the following remaining {f'{len(Missing_Entries)} required entries' if (len(Missing_Entries) > 1) else 'required entry'}:\n";
 							for missed in Missing_Entries: Description += f"- {missed if (missed) else '<NO ENTRY ID>'}\n";
 							prompt("Missing Information", Description[:-1], Entry(T.CHOICE, VALUE="Ok", ARGS=["Ok"]), "Left");
@@ -327,7 +338,7 @@ Are you sure you want to reset \"{Entries[Index].ID}\" to its initial value?\n\n
 					case T.CHOICE: # Array Input
 						Sub_Entries: list[Entry] = [
 							Entry(T.TEXT, Entries[Index].Name, BOLD=True),
-							Entry(T.TEXT, Entries[Index].Description),
+							Entry(T.TEXT, Entries[Index].Desc),
 							Entry(T.TEXT, "")
 						];
 

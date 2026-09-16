@@ -1,6 +1,6 @@
 [project]
 name = "TSN_Abstracter"
-version = "7.0.0a2"
+version = "7.0.0a3"
 authors = [
   { name="Ascellayn", email="contact+pypi@sirio-network.com" },
   { name="The Sirio Network", email="contact+pypi@sirio-network.com" },
