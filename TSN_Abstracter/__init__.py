@@ -132,7 +132,7 @@ class TSNA:
 
 		Returns a v.X.Y.Z string of the current TSN Abstracter Version (or of a provided Version Tuple)
 		"""
-		return f"v{".".join(String.ify_Array(TSNA.VERSION if (not VERSION) else VERSION))}";
+		return f"v{".".join(String.ifyArray(TSNA.VERSION if (not VERSION) else VERSION))}";
 
 
 
@@ -149,7 +149,7 @@ class TSNA:
 			elif (TSNA.VERSION[0] >= MINIMUM[0]): raise TSNA.__Breaking(MINIMUM, QUIT);
 			elif (QUIT): raise TSNA.__Outdated(MINIMUM, QUIT);
 			else: Log.warn(f"{App.Codename} is asking for TSN Abstracter {TSNA.version(MINIMUM)} however we're using {TSNA.version()}!");
-		except TSNA.__Breaking, TSNA.__Outdated:
+		except (TSNA.__Breaking, TSNA.__Outdated):
 			Log.stateless(f"You may ignore this error, however we do not guarantee that the program will function correctly.\nPress any key to continue.");
 			input();
 		return False;
