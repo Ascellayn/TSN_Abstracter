@@ -96,6 +96,7 @@
 
 
 - ### `Log` Changes
+	- Every base logging function now have a `CALLER` argument to specify a custom function name of "who called the function".
 	- Added `Log.ok()`, `Log.alert()`, `Log.bad()` and `Log.except()` which are faster and more efficient shortcuts to status logs' methods.
 	- Added `Log.text()`, which ONLY prints text to the console / log file and nothing else.
 		- Its logging level is 15.

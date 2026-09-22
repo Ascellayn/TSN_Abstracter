@@ -424,139 +424,147 @@ def exception(
 
 
 # Simplified logging functions
-def debugTSN(TEXT: str) -> None:
+def debugTSN(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a debug message for **Libraries** *(Level: 5)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.debugTSN(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - TSN_Debug: MyFunction → Hello World!
 	"""
-	log(TEXT, 5);
+	log(TEXT, 5, CALLER);
 
 
 
-def debug(TEXT: str) -> None:
+def debug(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a debug message for **TSNA Programs** *(Level: 10)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.debug(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - Debug: MyFunction → Hello World!
 	"""
-	log(TEXT, 10);
+	log(TEXT, 10, CALLER);
 
 
 
-def text(TEXT: str) -> None:
+def text(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a message. No extra fancy bells or whistles. *(Level: 15)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.Text(f"Hello World!");
 		>>> MyFunction();
 		Hello World!
 	"""
-	log(TEXT, 15);
+	log(TEXT, 15, CALLER);
 
 
 
-def stateless(TEXT: str) -> None:
+def stateless(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a message with only the time if it's enabled *(Level: 20)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.stateless(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - Hello World!
 	"""
-	log(TEXT, 20);
+	log(TEXT, 20, CALLER);
 
 
 
-def info(TEXT: str) -> None:
+def info(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a standard informal message *(Level: 25)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.info(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - Info: MyFunction → Hello World!
 	"""
-	log(TEXT, 25);
+	log(TEXT, 25, CALLER);
 
 
 
-def warn(TEXT: str) -> None:
+def warn(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a standard warning message *(Level: 30)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.warn(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - Warning: MyFunction → Hello World!
 	"""
-	log(TEXT, 30);
+	log(TEXT, 30, CALLER);
 
 
 
-def error(TEXT: str) -> None:
+def error(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a standard error message *(Level: 40)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.error(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - Error: MyFunction → Hello World!
 	"""
-	log(TEXT, 40);
+	log(TEXT, 40, CALLER);
 
 
 
-def crit(TEXT: str) -> None:
+def crit(TEXT: str, CALLER: str | None = None) -> None:
 	""" ***Implemented in __TSNA `v7.0.0`__***  
 
 	Log a standard critical message *(Level: 50)*.
 
 	Arguments:
-		Text (str): The string to be displayed in the Log.
+		TEXT (str): The string to be displayed in the Log.
+		CALLER (str | None = None): A custom function name to be used for the "caller" part of the function log.
 
 	Examples:
 		>>> def MyFunction() -> None: Log.crit(f"Hello World!");
 		>>> MyFunction();
 		[2007/04/23 - 17:00:00] - Critical: MyFunction → Hello World!
 	"""
-	log(TEXT, 50);
+	log(TEXT, 50, CALLER);
 
 
 
