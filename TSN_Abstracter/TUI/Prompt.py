@@ -37,6 +37,7 @@ def prompt(Title: str, Description: str, Entry: Entry = Entry(12, ARGS=["OK"]), 
 		Entry (Entry): **[!] MUST BE EITHER AN `IOText (11)` OR `Array (12)` ENTRY [!]** - The Entry with the options available to choose from or to type in.
 		Align (str = "Center"): The text alignment. Can be either "Center", "Left" or "Right".
 	"""
+	if (not Config.System.TUI_Enabled): init();
 	def __getTextX(Text: str, Align: str) -> int:
 		match Align:
 			case "Center": return ULX - round((len(Text) - (LRX - ULX)) / 2);

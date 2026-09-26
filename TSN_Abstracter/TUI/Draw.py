@@ -20,6 +20,7 @@ def frame(CLEAR: bool = True) -> None:
 	Arguments:
 		CLEAR (bool = True): Whenever to clear completely the Window before drawing the frame.
 	"""
+	if (not Config.System.TUI_Enabled): init();
 	curses.update_lines_cols();
 	if (curses.LINES < 6): exit(); Log.crit("Terminal size is way too small! TSN Abstracter's TUI Menu requires a terminal that's at the very least 6 lines long."); exit(78);
 	if (CLEAR): Window.clear();
@@ -40,6 +41,7 @@ def frameLine(OFFSET: int = 0) -> None:
 		OFFSET (int = 0): How many more additional lines the "box" should be.
 	
 	"""
+	if (not Config.System.TUI_Enabled): init();
 	Window.hline(curses.LINES - 3 - OFFSET, 1, curses.ACS_HLINE, curses.COLS -2);
 
 

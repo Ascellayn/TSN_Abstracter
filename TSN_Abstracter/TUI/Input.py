@@ -51,6 +51,7 @@ def Text(Value: str = "", Allowed: str = r".", Limitation: tuple[int, int, int] 
 	allowed represents regex, if regex fails then character is not inputted, value is default 
 	limitation is x_min, x_max, Y
 	"""
+	if (not Config.System.TUI_Enabled): init();
 	initial: str = Value;
 	cursor: int = 0;
 

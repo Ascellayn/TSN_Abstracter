@@ -57,7 +57,7 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 		Index (int = 0): Which (fake) Index to pre-select instead of going from the first element.
 		Visual_Only (bool = False): This disables the interactive part of the Menu, this useful for very hacky "Step by step" progression.
 	"""
-	init();
+	if (not Config.System.TUI_Enabled): init();
 	x: int; y: int = 2;
 
 
@@ -131,11 +131,9 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 			match (e.Type):
 				case T.CHECKBOX:
 					Entry_Quirk += f"[{Config.TUI.Checkbox_Fill}]" if (e.Value) else "[ ]";
-					break;
 
 				case T.INPUT:
 					Entry_Quirk += f" - '{e.Value}'";
-					break;
 
 				case T.CHOICE:
 					Values: str = "[";
@@ -145,7 +143,6 @@ def menu(Entries: Entries, Keybinds: Keybinds = [], Index: int = 0, Visual_Only:
 					Values += "]";
 
 					Entry_Quirk += f" - {Values}";
-					break;
 
 				case _: pass;
 
